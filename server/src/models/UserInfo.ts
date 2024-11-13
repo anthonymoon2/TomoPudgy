@@ -2,6 +2,8 @@ import { Schema, model, type Document } from 'mongoose';
 
 export interface IUserInfo extends Document {
   _id: String;
+  username: string;
+  password: string;
   Weight: number;
   Height: string;
   Gender: boolean;
@@ -12,6 +14,14 @@ export interface IUserInfo extends Document {
 
 const UserInfoSchema = new Schema<IUserInfo>({
 _id:{
+  type: String,
+  required: true,
+},
+username: {
+  type: String,
+  required: true,
+},
+password: {
   type: String,
   required: true,
 },

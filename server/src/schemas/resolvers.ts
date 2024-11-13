@@ -1,31 +1,28 @@
 import UserInfo, { IUserInfo } from "../models/UserInfo.js";
-import UserLogin, { IUserLogin } from "../models/UserLogin.js";
 
 const resolvers = {
-  Query: {
-    loginUser: async (
-      { username, password }: { username: string; password: string }
-    ): Promise<IUserLogin | null> => {
-      try {
-        const userLogin = await UserLogin.findOne({ username, password });
-        return userLogin;
-      } catch (err) {
-        console.error("Error checking UserLogin:", err);
-        return err;
-      }
-    },
-  },
-
   Mutation: {
     createUser: async (
       args: { username: string; password: string }
-    ): Promise<IUserLogin | null> => {
+    ): Promise<IUserInfo | null> => {
       try {
-        const userLogin = await UserLogin.create(args);
+        const userLogin = await UserInfo.create(args);
         return userLogin;
       } catch (err) {
         console.error("Error creating UserLogin:", err);
-        return err;
+        return null;
+      }
+    },
+
+    loginUser: async (
+      { username, password }: { username: string; password: string }
+    ): Promise<IUserInfo | null> => {
+      try {
+        const userLogin = await UserInfo.findOne({ username, password });
+        return userLogin;
+      } catch (err) {
+        console.error("Error checking UserLogin:", err);
+        return null;
       }
     },
 
@@ -41,7 +38,7 @@ const resolvers = {
         return updatedUserInfo;
       } catch (err) {
         console.error("Error updating UserInfo:", err);
-        return err;
+        return null;
       }
     },
   },
