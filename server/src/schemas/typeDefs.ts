@@ -1,14 +1,8 @@
 const typeDefs = `
-//check && set user login to db
-  type UserLogin {
-     _id: ID!
-  username: String!
-  password: String!
-}
-
-  // update user info to db
   type UserInfo {
   _id: ID!
+  username: String!
+  password: String!
   Weight: Float! 
   Height: String!
   Gender: Boolean!
@@ -17,14 +11,9 @@ const typeDefs = `
   DailyCaloricIntake: Float!
 }
 
- type Query {
-    loginUser(username: String!, password: String!): UserLogin
-  }
-
-
   type Mutation {
-  createUserLogin(username: String!, password: String!): UserLogin
-
+  createUser(username: String!, password: String!): UserInfo
+  loginUser(username: String!, password: String! ): UserInfo
   addUserInfo(
     _id: ID!,
     Weight: Float!,
