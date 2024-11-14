@@ -1,13 +1,34 @@
 // import { Query } from "mongoose";
 import UserInfo, { IUserInfo } from "../models/UserInfo.js";
+// import FoodItem, { IFoodItem } from '../models/FoodItem.js';
+import { fetchCalorieData } from '../utils/fetchCalorieData.js';
 
 const resolvers = {
   Query: {
-
+    getFoodItem: async (_: any, { name }: {name: string}) => {
+      try {
+        const foodItem = await fetchCalorieData(name);
+        return foodItem;
+      } catch (error) {
+        console.error('Error fetching food item:', error);
+        throw new Error ('Unable to fetch food item data');
+      } 
+    },
+    getUserInfo: async (_: any, { _id }: {_id: string}): Promise<IUserInfo | null> => {
+      try {
+        const user = await UserInfo.findById(_id);
+        return user;
+      } catch (error) {
+        console.error('Error fetching user info', error);
+        return null;
+      }
+    },
   },
+  
 
   Mutation: {
     createUser: async (
+      _parent: any,
       args: { username: string; password: string }
     ): Promise<IUserInfo | null> => {
       try {
@@ -20,6 +41,7 @@ const resolvers = {
     },
 
     loginUser: async (
+      _parent: any,
       { username, password }: { username: string; password: string }
     ): Promise<IUserInfo | null> => {
       try {
@@ -32,6 +54,7 @@ const resolvers = {
     },
 
     addUserInfo: async (
+      _parent: any,
       { _id, updateData }: { _id: string; updateData: Partial<IUserInfo> }
     ): Promise<IUserInfo | null> => {
       try {
