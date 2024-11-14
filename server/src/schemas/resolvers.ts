@@ -1,5 +1,6 @@
 // import { Query } from "mongoose";
 import UserInfo, { IUserInfo } from "../models/UserInfo.js";
+import FoodItem, { IFoodItem } from '../models/FoodItem.js';
 
 const resolvers = {
   Query: {

@@ -32,9 +32,6 @@ const typeDefs = `
   _id: ID!
   name: String!
   calories: Float!
-  fat_total_g: Float!
-  protein_g: Float!
-  carbs_total_g: Float!
   }
 `;
 
