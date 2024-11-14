@@ -1,6 +1,7 @@
 const typeDefs = `
   type Query {
   getUserInfo(_id: String!): UserInfo
+  getFoodItem(name: String!): FoodItem
 }
 
   type UserInfo {
@@ -29,7 +30,6 @@ const typeDefs = `
   ): UserInfo
 }
   type FoodItem {
-  _id: ID!
   name: String!
   calories: Float!
   }
