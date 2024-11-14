@@ -71,15 +71,15 @@ const Login = () => {
               </form>
             </div>
           )}
-          {(loginError || registerError) && <div>{(loginError ?? registerError)?.message}</div>}
+          <div className="errorStyle">{(loginError || registerError) && <div>{(loginError ?? registerError)?.message}</div>}</div>
         </div>
         <div className="directionalButtons">
           <div>
-            <button className="direction-button w-8 h-8 text-5xl mt-3">⬭</button>
+            <button className="directionMiddle w-8 h-8 text-5xl mt-5">⬭</button>
           </div>
-          <div className="horizontal-buttons flex space-x-20">
-            <button className="direction-button w-8 h-8 text-5xl">⬭</button>
-            <button className="direction-button  w-8 h-8 text-5xl">⬭</button>
+          <div className="bottomButtons flex w-20 justify-between">
+            <button className="directionLeft w-8 h-8 text-5xl">⬭</button>
+            <button className="directionRight  w-8 h-8 text-5xl">⬭</button>
           </div>
         </div>
       </div>

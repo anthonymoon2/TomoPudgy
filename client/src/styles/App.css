@@ -69,7 +69,7 @@ body {
 }
 
 .spriteStyle {
-  transform: translateY(-100px);
+  transform: translateY(-120px);
 }
 
 .content {
@@ -78,13 +78,19 @@ body {
 
 .formStyle input {
   width: 90%; /* Makes input fields and buttons responsive within the form */
-  margin: 0.25rem 0; /* Add spacing between form elements */
-  transform: translateY(-170px);
+  margin: 0.25rem auto; /* Add spacing between form elements */
+  transform: translateY(-180px); 
+}
+
+.errorStyle {
+  font-size: 15px;
+  transform: translateY(-100px);
+  margin: 0.25rem auto;
 }
 
 .formStyle button {
   width: 125px;
-  transform: translateY(-160px);
+  transform: translateY(-170px);
   border-radius: 30%;
 }
 
@@ -96,22 +102,72 @@ body {
   gap: 0.5rem;
 }
 
+.directionMiddle {
+  transform: translateY(20px);
+}
+
+.bottomButtons {
+  width: 175px;
+}
+
+.directionLeft, .directionRight {
+  transform: translateY(-10px);
+}
+
 
 /* Media query for smaller screens */
-@media (max-width: 600px) { */
+@media (max-width: 600px) {
   .tamagotchi {
-    width: 80vw;  /* Make it smaller on small screens */
-    aspect-ratio: 1;
+    width: 80vw;
+    height: 70vh;
+    border-width: 6px; /* Thinner border */
+    max-width: 400px; /* Reduce max width */
+    max-height: 500px; /* Reduce max height */
   }
 
   .screenStyle {
-    width: 150px;
+    width: 90%; /* Make the screen take more width */
+    max-width: 300px;
+    height: 70%; /* Increase height to accommodate content */
+    max-height: 300px;
+    padding: 0.4rem;
+    gap: 0.3rem; /* Smaller gap between items */
   }
-}
 
-@media (min-width: 1280px) {
-  .tamagotchi {
-    width: 500px;  /* Fixed width on very large screens */
-    height: 600px;
+  /* Adjustments for sprite position */
+  .spriteStyle {
+    transform: translateY(-30px);
+    margin-bottom: 0.5rem; /* Reduce spacing between sprite and form */
+  }
+
+  /* Form input and button adjustments */
+  .formStyle input {
+    width: 95%; /* Full width on smaller screens */
+    margin: 0.2rem 0;
+    transform: translateY(-100px);
+  }
+
+  .formStyle button {
+    width: 85px; /* Smaller buttons */
+    transform: translateY(-90px);
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem; /* Smaller font size */
+  }
+
+  /* Adjustments for directional buttons */
+  .directionalButtons {
+    gap: 0.3rem; /* Smaller gap */
+  }
+
+  .directionMiddle {
+    transform: translateY(5px); /* Smaller upward shift */
+  }
+
+  .bottomButtons {
+    width: 130px; /* Adjusted for smaller screen */
+  }
+
+  .directionLeft, .directionRight {
+    transform: translateY(-3px);
   }
 }
