@@ -52,5 +52,4 @@ password: {
 });
 
 const UserInfo = model<IUserInfo>('UserInfo', UserInfoSchema);
-
-export default UserInfo;
+export default UserInfo; 
