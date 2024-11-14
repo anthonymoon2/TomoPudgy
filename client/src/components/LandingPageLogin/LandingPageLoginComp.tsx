@@ -48,7 +48,7 @@ const Login = () => {
 
   return (
     <main>
-      <div className="tamagotchi">
+      <div className="tamagotchi flex flex-col">
         <div className="screenStyle">
           {loginData || registerData ? (
             <p>
@@ -58,24 +58,8 @@ const Login = () => {
             <div className="flex items-start justify-center w-full flex-col">
               <img src="sprite.gif" alt="Tamagotchi Display" className="spriteStyle w-full h-2/3 object-cover rounded-lg mb-4" />
               <form className="formStyle flex flex-col w-full">
-                <input
-                  placeholder="Your username"
-                  name="username"
-                  type="text"
-                  value={formState.username}
-                  onChange={handleChange}
-                  required
-                  className="mb-4 p-2 border border-gray-300 rounded"
-                />
-                <input
-                  placeholder="******"
-                  name="password"
-                  type="password"
-                  value={formState.password}
-                  onChange={handleChange}
-                  required
-                  className="mb-4 p-2 border border-gray-300 rounded"
-                />
+                <input placeholder="Your username" name="username" type="text" value={formState.username} onChange={handleChange} required className="mb-4 p-2 border border-gray-300 rounded" />
+                <input placeholder="******" name="password" type="password" value={formState.password} onChange={handleChange} required className="mb-4 p-2 border border-gray-300 rounded" />
                 <div className="flex justify-between">
                   <button type="button" onClick={handleRegisterSubmit} className="bg-blue-500 text-white font-bold py-2 px-4 rounded">
                     Register
@@ -88,13 +72,14 @@ const Login = () => {
             </div>
           )}
           {(loginError || registerError) && <div>{(loginError ?? registerError)?.message}</div>}
-
-          <div className="directionalButtons">
-            <div className="horizontal-buttons flex space-x-2">
-              <button className="direction-button left w-16 h-16 text-2xl">⬭</button>
-              <button className="direction-button right w-16 h-16 text-2xl">⬭</button>
-            </div>
-            <button className="direction-button up w-16 h-16 text-2xl mt-2">⬭</button>
+        </div>
+        <div className="directionalButtons">
+          <div>
+            <button className="direction-button w-8 h-8 text-5xl mt-3">⬭</button>
+          </div>
+          <div className="horizontal-buttons flex space-x-20">
+            <button className="direction-button w-8 h-8 text-5xl">⬭</button>
+            <button className="direction-button  w-8 h-8 text-5xl">⬭</button>
           </div>
         </div>
       </div>

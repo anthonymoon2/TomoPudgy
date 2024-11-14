@@ -55,7 +55,7 @@ body {
   width: 80%;               /* Adjust width for a smaller size */
   max-width: 400px;         /* Reduce max width */
   height: 60%;              /* Reduce height */
-  max-height: 300px;        /* Set a max height to control the box size */
+  max-height: 350px;        /* Set a max height to control the box size */
   background-color: #e5e7eb;
   border-radius: 10% 10% 10% 10%; /* Curved corners */
   padding: 0.5rem;          /* Reduce padding */
@@ -63,8 +63,9 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: flex-start; /* Align items to the top */
-  overflow: auto;            /* Allow scrolling if content overflows */
+  gap: 0.5rem;         /* Allow scrolling if content overflows */
   box-sizing: border-box;    /* Ensure padding does not affect width/height */
+  transform: translateY(25px);
 }
 
 .spriteStyle {
@@ -75,10 +76,16 @@ body {
   flex: 1; /* Takes up remaining space between header and footer */
 }
 
-.formStyle input,
-.formStyle button {
+.formStyle input {
   width: 90%; /* Makes input fields and buttons responsive within the form */
   margin: 0.25rem 0; /* Add spacing between form elements */
+  transform: translateY(-170px);
+}
+
+.formStyle button {
+  width: 125px;
+  transform: translateY(-160px);
+  border-radius: 30%;
 }
 
 /* Directional button group */
