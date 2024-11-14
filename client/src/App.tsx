@@ -3,7 +3,8 @@ import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink } from "@ap
 import { setContext } from "@apollo/client/link/context";
 import { Outlet } from "react-router-dom";
 
-import Header from "./components/Header";
+import Header from "./components/Header/HeaderComp";
+import Footer from "./components/Footer/FooterComp"
 import "./styles/Reset.css";
 import "./styles/App.css"
 
@@ -33,12 +34,13 @@ const client = new ApolloClient({
 
 function App() {
   return (
-    <div>
+    <div className="min-h-screen flex flex-col">
       <ApolloProvider client={client}>
           <Header />
-        <body>
+        <body className="content">
           <Outlet />
         </body>
+        <Footer />
       </ApolloProvider>
     </div>
   );
