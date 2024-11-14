@@ -13,14 +13,14 @@ export interface IUserInfo extends Document {
 }
 
 const UserInfoSchema = new Schema<IUserInfo>({
-username: {
-  type: String,
-  required: true,
-},
-password: {
-  type: String,
-  required: true,
-},
+  username: {
+    type: String,
+    required: true,
+  },
+  password: {
+    type: String,
+    required: true,
+  },
   Weight: {
     type: Number,
   },

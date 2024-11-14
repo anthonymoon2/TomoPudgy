@@ -31,3 +31,17 @@ export const LOGIN_USER = gql`
     }
   }
 `;
+
+export const UPDATE_USER = gql`
+  mutation UpdateUser($weight: Integer!, $height: Integer!, $age: Integer!, $gender: String!) {
+    updateUser(weight: $weight, height: $height, age: $age, gender: $gender) {
+      token
+      user {
+        weight
+        height
+        age
+        gender
+      }
+    }
+  }
+`
