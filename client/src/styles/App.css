@@ -53,11 +53,70 @@ body {
   z-index: 1; /* Ensure it appears above the background */
 }
 
+/* Profile Page */
+.profile-container{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 50px;
+  margin: 0 30px;
+}
+.profile-container-left-outer, .profile-container-right-outer{
+  background-color: black;
+  padding: 2px;
+  border-radius: 10px;
+}
+.profile-container-left, .profile-container-right{
+  background-color: #dbce9f;
+  border: 6px solid #ffcc00;
+  height: 400px;
+  border-radius: 10px;
+}
+.profile-container-left{
+  display: grid;
+  justify-content: center;
+  font-family: "Minecraft", sans-serif;
+  text-align: center;
+  padding-top: 25px;
+  font-size: 30px;
+}
+.profile-container-left-box{
+  background-color: #ffcc00;
+  padding: 5px;
+  text-align: center;
+  font-family: "Minecraft", sans-serif;
+  border-radius: 10px;
+}
+.figure-gif{
+  height: 250px;
+}
+.profile-container-right{
+  padding: 30px;
+}
+.profile-container-right form{
+  display: grid;
+  font-family: "Minecraft", sans-serif;
+}
+.profile-container-right form input, .profile-container-right form select{
+  margin-bottom: 10px;
+}
+.form-submit-button{
+  background-color: ;
+}
+
 /* Media query for smaller screens */
 @media (max-width: 600px) {
   .tamagotchi {
     width: 80vw;  /* Make it smaller on small screens */
     height: 50vh;
+  }
+  .profile-container{
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin: 0 30px;
+  }
+  .profile-container-right{
+    height: 250px;
   }
 }
 
