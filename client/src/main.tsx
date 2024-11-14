@@ -5,6 +5,7 @@ import App from './App.jsx';
 import ErrorPage from './pages/Error';
 import Home from './pages/Home.js';
 import LandingPage from './pages/LandingPage.js';
+import Profile from './pages/Profile.js';
 
 const router = createBrowserRouter([
     {
@@ -15,6 +16,12 @@ const router = createBrowserRouter([
             {
                 index: true,
                 element: <LandingPage />
+            },
+            {
+
+            }, {
+                path: '/profile',
+                element: <Profile />
             },
             {
                path:'/home',
