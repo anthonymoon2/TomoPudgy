@@ -1,8 +1,10 @@
-const Landing = () => {
+import AnimatedGifComponent from "../components/SpriteAnimation";
+
+const Home = () => {
+    console.log('Rendering Home');
     return (
-        <h1>Home</h1>
+        <AnimatedGifComponent />
     )
     
 }
-
-export default Landing; 
+export default Home; 
