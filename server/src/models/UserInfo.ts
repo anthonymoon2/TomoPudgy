@@ -4,12 +4,12 @@ export interface IUserInfo extends Document {
   _id: String;
   username: string;
   password: string;
-  Weight: number;
-  Height: string;
-  Gender: boolean;
-  Age: number;
-  RecommendedCalorieCalculation: number;
-  DailyCaloricIntake: number;
+  weight: number;
+  height: string;
+  gender: boolean;
+  age: number;
+  recommendedCalorieCalculation: number;
+  dailyCaloricIntake: number;
 }
 
 const UserInfoSchema = new Schema<IUserInfo>({
@@ -21,22 +21,22 @@ const UserInfoSchema = new Schema<IUserInfo>({
     type: String,
     required: true,
   },
-  Weight: {
+  weight: {
     type: Number,
   },
-  Height: {
+  height: {
     type: String,
   },
-  Gender: {
+  gender: {
     type: Boolean,
   },
-  Age: {
+  age: {
     type: Number,
   },
-  RecommendedCalorieCalculation: {
+  recommendedCalorieCalculation: {
     type: Number,
   },
-  DailyCaloricIntake: {
+  dailyCaloricIntake: {
     type: Number,
   },
 });
