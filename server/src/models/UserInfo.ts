@@ -23,27 +23,21 @@ password: {
 },
   Weight: {
     type: Number,
-    required: true,
   },
   Height: {
     type: String,
-    required: true,
   },
   Gender: {
     type: Boolean,
-    required: true,
   },
   Age: {
     type: Number,
-    required: true,
   },
   RecommendedCalorieCalculation: {
     type: Number,
-    required: true,
   },
   DailyCaloricIntake: {
     type: Number,
-    required: true,
   },
 });
 
