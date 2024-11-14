@@ -3,7 +3,15 @@ import UserInfo, { IUserInfo } from "../models/UserInfo.js";
 
 const resolvers = {
   Query: {
-
+    getUserInfo: async (_: any, { _id }: {_id: string}): Promise<IUserInfo | null> => {
+      try {
+        const user = await UserInfo.findById(_id);
+        return user;
+      } catch (error) {
+        console.error('Error fetching user info', error);
+        return null;
+      }
+    }
   },
 
   Mutation: {
