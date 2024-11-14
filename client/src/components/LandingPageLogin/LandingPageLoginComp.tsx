@@ -1,5 +1,5 @@
 import { useState, type FormEvent, type ChangeEvent } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate} from "react-router-dom";
 import { useMutation } from "@apollo/client";
 import { LOGIN_USER, REGISTER_USER } from "../../utils/mutations";
 
@@ -10,6 +10,7 @@ const Login = () => {
   const [formState, setFormState] = useState({ username: "", password: "" });
   const [login, { error: loginError, data: loginData }] = useMutation(LOGIN_USER);
   const [register, { error: registerError, data: registerData }] = useMutation(REGISTER_USER);
+  const navigate = useNavigate();
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -26,6 +27,7 @@ const Login = () => {
         variables: { ...formState },
       });
       Auth.login(data.login.token);
+      navigate("/home");
     } catch (e) {
       console.error(e);
     }
@@ -41,6 +43,7 @@ const Login = () => {
       if (data) {
         alert("Registration successful! Please log in.");
       }
+      navigate("/profile");
     } catch (e) {
       console.error(e);
     }
