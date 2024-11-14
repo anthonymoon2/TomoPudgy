@@ -86,12 +86,15 @@ body {
   font-family: "Minecraft", sans-serif;
   border-radius: 10px;
 }
+
 .figure-gif{
   height: 250px;
 }
+
 .profile-container-right{
   padding: 30px;
 }
+
 .profile-container-right form{
   display: grid;
   font-family: "Minecraft", sans-serif;
@@ -103,12 +106,34 @@ body {
   background-color: ;
 }
 
+.screenStyle {
+  width: 500px;
+  transform: translateY(-70px);
+
+}
+
+.content {
+  flex: 1; /* Takes up remaining space between header and footer */
+}
+
+.formStyle {
+  transform: translateY(-25px);
+}
+
+.footerStyle {
+  max-width: 1280px;
+  margin: 1rem auto;
+  font-family: "Minecraft", sans-serif;
+}
+
+
 /* Media query for smaller screens */
 @media (max-width: 600px) {
   .tamagotchi {
     width: 80vw;  /* Make it smaller on small screens */
     height: 50vh;
   }
+
   .profile-container{
     display: grid;
     grid-template-columns: 1fr;
@@ -117,6 +142,11 @@ body {
   }
   .profile-container-right{
     height: 250px;
+
+
+  .screenStyle {
+    width: 300px;
+
   }
 }
 

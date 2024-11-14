@@ -1,4 +1,4 @@
-import LandingPageLogin from '../components/LandingPageLogin';
+import LandingPageLogin from '../components/LandingPageLogin/LandingPageLoginComp';
 
 const LandingPage = () => {
     return (

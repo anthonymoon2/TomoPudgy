@@ -8,18 +8,24 @@
     "build": "tsc",
     "start": "node dist/server.js",
     "watch": "nodemon dist/server.js",
-    "seed": "node dist/seeds/seed.js"
+    "seed": "node dist/seeds/seed.js",
+    "test": "vitest"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@apollo/server": "^4.10.4",
+    "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "graphql": "^16.9.0",
     "mongoose": "^8.4.3"
+  
   },
   "devDependencies": {
+    "@types/jest": "^29.5.14",
     "nodemon": "^3.1.4",
-    "typescript": "^5.5.2"
+    "vite": "^5.4.11",
+    "typescript": "^5.5.2",
+    "vitest": "^2.1.5"
   }
 }
