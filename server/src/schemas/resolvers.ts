@@ -1,6 +1,11 @@
+// import { Query } from "mongoose";
 import UserInfo, { IUserInfo } from "../models/UserInfo.js";
 
 const resolvers = {
+  Query: {
+
+  },
+
   Mutation: {
     createUser: async (
       args: { username: string; password: string }
