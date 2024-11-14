@@ -13,10 +13,6 @@ export interface IUserInfo extends Document {
 }
 
 const UserInfoSchema = new Schema<IUserInfo>({
-_id:{
-  type: String,
-  required: true,
-},
 username: {
   type: String,
   required: true,
@@ -52,5 +48,4 @@ password: {
 });
 
 const UserInfo = model<IUserInfo>('UserInfo', UserInfoSchema);
-
-export default UserInfo;
+export default UserInfo; 

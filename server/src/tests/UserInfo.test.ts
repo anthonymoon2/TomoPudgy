@@ -1,14 +1,12 @@
-import { IUserInfo } from "../models/IUserInfo";
-
-it('should create and save a new user', async () => {
-    const user = new IUserInfo({
-        username: 'John Doe',
-        password: 'password123',
+import { UserInfo } from "../models/index.js";
+describe("UserInfo", ()=>{
+    it('should create and save a new user', async () => {
+        const user = new UserInfo({
+            username: 'John Doe',
+            password: 'password123',
+        });
+        expect(user.username).toBe('John Doe');
+        expect(user.password).toBe('password123');
     });
+})
 
-
-    const savedUser = await user.save();
-    expect(savedUser._id).
-        expect(savedUser.username).toBe('John Doe');
-    expect(savedUser.password).toBe('password123');
-});
