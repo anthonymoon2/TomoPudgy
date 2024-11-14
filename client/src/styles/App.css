@@ -1,0 +1,48 @@
+/* Set the entire page background color */
+body {
+  background-color: #9dc0bc; /* Background color for the page */
+  margin: 0; /* Remove default margin */
+}
+
+/* Font face definition */
+@font-face {
+  font-family: "Minecraft";
+  src: url("../fonts/Minecraft.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* Styling for headers and other elements */
+.headerStyle {
+  max-width: 1280px;
+  margin: 2rem auto;
+  padding: 2rem;
+  font-family: "Minecraft", sans-serif;
+}
+
+.loginStyle {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  font-family: "Minecraft", sans-serif;
+}
+
+/* Tamagotchi styling */
+.tamagotchi {
+  /* Outer "shell" of the Tamagotchi */
+  top: 25%;
+  left: 32%;
+  width: 600px;
+  height: 700px;
+  border: 10px solid #ffcc00;
+  border-radius: 50% 50% 45% 45%;
+  background-color: #ffffff; /* Pure white background */
+  box-shadow: 2 3 3 black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  box-shadow: 0px 0ch 20px 10px rgba(0, 0, 0, 0.75), /* softer, main shadow */
+  0px 0px 0px 0px rgba(0, 0, 0, 0.5); /* shadow around the border */
+  z-index: 1; /* Ensure it appears above the background */
+}
