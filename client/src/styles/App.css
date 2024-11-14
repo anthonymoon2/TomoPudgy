@@ -29,20 +29,41 @@ body {
 
 /* Tamagotchi styling */
 .tamagotchi {
-  /* Outer "shell" of the Tamagotchi */
-  top: 25%;
-  left: 32%;
-  width: 600px;
-  height: 700px;
-  border: 10px solid #ffcc00;
+  /* Centering and responsive dimensions */
+  width: 50vw;  /* Responsive width */
+  height: 60vh; /* Responsive height */
+  max-width: 600px; /* Limit size on larger screens */
+  max-height: 700px;
+
+  /* Centering position */
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  /* Outer "shell" styling */
+  border: 8px solid #ffcc00;
   border-radius: 50% 50% 48% 48%;
   background-color: #ffffff; /* Pure white background */
-  box-shadow: 2 3 3 black;
   display: flex;
   align-items: center;
   justify-content: center;
-  position: fixed;
-  box-shadow: 0px 0ch 20px 10px rgba(0, 0, 0, 0.75), /* softer, main shadow */
-  0px 0px 0px 0px rgba(0, 0, 0, 0.5); /* shadow around the border */
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.3); /* Drop shadow */
+
   z-index: 1; /* Ensure it appears above the background */
+}
+
+/* Media query for smaller screens */
+@media (max-width: 600px) {
+  .tamagotchi {
+    width: 80vw;  /* Make it smaller on small screens */
+    height: 50vh;
+  }
+}
+
+@media (min-width: 1280px) {
+  .tamagotchi {
+    width: 500px;  /* Fixed width on very large screens */
+    height: 600px;
+  }
 }
