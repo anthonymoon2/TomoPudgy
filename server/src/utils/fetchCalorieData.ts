@@ -1,5 +1,7 @@
 import FoodItem from '../models/FoodItem.js';
 import axios from 'axios';
+import dotenv from 'dotenv';
+dotenv.config();
 
 export async function fetchCalorieData(name: string) {
   try {
@@ -9,7 +11,7 @@ export async function fetchCalorieData(name: string) {
     };
 
     const response = await axios.get(`https://api.calorieninjas.com/v1/nutrition?query=${name}`, {
-      headers: {'ex-api-key': 'your-api-key'}
+      headers: {'X-Api-Key': process.env.CALORIE_NINJA_API_KEY }
     });
     const itemData = response.data.items[0];
     const newFoodItem = await FoodItem.create({
