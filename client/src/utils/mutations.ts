@@ -6,12 +6,12 @@ export const REGISTER_USER = gql`
       _id
       username
       password
-      Weight
-      Height
-      Gender
-      Age
-      RecommendedCalorieCalculation
-      DailyCaloricIntake
+      weight
+      height
+      gender
+      age
+      recommendedCalorieCalculation
+      dailyCaloricIntake
     }
   }
 `;
@@ -22,12 +22,12 @@ export const LOGIN_USER = gql`
       _id
       username
       password
-      Weight
-      Height
-      Gender
-      Age
-      RecommendedCalorieCalculation
-      DailyCaloricIntake
+      weight
+      height
+      gender
+      age
+      recommendedCalorieCalculation
+      dailyCaloricIntake
     }
   }
 `;
