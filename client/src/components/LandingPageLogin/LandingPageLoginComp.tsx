@@ -57,20 +57,40 @@ const Login = () => {
                 Success! You may now head <Link to="/">back to the homepage.</Link>
               </p>
             ) : (
-              <form className="flex flex-col p-6 rounded-lg shadow-lg w-full max-w-sm">
-                <input placeholder="Your username" name="username" type="text" value={formState.username} onChange={handleChange} required />
-                <input placeholder="******" name="password" type="password" value={formState.password} onChange={handleChange} required />
-                <div className="flex justify-between">
-                  {/* Login Button */}
-                  <button type="button" onClick={handleRegisterSubmit}>
-                    Register
-                  </button>
-                  <button type="button" onClick={handleLoginSubmit}>
-                    Login
-                  </button>
-                  {/* Register Button */}
+              <div className="flex items-center justify-center">
+                <div className="screenStyle bg-gray-200 flex flex-col items-start justify-between p-4 w-full max-w-sm rounded-t-[50%] rounded-b-none rounded-r-[] h-full h-[90vh] md:h-[30vh]">
+                  {/* Display image at the top */}
+                  <img src="sprite.gif" alt="Tamagotchi Display" className="w-full h-2/3 object-cover rounded-lg mb-4" />
+
+                  {/* Login Form at the bottom */}
+                  <form className="formStyle flex flex-col w-full">
+                    <input placeholder="Your username" name="username" type="text" value={formState.username} onChange={handleChange} required className="mb-4 p-2 border border-gray-300 rounded" />
+                    <input placeholder="******" name="password" type="password" value={formState.password} onChange={handleChange} required className="mb-4 p-2 border border-gray-300 rounded" />
+                    <div className="flex justify-between">
+                      {/* Register Button */}
+                      <button type="button" onClick={handleRegisterSubmit} className="bg-blue-500 text-white font-bold py-2 px-4 rounded">
+                        Register
+                      </button>
+                      {/* Login Button */}
+                      <button type="button" onClick={handleLoginSubmit} className="bg-green-500 text-white font-bold py-2 px-4 rounded">
+                        Login
+                      </button>
+                    </div>
+                  </form>
+                  <div className="directional-buttons flex flex-col items-center">
+                    {/* <!-- Up Button --> */}
+                    <button className="direction-button up">▲</button>
+
+                    <div className="horizontal-buttons flex">
+                      {/* <!-- Left Button --> */}
+                      <button className="direction-button left">◀</button>
+
+                      {/* <!-- Right Button --> */}
+                      <button className="direction-button right">▶</button>
+                    </div>
+                  </div>
                 </div>
-              </form>
+              </div>
             )}
 
             {(loginError || registerError) && <div>{(loginError ?? registerError)?.message}</div>}

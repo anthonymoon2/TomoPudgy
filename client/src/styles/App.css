@@ -53,8 +53,18 @@ body {
   z-index: 1; /* Ensure it appears above the background */
 }
 
+.screenStyle {
+  width: 500px;
+  transform: translateY(-70px);
+
+}
+
 .content {
   flex: 1; /* Takes up remaining space between header and footer */
+}
+
+.formStyle {
+  transform: translateY(-25px);
 }
 
 .footerStyle {
@@ -68,6 +78,10 @@ body {
   .tamagotchi {
     width: 80vw;  /* Make it smaller on small screens */
     height: 50vh;
+  }
+
+  .screenStyle {
+    width: 300px;
   }
 }
 
