@@ -116,26 +116,25 @@ body {
 .screenStyle {
   font-family: "Minecraft";
   position: relative;
-  width: 80%;               /* Adjust width for a smaller size */
-  max-width: 400px;         /* Reduce max width */
-  height: 60%;              /* Reduce height */
-  max-height: 350px;        /* Set a max height to control the box size */
+  width: 80%; /* Adjust width for a smaller size */
+  max-width: 400px; /* Reduce max width */
+  height: 60%; /* Reduce height */
+  max-height: 350px; /* Set a max height to control the box size */
   background-color: #e5e7eb;
   border-radius: 10% 10% 10% 10%; /* Curved corners */
-  padding: 0.5rem;          /* Reduce padding */
+  padding: 0.5rem; /* Reduce padding */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start; /* Align items to the top */
-  gap: 0.5rem;         /* Allow scrolling if content overflows */
-  box-sizing: border-box;    /* Ensure padding does not affect width/height */
+  gap: 0.5rem; /* Allow scrolling if content overflows */
+  box-sizing: border-box; /* Ensure padding does not affect width/height */
   transform: translateY(25px);
 }
 
 .spriteStyle {
   transform: translateY(-120px);
   width: 500px;
-  transform: translateY(-70px);
 }
 
 .content {
@@ -145,7 +144,7 @@ body {
 .formStyle input {
   width: 90%; /* Makes input fields and buttons responsive within the form */
   margin: 0.25rem auto; /* Add spacing between form elements */
-  transform: translateY(-180px); 
+  transform: translateY(-180px);
 }
 
 .errorStyle {
@@ -176,10 +175,10 @@ body {
   width: 175px;
 }
 
-.directionLeft, .directionRight {
+.directionLeft,
+.directionRight {
   transform: translateY(-10px);
 }
-
 
 /* Media query for smaller screens */
 @media (max-width: 600px) {
@@ -220,40 +219,44 @@ body {
   .spriteStyle {
     transform: translateY(-30px);
     margin-bottom: 0.5rem; /* Reduce spacing between sprite and form */
-@media (min-width: 1280px) {
-  .tamagotchi {
-    width: 500px; /* Fixed width on very large screens */
-    height: 600px;
   }
 
-  /* Form input and button adjustments */
-  .formStyle input {
-    width: 95%; /* Full width on smaller screens */
-    margin: 0.2rem 0;
-    transform: translateY(-100px);
-  }
+  @media (min-width: 1280px) {
+    .tamagotchi {
+      width: 500px; /* Fixed width on very large screens */
+      height: 600px;
+    }
 
-  .formStyle button {
-    width: 85px; /* Smaller buttons */
-    transform: translateY(-90px);
-    padding: 0.5rem 1rem;
-    font-size: 0.85rem; /* Smaller font size */
-  }
+    /* Form input and button adjustments */
+    .formStyle input {
+      width: 95%; /* Full width on smaller screens */
+      margin: 0.2rem 0;
+      transform: translateY(-100px);
+    }
 
-  /* Adjustments for directional buttons */
-  .directionalButtons {
-    gap: 0.3rem; /* Smaller gap */
-  }
+    .formStyle button {
+      width: 85px; /* Smaller buttons */
+      transform: translateY(-90px);
+      padding: 0.5rem 1rem;
+      font-size: 0.85rem; /* Smaller font size */
+    }
 
-  .directionMiddle {
-    transform: translateY(5px); /* Smaller upward shift */
-  }
+    /* Adjustments for directional buttons */
+    .directionalButtons {
+      gap: 0.3rem; /* Smaller gap */
+    }
 
-  .bottomButtons {
-    width: 130px; /* Adjusted for smaller screen */
-  }
+    .directionMiddle {
+      transform: translateY(5px); /* Smaller upward shift */
+    }
 
-  .directionLeft, .directionRight {
-    transform: translateY(-3px);
+    .bottomButtons {
+      width: 130px; /* Adjusted for smaller screen */
+    }
+
+    .directionLeft,
+    .directionRight {
+      transform: translateY(-3px);
+    }
   }
 }
