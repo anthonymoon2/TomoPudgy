@@ -13,37 +13,31 @@ export interface IUserInfo extends Document {
 }
 
 const UserInfoSchema = new Schema<IUserInfo>({
-username: {
-  type: String,
-  required: true,
-},
-password: {
-  type: String,
-  required: true,
-},
-  Weight: {
-    type: Number,
-    required: true,
-  },
-  Height: {
+  username: {
     type: String,
     required: true,
   },
+  password: {
+    type: String,
+    required: true,
+  },
+  Weight: {
+    type: Number,
+  },
+  Height: {
+    type: String,
+  },
   Gender: {
     type: Boolean,
-    required: true,
   },
   Age: {
     type: Number,
-    required: true,
   },
   RecommendedCalorieCalculation: {
     type: Number,
-    required: true,
   },
   DailyCaloricIntake: {
     type: Number,
-    required: true,
   },
 });
 
