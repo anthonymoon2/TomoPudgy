@@ -40,6 +40,7 @@ const UserInfoSchema = new Schema<IUserInfo>({
   },
   recommendedCalorieCalculation: {
     type: Number,
+    default: 2000,
   },
   dailyCaloricIntake: {
     type: Number,

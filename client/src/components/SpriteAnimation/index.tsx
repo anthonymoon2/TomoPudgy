@@ -4,7 +4,7 @@ import './index.css';
 const AnimatedGifComponent: React.FC = () => {
   return (
     <div>
-      <img src="./img/sprite.gif" alt="Animated GIF" className="animated-gif" />
+      <img src="sprite.gif" alt="Animated GIF" className="animated-gif" />
     </div>
   );
 };
