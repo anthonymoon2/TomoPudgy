@@ -18,6 +18,12 @@ const typeDefs = `
     dailyCaloricIntake: Float
     currentCalories: Float
   }
+
+  type Compare {
+    result: Boolean
+    currentCalories: Float  
+  }
+
   type Mutation {
     createUser(username: String!, password: String!): UserInfo
     loginUser(username: String!, password: String! ): UserInfo
@@ -29,7 +35,6 @@ const typeDefs = `
       gender: Boolean,
       age: Int
     ): UserInfo
-    
     recommendedCalorieCalculation(
       _id: ID!,
       weight: Float!,
@@ -38,6 +43,7 @@ const typeDefs = `
       age: Int!,
       gender: Boolean!
     ): Float
+    compareUserCalories(_id: String!, foodName: String!): Compare
   }
 
   type FoodItem {
