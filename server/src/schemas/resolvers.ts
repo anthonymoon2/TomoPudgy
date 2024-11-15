@@ -1,6 +1,5 @@
-// import { Query } from "mongoose";
+import bcrypt from 'bcryptjs';
 import UserInfo, { IUserInfo } from "../models/UserInfo.js";
-// import FoodItem, { IFoodItem } from '../models/FoodItem.js';
 import { fetchCalorieData } from '../utils/fetchCalorieData.js';
 
 const resolvers = {
@@ -40,34 +39,64 @@ const resolvers = {
         console.error("Error calculating combined calories:", error);
         return null;
       }
-    },
+    }
   },
+
   Mutation: {
     createUser: async (
+      _parent: any,
       args: { username: string; password: string }
     ): Promise<IUserInfo | null> => {
       try {
-        const userLogin = await UserInfo.create(args);
+        const { username, password } = args;
+
+        // Ensure both username and password are provided
+        if (!username || !password) {
+          throw new Error("Username and password are required.");
+        }
+
+        // Hash the password before saving to the database
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        // Create the new user
+        const userLogin = await UserInfo.create({
+          username,
+          password: hashedPassword, // Store the hashed password
+        });
+
         return userLogin;
       } catch (err) {
         console.error("Error creating UserLogin:", err);
-        return null;
+        throw new Error("Error creating user.");
       }
     },
 
     loginUser: async (
+      _parent: any,
       { username, password }: { username: string; password: string }
     ): Promise<IUserInfo | null> => {
       try {
-        const userLogin = await UserInfo.findOne({ username, password });
+        const userLogin = await UserInfo.findOne({ username });
+
+        // If user doesn't exist or passwords don't match, throw an error
+        if (!userLogin) {
+          throw new Error('User not found.');
+        }
+
+        const isMatch = await bcrypt.compare(password, userLogin.password);
+        if (!isMatch) {
+          throw new Error('Invalid credentials.');
+        }
+
         return userLogin;
       } catch (err) {
         console.error("Error checking UserLogin:", err);
-        return null;
+        throw new Error("Error logging in.");
       }
     },
 
     addUserInfo: async (
+      _parent: any,
       { _id, updateData }: { _id: string; updateData: Partial<IUserInfo> }
     ): Promise<IUserInfo | null> => {
       try {
@@ -79,10 +108,9 @@ const resolvers = {
         return updatedUserInfo;
       } catch (err) {
         console.error("Error updating UserInfo:", err);
-        return null;
+        throw new Error("Error updating user information.");
       }
     },
   },
 };
-
 export default resolvers;
