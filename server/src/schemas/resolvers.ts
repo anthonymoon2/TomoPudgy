@@ -1,4 +1,4 @@
-import bcrypt from 'bcryptjs'; // Add bcrypt for hashing
+import bcrypt from 'bcryptjs';
 import UserInfo, { IUserInfo } from "../models/UserInfo.js";
 import { fetchCalorieData } from '../utils/fetchCalorieData.js';
 
@@ -22,8 +22,26 @@ const resolvers = {
         return null;
       }
     },
+    calculateUserCalories: async (_: any, { _id, foodName }: { _id: string; foodName: string }): Promise<number | null> => {
+      try {
+        const user = await UserInfo.findById(_id);
+        if (!user) {
+          throw new Error("User not found");
+        }
+        const apiFoodCalorieResponse = await fetchCalorieData(foodName);
+        if (!apiFoodCalorieResponse || typeof apiFoodCalorieResponse.calories !== "number") {
+          throw new Error("Invalid calorie data from external source");
+        }
+        const databaseFoodCalorie = user.currentCalories || 0;
+        const combinedCalories = databaseFoodCalorie + apiFoodCalorieResponse.calories;
+        return combinedCalories;
+      } catch (error) {
+        console.error("Error calculating combined calories:", error);
+        return null;
+      }
+    }
   },
-  
+
   Mutation: {
     createUser: async (
       _parent: any,
@@ -59,7 +77,7 @@ const resolvers = {
     ): Promise<IUserInfo | null> => {
       try {
         const userLogin = await UserInfo.findOne({ username });
-        
+
         // If user doesn't exist or passwords don't match, throw an error
         if (!userLogin) {
           throw new Error('User not found.');
