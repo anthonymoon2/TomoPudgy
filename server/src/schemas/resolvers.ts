@@ -23,25 +23,28 @@ const resolvers = {
         return null;
       }
     },
-    calculateUserCalories: async (_: any, { _id, foodName }: { _id: string; foodName: string }): Promise<number | null> => {
-      try {
-        const user = await UserInfo.findById(_id);
-        if (!user) {
-          throw new Error("User not found");
-        }
-        const externalFoodCalorie = await fetchCalorieData(foodName);
-        if (!externalFoodCalorie || typeof externalFoodCalorie.calories !== "number") {
-          throw new Error("Invalid calorie data from external source");
-        }
-        const databaseFoodCalorie = user.calorie || 0;
-        const combinedCalories = databaseFoodCalorie + externalFoodCalorie.calories;
-        return combinedCalories;
-      } catch (error) {
-        console.error("Error calculating combined calories:", error);
-        return null;
-      }
-    },
+    
+    // calculateUserCalories: async (_: any, { _id, foodName }: { _id: string; foodName: string }): Promise<number | null> => {
+    //   try {
+    //     const user = await UserInfo.findById(_id);
+    //     if (!user) {
+    //       throw new Error("User not found");
+    //     }
+    //     const externalFoodCalorie = await fetchCalorieData(foodName);
+    //     if (!externalFoodCalorie || typeof externalFoodCalorie.calories !== "number") {
+    //       throw new Error("Invalid calorie data from external source");
+    //     }
+    //     const databaseFoodCalorie = user.calorie || 0;
+    //     const combinedCalories = databaseFoodCalorie + externalFoodCalorie.calories;
+    //     return combinedCalories;
+    //   } catch (error) {
+    //     console.error("Error calculating combined calories:", error);
+    //     return null;
+    //   }
+    // },
   },
+
+
   Mutation: {
     createUser: async (
       _parent: any,

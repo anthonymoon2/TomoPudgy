@@ -6,12 +6,12 @@ export const GET_USER_INFO = gql`
       _id
       username
       password
-      Weight
-      Height
-      Gender
-      Age
-      RecommendedCalorieCalculation
-      DailyCaloricIntake
+      weight
+      height
+      gender
+      age
+      recommendedCalorieCalculation
+      dailyCaloricIntake
     }
   }
 `;
