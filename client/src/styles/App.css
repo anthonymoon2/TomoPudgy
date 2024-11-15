@@ -12,6 +12,26 @@ body {
   font-style: normal;
 }
 
+.navbarStyle {
+  margin: 3rem;
+  font-family: "Minecraft", sans-serif;
+  color: #7c7287;
+}
+
+.navbarLink a {
+  color: #7c7287;
+  text-decoration: none;
+}
+
+.navbarLink a:hover {
+  color: #c1fff2; /* Hover effect */
+}
+
+.navbarLink a.active {
+  color: #c1fff2; /* Active link color */
+  font-weight: bold;
+}
+
 .headerStyle {
   margin-top: 3rem;
   font-family: "Minecraft", sans-serif;
