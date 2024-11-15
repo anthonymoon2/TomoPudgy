@@ -8,7 +8,7 @@ const typeDefs = `
   _id: ID!
   username: String!
   password: String!
-  weight: Float! 
+  weight: Float
   height: String!
   gender: Boolean!
   age: Int!
@@ -21,7 +21,7 @@ const typeDefs = `
   loginUser(username: String!, password: String! ): UserInfo
   addUserInfo(
     _id: ID!,
-    weight: Float!,
+    weight: Float,
     height: String!,
     gender: Boolean!,
     age: Int!,
