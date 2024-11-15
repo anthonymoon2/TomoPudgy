@@ -8,12 +8,12 @@ const typeDefs = `
   _id: ID!
   username: String!
   password: String!
-  weight: Float! 
-  height: String!
-  gender: Boolean!
-  age: Int!
-  recommendedCalorieCalculation: Float!
-  dailyCaloricIntake: Float!
+  weight: Float 
+  height: String
+  gender: Boolean
+  age: Int
+  recommendedCalorieCalculation: Float
+  dailyCaloricIntake: Float
 }
 
   type Mutation {
@@ -21,17 +21,17 @@ const typeDefs = `
   loginUser(username: String!, password: String! ): UserInfo
   addUserInfo(
     _id: ID!,
-    weight: Float!,
-    height: String!,
-    gender: Boolean!,
-    age: Int!,
-    recommendedCalorieCalculation: Float!,
-    dailyCaloricIntake: Float!
+    weight: Float,
+    height: String,
+    gender: Boolean,
+    age: Int,
+    recommendedCalorieCalculation: Float,
+    dailyCaloricIntake: Float
   ): UserInfo
 }
   type FoodItem {
-  name: String!
-  calories: Float!
+  name: String
+  calories: Float
   }
 `;
 
