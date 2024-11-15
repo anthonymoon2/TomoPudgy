@@ -112,6 +112,39 @@ const resolvers = {
         throw new Error("Error updating user information.");
       }
     },
+
+    compareUserCalories: async ( _: any, { _id, foodName}: { _id: string; foodName: string}): Promise<boolean | null> => {
+      try {
+        //retrieving the user id from the database
+        const user = await UserInfo.findById(_id);
+        if (!user) {
+          throw new Error('User not found');
+        }
+        // fetching the calories food response from the 3rd party api
+        const apiFoodCalorieResponse = await fetchCalorieData(foodName);
+        if (!apiFoodCalorieResponse || typeof apiFoodCalorieResponse.calories !== 'number') {
+          throw new Error ('Invalid calorie data from external source');
+        }
+        // updating the user's current calories with the food calorie from the API response
+        const currentCalories = (user.currentCalories || 0) + apiFoodCalorieResponse.calories;
+        // updating the user's current calorie count with the new total value
+        user.currentCalories = currentCalories;
+        // saving the updated user data to the database
+        await user.save();
+
+        // getting the user's recommended daily calorie intake
+        const recommendedCalories = user.recommendedCalorieCalculation;
+        // checking if the recommendedCalories is a valid number if it isnt it throws an error
+        if (typeof recommendedCalories !== 'number') {
+          throw new Error('Invalid recommended calorie data');
+        }
+        // returns true if the currentCalories is greater than recommendedCalories and returns false if the currentCalories is less than or equal to the recommendedCalories
+        return currentCalories > recommendedCalories;
+      } catch (error) {
+        console.error('Error comparing user calories:', error);
+        return null;
+      }
+    }
   },
 };
 export default resolvers;
