@@ -6,45 +6,16 @@ const typeDefs = `
   }
 
   type UserInfo {
-  _id: ID!
-  username: String!
-  password: String!
-  weight: Float 
-  height: String
-  gender: Boolean
-  age: Int
-  recommendedCalorieCalculation: Float
-  dailyCaloricIntake: Float
-  currentCalories: Float
-}
-
-  type Mutation {
-  createUser(username: String!, password: String!): UserInfo
-  loginUser(username: String!, password: String! ): UserInfo
-  addUserInfo(
-    _id: ID!,
-    weight: Float,
-    height: String,
-    gender: Boolean,
-    age: Int,
-    recommendedCalorieCalculation: Float,
-    dailyCaloricIntake: Float
-    currentCalories: Float
-  ): UserInfo
-}
-  type FoodItem {
-  name: String
-  calories: Float
-
     _id: ID!
     username: String!
     password: String!
-    weight: Float!
-    height: String!
-    gender: Boolean!
-    age: Int!
-    recommendedCalorieCalculation: Float!
-    dailyCaloricIntake: Float!
+    weight: Float
+    feet: Int
+    inches: Int
+    gender: Boolean
+    age: Int
+    recommendedCalorieCalculation: Float
+    dailyCaloricIntake: Float
     currentCalories: Float
   }
 
@@ -52,17 +23,22 @@ const typeDefs = `
     createUser(username: String!, password: String!): UserInfo
     loginUser(username: String!, password: String!): UserInfo
     addUserInfo(
-      _id: ID!
-      weight: Float!
-      height: String!
-      gender: Boolean!
-      age: Int!
-      recommendedCalorieCalculation: Float!
-      dailyCaloricIntake: Float!
-      currentCalories: Float
+      _id: ID!,
+      weight: Float,
+      feet: Int,
+      inches: Int,
+      gender: Boolean,
+      age: Int
     ): UserInfo
-
     
+    recommendedCalorieCalculation(
+      _id: ID!,
+      weight: Float!,
+      feet: Int!,
+      inches: Int!,
+      age: Int!,
+      gender: Boolean!
+    ): Float
   }
 
   type FoodItem {
@@ -70,4 +46,5 @@ const typeDefs = `
     calories: Float!
   }
 `;
+
 export default typeDefs;

@@ -5,8 +5,9 @@ export interface IUserInfo extends Document {
   username: string;
   password: string;
   weight: number;
-  height: number;
-  gender: boolean;
+  feet: number;
+  inches: number;
+  gender: Boolean;
   age: number;
   recommendedCalorieCalculation: number;
   dailyCaloricIntake: number;
@@ -25,7 +26,10 @@ const UserInfoSchema = new Schema<IUserInfo>({
   weight: {
     type: Number,
   },
-  height: {
+  feet: {
+    type: Number,
+  },
+  inches: {
     type: Number,
   },
   gender: {
