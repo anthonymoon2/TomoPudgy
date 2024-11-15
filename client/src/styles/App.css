@@ -1,7 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 /* Set the entire page background color */
 body {
   background-color: #9dc0bc; /* Background color for the page */
   margin: 0; /* Remove default margin */
+}
+
+.bg-customBeige{
+  background-color: #dbce9f;
 }
 
 /* Font face definition */
@@ -129,9 +137,6 @@ body {
 .profile-container-right form select {
   margin-bottom: 10px;
 }
-.form-submit-button {
-  background-color: ;
-}
 
 .screenStyle {
   font-family: "Minecraft";
@@ -234,6 +239,8 @@ body {
       width: 300px;
     }
   }
+
+  /* === Homepage === */
 
   /* Adjustments for sprite position */
   .spriteStyle {
