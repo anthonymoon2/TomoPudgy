@@ -37,6 +37,7 @@ const resolvers = {
         return combinedCalories;
       } catch (error) {
         console.error("Error calculating combined calories:", error);
+        
         return null;
       }
     }
