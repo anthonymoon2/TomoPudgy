@@ -113,7 +113,7 @@ const resolvers = {
       }
     },
 
-    compareUserCalories: async ( _: any, { _id, foodName}: { _id: string; foodName: string}): Promise<boolean | null> => {
+    compareUserCalories: async ( _: any, { _id, foodName}: { _id: string; foodName: string}): Promise<Object | null> => {
       try {
         //retrieving the user id from the database
         const user = await UserInfo.findById(_id);
@@ -139,7 +139,10 @@ const resolvers = {
           throw new Error('Invalid recommended calorie data');
         }
         // returns true if the currentCalories is greater than recommendedCalories and returns false if the currentCalories is less than or equal to the recommendedCalories
-        return currentCalories > recommendedCalories;
+          return {
+          result: currentCalories > recommendedCalories,
+          currentCalories
+        };
       } catch (error) {
         console.error('Error comparing user calories:', error);
         return null;
