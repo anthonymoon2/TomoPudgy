@@ -44,6 +44,7 @@ const resolvers = {
   },
   Mutation: {
     createUser: async (
+      _parent: any,
       args: { username: string; password: string }
     ): Promise<IUserInfo | null> => {
       try {
@@ -56,6 +57,7 @@ const resolvers = {
     },
 
     loginUser: async (
+      _parent: any,
       { username, password }: { username: string; password: string }
     ): Promise<IUserInfo | null> => {
       try {
@@ -68,6 +70,7 @@ const resolvers = {
     },
 
     addUserInfo: async (
+      _parent: any,
       { _id, updateData }: { _id: string; updateData: Partial<IUserInfo> }
     ): Promise<IUserInfo | null> => {
       try {

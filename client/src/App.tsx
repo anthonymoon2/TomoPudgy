@@ -37,9 +37,9 @@ function App() {
     <div className="min-h-screen flex flex-col">
       <ApolloProvider client={client}>
           <Header />
-        <body className="content">
+        <main className="content">
           <Outlet />
-        </body>
+        </main>
         <Footer />
       </ApolloProvider>
     </div>
