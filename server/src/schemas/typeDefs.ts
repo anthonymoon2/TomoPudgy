@@ -2,7 +2,7 @@ const typeDefs = `
   type Query {
     getUserInfo(_id: String!): UserInfo
     getFoodItem(name: String!): FoodItem
-    calculateUserCalories(_id: String, foodName: String):UserInfo
+    calculateUserCalories(_id: String!, foodName: String!): Float
   }
 
   type UserInfo {
@@ -15,6 +15,7 @@ const typeDefs = `
   age: Int
   recommendedCalorieCalculation: Float
   dailyCaloricIntake: Float
+  currentCalories: Float
 }
 
   type Mutation {
@@ -28,6 +29,7 @@ const typeDefs = `
     age: Int,
     recommendedCalorieCalculation: Float,
     dailyCaloricIntake: Float
+    currentCalories: Float
   ): UserInfo
 }
   type FoodItem {
@@ -43,6 +45,7 @@ const typeDefs = `
     age: Int!
     recommendedCalorieCalculation: Float!
     dailyCaloricIntake: Float!
+    currentCalories: Float
   }
 
   type Mutation {
@@ -56,7 +59,7 @@ const typeDefs = `
       age: Int!
       recommendedCalorieCalculation: Float!
       dailyCaloricIntake: Float!
-
+      currentCalories: Float
     ): UserInfo
 
     
