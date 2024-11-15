@@ -2,8 +2,8 @@ const typeDefs = `
   type Query {
     getUserInfo(_id: String!): UserInfo
     getFoodItem(name: String!): FoodItem
-    calculateUserCalories(_id: String!, foodName: String!): Float
-  }
+ 
+   }
 
   type UserInfo {
     _id: ID!
@@ -40,12 +40,7 @@ const typeDefs = `
 
     
     recommendedCalorieCalculation(
-      _id: ID!,
-      weight: Float!,
-      feet: Int!,
-      inches: Int!,
-      age: Int!,
-      gender: Boolean!
+      _id: ID!
     ): Float
     compareUserCalories(_id: String!, foodName: String!): Compare
   }

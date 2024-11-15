@@ -31,47 +31,26 @@ const resolvers = {
         return null;
       }
     },
-    calculateUserCalories: async (
-      _: any,
-      { _id, foodName }: { _id: string; foodName: string }
-    ): Promise<number> => {
-      try {
-        const user = await UserInfo.findById(_id);
-        if (!user) {
-          throw new Error("User not found.");
-        }
-        const apiFoodCalorieResponse = await fetchCalorieData(foodName);
-        if (!apiFoodCalorieResponse || typeof apiFoodCalorieResponse.calories !== "number") {
-          throw new Error("Invalid calorie data from external source.");
-        }
-        const combinedCalories = (user.currentCalories || 0) + apiFoodCalorieResponse.calories;
-        return combinedCalories;
-      } catch (error) {
-        console.error("Error calculating combined calories:", error);
-        return 0;
-      }
-    },
   },
 
   Mutation: {
     recommendedCalorieCalculation: async (
       _parent: any,
-      { _id, weight, feet, inches, age, gender }:
-        { _id: string; weight: number; feet: number; inches: number; age: number; gender: boolean }
+      { _id }:
+        { _id: string }
     ): Promise<Number | null> => {
       try {
         const user = await UserInfo.findById(_id);
         if (!user) {
           throw new Error("User not found.");
         }
-        const weightInKg = weight * 0.453592;
-        const heightInCm = (feet * 12 + inches) * 2.54;
-        const calculatedBMR = calculateBMR(weightInKg, heightInCm, age, gender);
+        const weightInKg = user.weight * 0.453592;
+        const heightInCm = (user.feet * 12 + user.inches) * 2.54;
+        const calculatedBMR = calculateBMR(weightInKg, heightInCm, user.age, user.gender);
         await UserInfo.findByIdAndUpdate(
           _id,
           {
             recommendedCalorieCalculation: calculatedBMR,
-            dailyCaloricIntake: calculatedBMR,
           },
           { new: true }
         );
