@@ -1,4 +1,4 @@
-import { useState, type FormEvent, type ChangeEvent, useRef } from "react";
+import { useState, type ChangeEvent, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useMutation } from "@apollo/client";
 import { LOGIN_USER, REGISTER_USER } from "../../utils/mutations";
