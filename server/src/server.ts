@@ -1,10 +1,12 @@
 import express from 'express';
 import { ApolloServer } from '@apollo/server';
-import { expressMiddleware } from '@apollo/server/express4';
+
 import path from 'path';
 import dotenv from 'dotenv';
 
 dotenv.config();
+
+import { expressMiddleware } from '@apollo/server/express4';
 
 import { typeDefs, resolvers } from './schemas/index.js';
 import db from './config/connection.js';

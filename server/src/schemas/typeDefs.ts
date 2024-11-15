@@ -18,9 +18,15 @@ const typeDefs = `
   currentCalories: Float
 }
 
+type Auth {
+  token: ID!
+  userLogin: UserInfo
+}
+
   type Mutation {
   createUser(username: String!, password: String!): UserInfo
-  loginUser(username: String!, password: String! ): UserInfo
+  loginUser(username: String!, password: String! ): Auth
+
   addUserInfo(
     _id: ID!,
     weight: Float,
@@ -46,23 +52,6 @@ const typeDefs = `
     recommendedCalorieCalculation: Float!
     dailyCaloricIntake: Float!
     currentCalories: Float
-  }
-
-  type Mutation {
-    createUser(username: String!, password: String!): UserInfo
-    loginUser(username: String!, password: String!): UserInfo
-    addUserInfo(
-      _id: ID!
-      weight: Float!
-      height: String!
-      gender: Boolean!
-      age: Int!
-      recommendedCalorieCalculation: Float!
-      dailyCaloricIntake: Float!
-      currentCalories: Float
-    ): UserInfo
-
-    
   }
 
   type FoodItem {

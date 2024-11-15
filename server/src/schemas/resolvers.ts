@@ -1,6 +1,7 @@
 import bcrypt from 'bcryptjs';
 import UserInfo, { IUserInfo } from "../models/UserInfo.js";
 import { fetchCalorieData } from '../utils/fetchCalorieData.js';
+import { signToken } from '../utils/auth.js';
 
 const resolvers = {
   Query: {
@@ -75,7 +76,7 @@ const resolvers = {
     loginUser: async (
       _parent: any,
       { username, password }: { username: string; password: string }
-    ): Promise<IUserInfo | null> => {
+    ): Promise<{ token:string; userLogin: IUserInfo }> => {
       try {
         const userLogin = await UserInfo.findOne({ username });
 
@@ -88,8 +89,9 @@ const resolvers = {
         if (!isMatch) {
           throw new Error('Invalid credentials.');
         }
+        const token = signToken(userLogin.username, userLogin._id)
+        return {token, userLogin};
 
-        return userLogin;
       } catch (err) {
         console.error("Error checking UserLogin:", err);
         throw new Error("Error logging in.");

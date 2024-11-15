@@ -10,6 +10,7 @@ const Login = () => {
   const [login, { error: loginError, data: loginData }] = useMutation(LOGIN_USER);
   const [register, { error: registerError, data: registerData }] = useMutation(REGISTER_USER);
   const navigate = useNavigate();
+  const saveToken = (token: string) => { localStorage.setItem("id_token", token)}; // Save token to localStorage };
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -25,13 +26,25 @@ const Login = () => {
       const { data } = await login({
         variables: { ...formState },
       });
-      Auth.login(data.login.token);
-      navigate("/home");
+
+      console.log("Login response data:", data);
+
+      // Add the validation check here
+      if (!data.loginUser.weight || !data.loginUser.height) {
+        console.warn("Some optional fields are missing:", {
+          weight: data.loginUser.weight,
+          height: data.loginUser.height,
+        });
+      }
+      // Proceed only if the token exists
+      Auth.login(data.loginUser.token);
     } catch (e) {
-      console.error(e);
+      console.error("Error during login:", e);
+    } finally {
+      setFormState({ username: "", password: "" }); // Reset form state
     }
-    setFormState({ username: "", password: "" });
   };
+  
 
   const handleRegisterSubmit = async (event: FormEvent) => {
     event.preventDefault();
@@ -41,6 +54,7 @@ const Login = () => {
       });
       if (data) {
         alert("Registration successful! Please log in.");
+        saveToken(data.loginUser.token);
       }
       navigate("/profile");
     } catch (e) {

@@ -1,6 +1,5 @@
 .animated-gif {
-    width: 200px; /* Adjust this to your desired size */
-    height: auto; /* Maintains the aspect ratio */
-}
-
+    width: 250px;  /* Adjust the size of the GIF */
+    position: relative; /* Ensures it moves relative to its container */
+  }
   
