@@ -31,6 +31,7 @@ const UserInfoSchema = new Schema<IUserInfo>({
   },
   inches: {
     type: Number,
+
   },
   gender: {
     type: Boolean,

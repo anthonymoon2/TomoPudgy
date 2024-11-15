@@ -27,6 +27,7 @@ const typeDefs = `
   type Mutation {
     createUser(username: String!, password: String!): UserInfo
     loginUser(username: String!, password: String! ): UserInfo
+
     addUserInfo(
       _id: ID!,
       weight: Float,
@@ -35,6 +36,9 @@ const typeDefs = `
       gender: Boolean,
       age: Int
     ): UserInfo
+
+
+    
     recommendedCalorieCalculation(
       _id: ID!,
       weight: Float!,

@@ -130,14 +130,16 @@ const resolvers = {
     },
     addUserInfo: async (
       _parent: any,
-      { _id, updateData }: { _id: string; updateData: Partial<IUserInfo> }
+      { _id, weight, age, feet, inches, gender }: { _id: string; weight: number, age: number, feet: number, inches: number, gender: boolean }
     ): Promise<IUserInfo | null> => {
       try {
+        const updateData = { weight, age, feet, inches, gender }
         const updatedUserInfo = await UserInfo.findByIdAndUpdate(
           _id,
-          { $set: updateData },
+          updateData,
           { new: true }
         );
+        console.log(updatedUserInfo)
         if (!updatedUserInfo) {
           throw new Error("User not found.");
         }
@@ -148,7 +150,7 @@ const resolvers = {
       }
     },
 
-    compareUserCalories: async ( _: any, { _id, foodName}: { _id: string; foodName: string}): Promise<Object | null> => {
+    compareUserCalories: async (_: any, { _id, foodName }: { _id: string; foodName: string }): Promise<Object | null> => {
       try {
         //retrieving the user id from the database
         const user = await UserInfo.findById(_id);
@@ -158,7 +160,7 @@ const resolvers = {
         // fetching the calories food response from the 3rd party api
         const apiFoodCalorieResponse = await fetchCalorieData(foodName);
         if (!apiFoodCalorieResponse || typeof apiFoodCalorieResponse.calories !== 'number') {
-          throw new Error ('Invalid calorie data from external source');
+          throw new Error('Invalid calorie data from external source');
         }
         // updating the user's current calories with the food calorie from the API response
         const currentCalories = (user.currentCalories || 0) + apiFoodCalorieResponse.calories;
@@ -174,7 +176,7 @@ const resolvers = {
           throw new Error('Invalid recommended calorie data');
         }
         // returns true if the currentCalories is greater than recommendedCalories and returns false if the currentCalories is less than or equal to the recommendedCalories
-          return {
+        return {
           result: currentCalories > recommendedCalories,
           currentCalories
         };
