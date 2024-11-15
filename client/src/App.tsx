@@ -1,12 +1,12 @@
 import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink } from "@apollo/client";
-
 import { setContext } from "@apollo/client/link/context";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 
+import Navbar from "./components/Navbar/NavbarComp";
 import Header from "./components/Header/HeaderComp";
-import Footer from "./components/Footer/FooterComp"
+import Footer from "./components/Footer/FooterComp";
 import "./styles/Reset.css";
-import "./styles/App.css"
+import "./styles/App.css";
 
 // Construct our main GraphQL API endpoint
 const httpLink = createHttpLink({
@@ -33,10 +33,12 @@ const client = new ApolloClient({
 });
 
 function App() {
+  const location = useLocation();
   return (
     <div className="min-h-screen flex flex-col">
       <ApolloProvider client={client}>
-          <Header />
+        {location.pathname === "/" && <Header />}
+        {location.pathname !== "/" && <Navbar />}
         <main className="content">
           <Outlet />
         </main>
