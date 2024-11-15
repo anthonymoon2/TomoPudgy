@@ -23,11 +23,11 @@ body {
   text-decoration: none;
 }
 
-.navbarLink a:hover {
+.navbarLink:hover {
   color: #c1fff2; /* Hover effect */
 }
 
-.navbarLink a.active {
+.navbarLink.active {
   color: #c1fff2; /* Active link color */
   font-weight: bold;
 }
