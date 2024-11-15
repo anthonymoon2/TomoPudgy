@@ -1,6 +1,5 @@
-// import { Query } from "mongoose";
+import bcrypt from 'bcryptjs'; // Add bcrypt for hashing
 import UserInfo, { IUserInfo } from "../models/UserInfo.js";
-// import FoodItem, { IFoodItem } from '../models/FoodItem.js';
 import { fetchCalorieData } from '../utils/fetchCalorieData.js';
 
 const resolvers = {
@@ -23,6 +22,8 @@ const resolvers = {
         return null;
       }
     },
+
+  },
     calculateUserCalories: async (_: any, { _id, foodName }: { _id: string; foodName: string }): Promise<number | null> => {
       try {
         const user = await UserInfo.findById(_id);
@@ -48,11 +49,26 @@ const resolvers = {
       args: { username: string; password: string }
     ): Promise<IUserInfo | null> => {
       try {
-        const userLogin = await UserInfo.create(args);
+        const { username, password } = args;
+
+        // Ensure both username and password are provided
+        if (!username || !password) {
+          throw new Error("Username and password are required.");
+        }
+
+        // Hash the password before saving to the database
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        // Create the new user
+        const userLogin = await UserInfo.create({
+          username,
+          password: hashedPassword, // Store the hashed password
+        });
+
         return userLogin;
       } catch (err) {
         console.error("Error creating UserLogin:", err);
-        return null;
+        throw new Error("Error creating user.");
       }
     },
 
@@ -61,11 +77,22 @@ const resolvers = {
       { username, password }: { username: string; password: string }
     ): Promise<IUserInfo | null> => {
       try {
-        const userLogin = await UserInfo.findOne({ username, password });
+        const userLogin = await UserInfo.findOne({ username });
+        
+        // If user doesn't exist or passwords don't match, throw an error
+        if (!userLogin) {
+          throw new Error('User not found.');
+        }
+
+        const isMatch = await bcrypt.compare(password, userLogin.password);
+        if (!isMatch) {
+          throw new Error('Invalid credentials.');
+        }
+
         return userLogin;
       } catch (err) {
         console.error("Error checking UserLogin:", err);
-        return null;
+        throw new Error("Error logging in.");
       }
     },
 
@@ -82,7 +109,7 @@ const resolvers = {
         return updatedUserInfo;
       } catch (err) {
         console.error("Error updating UserInfo:", err);
-        return null;
+        throw new Error("Error updating user information.");
       }
     },
   },

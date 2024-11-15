@@ -17,7 +17,7 @@ const Profile = () => {
     const handleFormSubmit = async (event: FormEvent) => {
         event.preventDefault();
         try {
-            const { data } = await updateUser({
+            await updateUser({
                 variables: { ...formState },
             })
         } catch (e) {
