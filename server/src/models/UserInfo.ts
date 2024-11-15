@@ -10,7 +10,7 @@ export interface IUserInfo extends Document {
   age: number;
   recommendedCalorieCalculation: number;
   dailyCaloricIntake: number;
-  currentCalories: number
+  currentCalories: number;
 }
 
 const UserInfoSchema = new Schema<IUserInfo>({
