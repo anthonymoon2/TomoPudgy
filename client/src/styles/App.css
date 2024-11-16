@@ -26,6 +26,10 @@ body {
   color: #7c7287;
 }
 
+.minecraftFont{
+  font-family: "Minecraft", sans-serif;
+}
+
 .navbarLink a {
   color: #7c7287;
   text-decoration: none;
