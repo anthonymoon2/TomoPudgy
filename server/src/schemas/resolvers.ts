@@ -5,6 +5,7 @@ import { Types } from 'mongoose';
 import fetchCalorieData from '../utils/fetchCalorieData.js';
 import { signToken } from '../utils/auth.js';
 
+//TIED TO FOURTH STEP
 const calculateBMR = (weight: number, height: number, age: number, gender: boolean): number => {
   const bmr = gender
     ? 10 * weight + 6.25 * height - 5 * age + 5 // If male, true
@@ -39,6 +40,75 @@ const resolvers = {
   },
 
   Mutation: {
+
+    //  FIRST STEP
+    createUser: async (_parent: any, { username, password }: { username: string; password: string }) => {
+      try {
+        if (!username || !password) {
+          throw new Error("Username and password are required.");
+        }
+        const existingUser = await UserInfo.findOne({ username });
+        if (existingUser) {
+          throw new Error("Username already exists.");
+        }
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const userLogin = await UserInfo.create({
+          username,
+          password: hashedPassword,
+        });
+        const token = signToken(userLogin.username, userLogin._id);
+        return { token, userLogin };
+      } catch (err) {
+        console.error("Error creating user:", err);
+        throw new Error("Error creating user.");
+      }
+    },
+
+    // SECOND STEP
+    loginUser: async (
+      _parent: any,
+      { username, password }: { username: string; password: string }
+    ): Promise<{ token: string; userLogin: IUserInfo }> => {
+      try {
+        const userLogin = await UserInfo.findOne({ username });
+        if (!userLogin) {
+          throw new Error("User not found.");
+        }
+        const isMatch = await bcrypt.compare(password, userLogin.password);
+        if (!isMatch) {
+          throw new Error("Invalid credentials.");
+        }
+        const token = signToken(userLogin.username, userLogin._id);
+        return { token, userLogin };
+      } catch (err) {
+        console.error("Error logging in:", err);
+        throw new Error("Error logging in.");
+      }
+    },
+
+    // THIRD STEP
+    addUserInfo: async (
+      _parent: any,
+      { _id, weight, age, feet, inches, gender }: { _id: string; weight: number, age: number, feet: number, inches: number, gender: boolean }
+    ): Promise<IUserInfo | null> => {
+      try {
+        const updateData = { weight, age, feet, inches, gender };
+        const updatedUserInfo = await UserInfo.findByIdAndUpdate(
+          _id,
+          updateData,
+          { new: true }
+        );
+        if (!updatedUserInfo) {
+          throw new Error("User not found.");
+        }
+        return updatedUserInfo;
+      } catch (err) {
+        console.error("Error updating UserInfo:", err);
+        throw new Error("Error updating user information.");
+      }
+    },
+
+    //FOURTH STEP
     recommendedCalorieCalculation: async (
       _parent: any,
       { _id }: { _id: string }
@@ -63,70 +133,36 @@ const resolvers = {
       }
     },
 
-    createUser: async (_parent: any, { username, password }: { username: string; password: string }) => {
+    //FIFTH STEP
+    addFoodItemToUser: async (_: any, { userId, foodName }: { userId: string; foodName: string; }): Promise<IFoodItem | null> => {
       try {
-        if (!username || !password) {
-          throw new Error("Username and password are required.");
+        const apiFoodCalorieResponse = await fetchCalorieData(foodName);
+        if (!apiFoodCalorieResponse || typeof apiFoodCalorieResponse.calories !== 'number') {
+          throw new Error('Invalid calorie data from external source');
         }
-        const existingUser = await UserInfo.findOne({ username });
-        if (existingUser) {
-          throw new Error("Username already exists.");
-        }
-        const hashedPassword = await bcrypt.hash(password, 10);
-        const userLogin = await UserInfo.create({
-          username,
-          password: hashedPassword,
+        const foodItem = new FoodItem({
+          name: foodName,
+          calories: apiFoodCalorieResponse.calories,
         });
-        const token = signToken(userLogin.username, userLogin._id);
-        return { token, userLogin };
-      } catch (err) {
-        console.error("Error creating user:", err);
-        throw new Error("Error creating user.");
+        await foodItem.save();
+        const user = await UserInfo.findById(userId);
+        if (!user) {
+          throw new Error('User not found');
+        }
+        // Add the new food item's ID to the user's foodItems array
+        user.foodItems.push(foodItem._id as Types.ObjectId);
+        // Update the user's current calorie count
+        const currentCalories = (user.currentCalories || 0) + foodItem.calories;
+        user.currentCalories = currentCalories;
+        await user.save();
+        return foodItem;
+      } catch (error) {
+        console.error('Error adding food item:', error);
+        return null;
       }
     },
 
-    loginUser: async (
-      _parent: any,
-      { username, password }: { username: string; password: string }
-    ): Promise<{ token: string; userLogin: IUserInfo }> => {
-      try {
-        const userLogin = await UserInfo.findOne({ username });
-        if (!userLogin) {
-          throw new Error("User not found.");
-        }
-        const isMatch = await bcrypt.compare(password, userLogin.password);
-        if (!isMatch) {
-          throw new Error("Invalid credentials.");
-        }
-        const token = signToken(userLogin.username, userLogin._id);
-        return { token, userLogin };
-      } catch (err) {
-        console.error("Error logging in:", err);
-        throw new Error("Error logging in.");
-      }
-    },
-
-    addUserInfo: async (
-      _parent: any,
-      { _id, weight, age, feet, inches, gender }: { _id: string; weight: number, age: number, feet: number, inches: number, gender: boolean }
-    ): Promise<IUserInfo | null> => {
-      try {
-        const updateData = { weight, age, feet, inches, gender };
-        const updatedUserInfo = await UserInfo.findByIdAndUpdate(
-          _id,
-          updateData,
-          { new: true }
-        );
-        if (!updatedUserInfo) {
-          throw new Error("User not found.");
-        }
-        return updatedUserInfo;
-      } catch (err) {
-        console.error("Error updating UserInfo:", err);
-        throw new Error("Error updating user information.");
-      }
-    },
-
+// SXTH & FINAL STEP: WONT WORK IF DONE OUT OF ORDER
     compareUserCalories: async (_: any, { _id }: { _id: string; }): Promise<Object | null> => {
       try {
         const user = await UserInfo.findById(_id);
@@ -161,33 +197,6 @@ const resolvers = {
       }
     },
 
-    addFoodItemToUser: async (_: any, { userId, foodName }: { userId: string; foodName: string; }): Promise<IFoodItem | null> => {
-      try {
-        const apiFoodCalorieResponse = await fetchCalorieData(foodName);
-        if (!apiFoodCalorieResponse || typeof apiFoodCalorieResponse.calories !== 'number') {
-          throw new Error('Invalid calorie data from external source');
-        }
-        const foodItem = new FoodItem({
-          name: foodName,
-          calories: apiFoodCalorieResponse.calories,
-        });
-        await foodItem.save();
-        const user = await UserInfo.findById(userId);
-        if (!user) {
-          throw new Error('User not found');
-        }
-        // Add the new food item's ID to the user's foodItems array
-        user.foodItems.push(foodItem._id as Types.ObjectId);
-        // Update the user's current calorie count
-        const currentCalories = (user.currentCalories || 0) + foodItem.calories;
-        user.currentCalories = currentCalories;
-        await user.save();
-        return foodItem;
-      } catch (error) {
-        console.error('Error adding food item:', error);
-        return null;
-      }
-    }
   },
 };
 
