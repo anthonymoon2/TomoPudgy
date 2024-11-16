@@ -1,6 +1,9 @@
+
 import { useState, type FormEvent, type ChangeEvent } from "react";
 
 import Meal from "../components/Meal/Meal";
+
+//import AnimatedGifComponent from "../components/SpriteAnimation";
 
 
 const Home = () => {

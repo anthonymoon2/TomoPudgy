@@ -1,6 +1,7 @@
 import bcrypt from 'bcryptjs';
 import UserInfo, { IUserInfo } from "../models/UserInfo.js";
 import fetchCalorieData from '../utils/fetchCalorieData.js';
+import { signToken } from '../utils/auth.js';
 
 const calculateBMR = (weight: number, height: number, age: number, gender: boolean): number => {
   const bmr = gender
@@ -31,47 +32,26 @@ const resolvers = {
         return null;
       }
     },
-    calculateUserCalories: async (
-      _: any,
-      { _id, foodName }: { _id: string; foodName: string }
-    ): Promise<number> => {
-      try {
-        const user = await UserInfo.findById(_id);
-        if (!user) {
-          throw new Error("User not found.");
-        }
-        const apiFoodCalorieResponse = await fetchCalorieData(foodName);
-        if (!apiFoodCalorieResponse || typeof apiFoodCalorieResponse.calories !== "number") {
-          throw new Error("Invalid calorie data from external source.");
-        }
-        const combinedCalories = (user.currentCalories || 0) + apiFoodCalorieResponse.calories;
-        return combinedCalories;
-      } catch (error) {
-        console.error("Error calculating combined calories:", error);
-        return 0;
-      }
-    },
   },
 
   Mutation: {
     recommendedCalorieCalculation: async (
       _parent: any,
-      { _id, weight, feet, inches, age, gender }:
-        { _id: string; weight: number; feet: number; inches: number; age: number; gender: boolean }
+      { _id }:
+        { _id: string }
     ): Promise<Number | null> => {
       try {
         const user = await UserInfo.findById(_id);
         if (!user) {
           throw new Error("User not found.");
         }
-        const weightInKg = weight * 0.453592;
-        const heightInCm = (feet * 12 + inches) * 2.54;
-        const calculatedBMR = calculateBMR(weightInKg, heightInCm, age, gender);
+        const weightInKg = user.weight * 0.453592;
+        const heightInCm = (user.feet * 12 + user.inches) * 2.54;
+        const calculatedBMR = calculateBMR(weightInKg, heightInCm, user.age, user.gender);
         await UserInfo.findByIdAndUpdate(
           _id,
           {
             recommendedCalorieCalculation: calculatedBMR,
-            dailyCaloricIntake: calculatedBMR,
           },
           { new: true }
         );
@@ -81,27 +61,35 @@ const resolvers = {
         throw new Error("Error updating recommended calories.");
       }
     },
-    createUser: async (
-      _parent: any,
-      { username, password }: { username: string; password: string }
-    ): Promise<IUserInfo | null> => {
+    createUser: async (_parent: any, { username, password }: { username: string; password: string }) => {
       try {
+        console.log('Attempting to create user with username:', username); // Log the incoming username
+    
         if (!username || !password) {
+          console.log('Error: Username or password is missing.');
           throw new Error("Username and password are required.");
         }
-
+    
         const existingUser = await UserInfo.findOne({ username });
         if (existingUser) {
+          console.log('Error: Username already exists.');
           throw new Error("Username already exists.");
         }
-
+    
+        console.log('Hashing password...');
         const hashedPassword = await bcrypt.hash(password, 10);
+        console.log('Password hashed successfully.');
+    
         const userLogin = await UserInfo.create({
           username,
           password: hashedPassword,
         });
-
-        return userLogin;
+    
+        console.log('User created successfully:', userLogin);
+    
+        const token = signToken(userLogin.username, userLogin._id);
+    
+        return { token, userLogin };
       } catch (err) {
         console.error("Error creating user:", err);
         throw new Error("Error creating user.");
@@ -110,7 +98,7 @@ const resolvers = {
     loginUser: async (
       _parent: any,
       { username, password }: { username: string; password: string }
-    ): Promise<IUserInfo | null> => {
+    ): Promise<{ token:string; userLogin: IUserInfo }> => {
       try {
         const userLogin = await UserInfo.findOne({ username });
         if (!userLogin) {
@@ -121,23 +109,27 @@ const resolvers = {
         if (!isMatch) {
           throw new Error("Invalid credentials.");
         }
+        const token = signToken(userLogin.username, userLogin._id);
+        return {token, userLogin};
 
-        return userLogin;
       } catch (err) {
         console.error("Error logging in:", err);
         throw new Error("Error logging in.");
       }
     },
+
     addUserInfo: async (
       _parent: any,
-      { _id, updateData }: { _id: string; updateData: Partial<IUserInfo> }
+      { _id, weight, age, feet, inches, gender }: { _id: string; weight: number, age: number, feet: number, inches: number, gender: boolean }
     ): Promise<IUserInfo | null> => {
       try {
+        const updateData = { weight, age, feet, inches, gender }
         const updatedUserInfo = await UserInfo.findByIdAndUpdate(
           _id,
-          { $set: updateData },
+          updateData,
           { new: true }
         );
+        console.log(updatedUserInfo)
         if (!updatedUserInfo) {
           throw new Error("User not found.");
         }
@@ -148,7 +140,7 @@ const resolvers = {
       }
     },
 
-    compareUserCalories: async ( _: any, { _id, foodName}: { _id: string; foodName: string}): Promise<Object | null> => {
+    compareUserCalories: async (_: any, { _id, foodName }: { _id: string; foodName: string }): Promise<Object | null> => {
       try {
         //retrieving the user id from the database
         const user = await UserInfo.findById(_id);
@@ -158,7 +150,7 @@ const resolvers = {
         // fetching the calories food response from the 3rd party api
         const apiFoodCalorieResponse = await fetchCalorieData(foodName);
         if (!apiFoodCalorieResponse || typeof apiFoodCalorieResponse.calories !== 'number') {
-          throw new Error ('Invalid calorie data from external source');
+          throw new Error('Invalid calorie data from external source');
         }
         // updating the user's current calories with the food calorie from the API response
         const currentCalories = (user.currentCalories || 0) + apiFoodCalorieResponse.calories;
@@ -174,7 +166,7 @@ const resolvers = {
           throw new Error('Invalid recommended calorie data');
         }
         // returns true if the currentCalories is greater than recommendedCalories and returns false if the currentCalories is less than or equal to the recommendedCalories
-          return {
+        return {
           result: currentCalories > recommendedCalories,
           currentCalories
         };

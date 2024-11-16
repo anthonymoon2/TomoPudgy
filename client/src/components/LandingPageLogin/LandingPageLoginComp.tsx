@@ -1,4 +1,4 @@
-import { useState, type FormEvent, type ChangeEvent, useRef } from "react";
+import { useState, type ChangeEvent, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useMutation } from "@apollo/client";
 import { LOGIN_USER, REGISTER_USER } from "../../utils/mutations";
@@ -23,6 +23,12 @@ const Login = () => {
     useRef<HTMLButtonElement>(null),
   ];
   
+  useEffect(() => {
+    if (currentFocus === 0 || currentFocus === 1) {
+      // Focus the input so the user can start typing
+      inputRefs[currentFocus]?.current?.focus();
+    } 
+  }, [currentFocus]);
 
   const focusInput = (index: any) => {
     if (inputRefs[index]?.current) {
@@ -48,18 +54,27 @@ const Login = () => {
   };
 
   const handleLoginSubmit = async () => {
-
     try {
       const { data } = await login({
         variables: { ...formState },
       });
-      Auth.login(data.login.token);
-      navigate("/home");
+  
+      console.log("Login response data:", data);
+  
+      const token = data?.loginUser?.token; // Adjust the path based on actual response
+      if (token) {
+        Auth.login(token);
+      } else {
+        alert("Login failed: Token not found.");
+      }
     } catch (e) {
-      console.error(e);
+      console.error("Error during login:", e);
+      alert("An error occurred while logging in. Please try again.");
     }
+  
     setFormState({ username: "", password: "" });
   };
+  
 
   const handleRegisterSubmit = async () => {
 
@@ -147,10 +162,7 @@ const Login = () => {
               className="directionMiddle w-8 h-8 text-5xl mt-5"
               tabIndex={-1}
               onClick={() => {
-                if (currentFocus === 0 || currentFocus === 1) {
-                  // Focus the input so the user can start typing
-                  inputRefs[currentFocus]?.current?.focus();
-                } else if (currentFocus === 2) {
+                if (currentFocus === 2) {
                   // Trigger Register if focused
                   handleRegisterSubmit();
                 } else if (currentFocus === 3) {
