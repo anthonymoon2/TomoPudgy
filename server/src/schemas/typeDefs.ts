@@ -1,7 +1,9 @@
 const typeDefs = `
   type Query {
     getUserInfo(_id: String!): UserInfo
+
     getFoodItem(foodName: String!): FoodItem
+
     calculateUserCalories(_id: String!, foodName: String!): Float
     }
     
@@ -20,10 +22,12 @@ const typeDefs = `
       foodItems: [FoodItem!]!
     }
     
-    type Compare {
-      result: Boolean
-      currentCalories: Float  
-      }
+type Compare {
+  result: Boolean
+  currentCalories: Float
+  weight: Float
+}
+
       
     type FoodItem {
       name: String!
@@ -38,7 +42,9 @@ const typeDefs = `
 
   type Mutation {
     createUser(username: String!, password: String!): Auth
+
     loginUser(username: String!, password: String! ): Auth
+
     addUserInfo(
       _id: ID!,
       weight: Float,
@@ -47,16 +53,10 @@ const typeDefs = `
       gender: Boolean,
       age: Int
     ): UserInfo
-    recommendedCalorieCalculation(
-      _id: ID!,
-      weight: Float!,
-      feet: Int!,
-      inches: Int!,
-      age: Int!,
-      gender: Boolean!
-      ): Float
+    recommendedCalorieCalculation(_id: ID!): Float
       compareUserCalories(_id: String!): Compare
       addFoodItemToUser(userId: String!, foodName: String!): FoodItem
+
   }
 `;
 

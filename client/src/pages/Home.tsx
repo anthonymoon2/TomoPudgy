@@ -1,21 +1,21 @@
 import AnimatedGifComponent from "../components/SpriteAnimation";
 
-import { useState, type FormEvent, type ChangeEvent } from "react";
+// import { useState, type FormEvent, type ChangeEvent } from "react";
 
-import Meal from "../components/Meal/Meal";
+// import Meal from "../components/Meal/Meal";
 
 const Home = () => {
     console.log('Rendering Home');
 
-    const [formState, setFormState] = useState({ meal: ""});
+    // const [formState, setFormState] = useState({ meal: ""});
 
-    const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-        const { name, value } = event.target;
-        setFormState({
-          ...formState,
-          [name]: value,
-        });
-    }
+    // const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    //     const { name, value } = event.target;
+    //     setFormState({
+    //       ...formState,
+    //       [name]: value,
+    //     });
+    // }
 
     return (
         <div className="grid grid-cols-[2fr_1fr] gap-[50px] m-[0px_50px] h-[500px] minecraftFont">
@@ -34,8 +34,8 @@ const Home = () => {
                             <label htmlFor="meal" className="block">
                                 Add Meal
                             </label>
-
-                            <input placeholder="Steak and Eggs" name="meal" type="text" value={formState.meal} onChange={handleChange} required />
+{/* 
+                            <input placeholder="Steak and Eggs" name="meal" type="text" value={formState.meal} onChange={handleChange} required /> */}
 
                             <button className="mt-[20px] bg-white p-[4px] hover:bg-neutral-200 rounded-[10px] border-[2px] border-solid border-black">Submit</button>
                         </form>

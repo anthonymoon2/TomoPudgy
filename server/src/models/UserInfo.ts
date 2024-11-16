@@ -13,6 +13,7 @@ export interface IUserInfo extends Document {
   dailyCaloricIntake: number;
   currentCalories: number;
   foodItems: Types.ObjectId[];
+  isOverRecommendedCalories: boolean
 }
 
 const UserInfoSchema = new Schema<IUserInfo>({
@@ -46,13 +47,17 @@ const UserInfoSchema = new Schema<IUserInfo>({
   dailyCaloricIntake: {
     type: Number,
   },
-currentCalories: {
+  currentCalories: {
     type: Number,
   },
-foodItems: [{
-  type: Types.ObjectId,
-  ref: 'FoodItem',
+  foodItems: [{
+    type: Types.ObjectId,
+    ref: 'FoodItem',
   }],
+  isOverRecommendedCalories: {
+    type: Boolean,
+    default: null
+  },
 });
 
 const UserInfo = model<IUserInfo>('UserInfo', UserInfoSchema);
