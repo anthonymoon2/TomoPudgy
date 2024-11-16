@@ -13,13 +13,11 @@ const typeDefs = `
       feet: Int
       inches: Int
       gender: Boolean
-
-    age: Int
-    recommendedCalorieCalculation: Float
-    dailyCaloricIntake: Float
-    currentCalories: Float
-
-    foodItems: [FoodItem!]!
+      age: Int
+      recommendedCalorieCalculation: Float
+      dailyCaloricIntake: Float
+      currentCalories: Float
+      foodItems: [FoodItem!]!
     }
     
     type Compare {
@@ -27,30 +25,16 @@ const typeDefs = `
       currentCalories: Float  
       }
       
-      type FoodItem {
-        name: String!
-        calories: Float!
-        _id: ID!
-        }
-        
-      recommendedCalorieCalculation(
-      _id: ID!,
-      weight: Float!,
-      feet: Int!,
-      inches: Int!,
-      age: Int!,
-      gender: Boolean!
-      ): Float
-      compareUserCalories(_id: String!): Compare
-      addFoodItemToUser(userId: String!, foodName: String!): FoodItem
-      }
-      `;
+    type FoodItem {
+      name: String!
+      calories: Float!
+      _id: ID!
+    } 
 
-  type Auth {
-  token: ID!
-  userLogin: UserInfo
-  }
-
+    type Auth {
+      token: ID!
+      userLogin: UserInfo
+    }
 
   type Mutation {
     createUser(username: String!, password: String!): Auth
@@ -63,6 +47,16 @@ const typeDefs = `
       gender: Boolean,
       age: Int
     ): UserInfo
+    recommendedCalorieCalculation(
+      _id: ID!,
+      weight: Float!,
+      feet: Int!,
+      inches: Int!,
+      age: Int!,
+      gender: Boolean!
+      ): Float
+      compareUserCalories(_id: String!): Compare
+      addFoodItemToUser(userId: String!, foodName: String!): FoodItem
   }
 `;
 
