@@ -1,10 +1,8 @@
+import AnimatedGifComponent from "../components/SpriteAnimation";
 
 import { useState, type FormEvent, type ChangeEvent } from "react";
 
 import Meal from "../components/Meal/Meal";
-
-//import AnimatedGifComponent from "../components/SpriteAnimation";
-
 
 const Home = () => {
     console.log('Rendering Home');
@@ -24,7 +22,7 @@ const Home = () => {
             <div className="bg-black p-[2px] rounded-[10px]">
                 <div className="h-[500px] bg-customBeige border-[6px] border-solid border-amber-400 rounded-[10px]">
                     <div>
-                    <img src="/figure1.gif" className="h-[80px]"></img>
+                    < AnimatedGifComponent/>
                     </div>
                 </div>
             </div>
