@@ -82,27 +82,35 @@ const resolvers = {
         throw new Error("Error updating recommended calories.");
       }
     },
-    createUser: async (
-      _parent: any,
-      { username, password }: { username: string; password: string }
-    ): Promise<IUserInfo | null> => {
+    createUser: async (_parent: any, { username, password }: { username: string; password: string }) => {
       try {
+        console.log('Attempting to create user with username:', username); // Log the incoming username
+    
         if (!username || !password) {
+          console.log('Error: Username or password is missing.');
           throw new Error("Username and password are required.");
         }
-
+    
         const existingUser = await UserInfo.findOne({ username });
         if (existingUser) {
+          console.log('Error: Username already exists.');
           throw new Error("Username already exists.");
         }
-
+    
+        console.log('Hashing password...');
         const hashedPassword = await bcrypt.hash(password, 10);
+        console.log('Password hashed successfully.');
+    
         const userLogin = await UserInfo.create({
           username,
           password: hashedPassword,
         });
-
-        return userLogin;
+    
+        console.log('User created successfully:', userLogin);
+    
+        const token = signToken(userLogin.username, userLogin._id);
+    
+        return { token, userLogin };
       } catch (err) {
         console.error("Error creating user:", err);
         throw new Error("Error creating user.");
@@ -122,7 +130,7 @@ const resolvers = {
         if (!isMatch) {
           throw new Error("Invalid credentials.");
         }
-        const token = signToken(userLogin.username, userLogin._id)
+        const token = signToken(userLogin.username, userLogin._id);
         return {token, userLogin};
 
       } catch (err) {
