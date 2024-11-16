@@ -3,15 +3,11 @@ import { gql } from '@apollo/client';
 export const REGISTER_USER = gql`
   mutation CreateUser($username: String!, $password: String!) {
     createUser(username: $username, password: $password) {
-      _id
-      username
-      password
-      weight
-      height
-      gender
-      age
-      recommendedCalorieCalculation
-      dailyCaloricIntake
+      token
+      userLogin {
+        _id
+        username
+      }
     }
   }
 `;
@@ -19,15 +15,11 @@ export const REGISTER_USER = gql`
 export const LOGIN_USER = gql`
   mutation LoginUser($username: String!, $password: String!) {
     loginUser(username: $username, password: $password) {
-      _id
-      username
-      password
-      weight
-      height
-      gender
-      age
-      recommendedCalorieCalculation
-      dailyCaloricIntake
+      token
+      userLogin {
+        _id
+        username
+      }
     }
   }
 `;

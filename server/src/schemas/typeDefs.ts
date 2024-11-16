@@ -19,15 +19,19 @@ const typeDefs = `
     currentCalories: Float
   }
 
+  type Auth {
+  token: ID!
+  userLogin: UserInfo
+  }
+
   type Compare {
     result: Boolean
     currentCalories: Float  
   }
 
   type Mutation {
-    createUser(username: String!, password: String!): UserInfo
-    loginUser(username: String!, password: String! ): UserInfo
-
+    createUser(username: String!, password: String!): Auth
+    loginUser(username: String!, password: String! ): Auth
     addUserInfo(
       _id: ID!,
       weight: Float,
