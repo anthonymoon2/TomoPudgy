@@ -1,14 +1,8 @@
-<<<<<<< HEAD
 import AnimatedGifComponent from "../components/SpriteAnimation";
-=======
 
 import { useState, type FormEvent, type ChangeEvent } from "react";
 
 import Meal from "../components/Meal/Meal";
-
-//import AnimatedGifComponent from "../components/SpriteAnimation";
->>>>>>> 7d15f2443aa06ff076ae3f4f89fbddc30203aef3
-
 
 const Home = () => {
     console.log('Rendering Home');
@@ -28,16 +22,10 @@ const Home = () => {
             <div className="bg-black p-[2px] rounded-[10px]">
                 <div className="h-[500px] bg-customBeige border-[6px] border-solid border-amber-400 rounded-[10px]">
                     <div>
-                    <img src="/figure1.gif" className="h-[80px]"></img>
+                    < AnimatedGifComponent/>
                     </div>
                 </div>
             </div>
-<<<<<<< HEAD
-            <div className="bg-black p-[2px]">
-                <div className="h-[500px] bg-customBeige border-[6px] border-solid border-amber-400">
-                    right
-                    < AnimatedGifComponent/>
-=======
 
             <div className="bg-black p-[2px] rounded-[10px]">
                 <div className="grid justify-center h-[500px] bg-customBeige border-[6px] border-solid border-amber-400 rounded-[10px]">
@@ -64,7 +52,6 @@ const Home = () => {
                             </div>
                         </div>
                     </div>
->>>>>>> 7d15f2443aa06ff076ae3f4f89fbddc30203aef3
                 </div>
             </div>
         </div>
