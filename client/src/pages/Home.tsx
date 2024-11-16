@@ -1,4 +1,4 @@
-//import AnimatedGifComponent from "../components/SpriteAnimation";
+import AnimatedGifComponent from "../components/SpriteAnimation";
 
 const Home = () => {
     console.log('Rendering Home');
@@ -12,6 +12,7 @@ const Home = () => {
             <div className="bg-black p-[2px]">
                 <div className="h-[500px] bg-customBeige border-[6px] border-solid border-amber-400">
                     right
+                    < AnimatedGifComponent/>
                 </div>
             </div>
         </div>
