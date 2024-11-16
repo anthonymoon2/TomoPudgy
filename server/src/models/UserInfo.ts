@@ -1,4 +1,4 @@
-import { Schema, model, type Document } from 'mongoose';
+import { Schema, Types, model, type Document } from 'mongoose';
 
 export interface IUserInfo extends Document {
   _id: String;
@@ -12,6 +12,7 @@ export interface IUserInfo extends Document {
   recommendedCalorieCalculation: number;
   dailyCaloricIntake: number;
   currentCalories: number;
+  foodItems: Types.ObjectId[];
 }
 
 const UserInfoSchema = new Schema<IUserInfo>({
@@ -48,6 +49,10 @@ const UserInfoSchema = new Schema<IUserInfo>({
 currentCalories: {
     type: Number,
   },
+foodItems: [{
+  type: Types.ObjectId,
+  ref: 'FoodItem',
+  }],
 });
 
 const UserInfo = model<IUserInfo>('UserInfo', UserInfoSchema);

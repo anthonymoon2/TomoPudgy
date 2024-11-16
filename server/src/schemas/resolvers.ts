@@ -1,5 +1,7 @@
 import bcrypt from 'bcryptjs';
 import UserInfo, { IUserInfo } from "../models/UserInfo.js";
+import FoodItem, { IFoodItem } from '../models/FoodItem.js';
+import { Types } from 'mongoose';
 import fetchCalorieData from '../utils/fetchCalorieData.js';
 import { signToken } from '../utils/auth.js';
 
@@ -11,18 +13,19 @@ const calculateBMR = (weight: number, height: number, age: number, gender: boole
 };
 const resolvers = {
   Query: {
-    getFoodItem: async (_: any, { name }: { name: string }) => {
-      try {
-        const foodItem = await fetchCalorieData(name);
-        return foodItem;
-      } catch (error) {
-        console.error('Error fetching food item:', error);
-        throw new Error('Unable to fetch food item data.');
-      }
-    },
+      getFoodItem: async (_: any, { foodName }: { foodName: string }) => {
+        try {
+          const foodItem = await fetchCalorieData(foodName);
+          return foodItem;
+        } catch (error) {
+          console.error('Error fetching food item:', error);
+          throw new Error('Unable to fetch food item data.');
+        }
+      },
+
     getUserInfo: async (_: any, { _id }: { _id: string }): Promise<IUserInfo | null> => {
       try {
-        const user = await UserInfo.findById(_id);
+        const user = await UserInfo.findById(_id).populate('foodItems');
         if (!user) {
           throw new Error('User not found.');
         }
@@ -140,7 +143,8 @@ const resolvers = {
       }
     },
 
-    compareUserCalories: async (_: any, { _id, foodName }: { _id: string; foodName: string }): Promise<Object | null> => {
+
+    compareUserCalories: async ( _: any, { _id}: { _id: string;}): Promise<Object | null> => {
       try {
         //retrieving the user id from the database
         const user = await UserInfo.findById(_id);
@@ -148,19 +152,19 @@ const resolvers = {
           throw new Error('User not found');
         }
         // fetching the calories food response from the 3rd party api
-        const apiFoodCalorieResponse = await fetchCalorieData(foodName);
-        if (!apiFoodCalorieResponse || typeof apiFoodCalorieResponse.calories !== 'number') {
-          throw new Error('Invalid calorie data from external source');
-        }
-        // updating the user's current calories with the food calorie from the API response
-        const currentCalories = (user.currentCalories || 0) + apiFoodCalorieResponse.calories;
-        // updating the user's current calorie count with the new total value
-        user.currentCalories = currentCalories;
-        // saving the updated user data to the database
-        await user.save();
-
+        // const apiFoodCalorieResponse = await fetchCalorieData(foodName);
+        // if (!apiFoodCalorieResponse || typeof apiFoodCalorieResponse.calories !== 'number') {
+        //   throw new Error ('Invalid calorie data from external source');
+        // }
+        // // updating the user's current calories with the food calorie from the API response
+        // const currentCalories = (user.currentCalories || 0) + apiFoodCalorieResponse.calories;
+        // // updating the user's current calorie count with the new total value
+        // user.currentCalories = currentCalories;
+        // // saving the updated user data to the database
+        // await user.save();
         // getting the user's recommended daily calorie intake
         const recommendedCalories = user.recommendedCalorieCalculation;
+        const currentCalories = user.currentCalories;
         // checking if the recommendedCalories is a valid number if it isnt it throws an error
         if (typeof recommendedCalories !== 'number') {
           throw new Error('Invalid recommended calorie data');
@@ -168,13 +172,49 @@ const resolvers = {
         // returns true if the currentCalories is greater than recommendedCalories and returns false if the currentCalories is less than or equal to the recommendedCalories
         return {
           result: currentCalories > recommendedCalories,
-          currentCalories
+          // currentCalories
         };
       } catch (error) {
         console.error('Error comparing user calories:', error);
         return null;
       }
-    }
+    },
+
+    addFoodItemToUser: async (_: any, { userId, foodName}: { userId: string, foodName: string}): Promise<IFoodItem | null> => {
+      try {
+        const apiFoodCalorieResponse = await fetchCalorieData(foodName);
+        if (!apiFoodCalorieResponse || typeof apiFoodCalorieResponse.calories !== 'number') {
+          throw new Error('Invalid calorie data from external source');
+        }
+        const foodItem = new FoodItem({
+          name: foodName,
+          calories: apiFoodCalorieResponse.calories,
+        })
+        
+
+        const savedFoodItem = await foodItem.save();
+        if(!savedFoodItem || !savedFoodItem._id) {
+          throw new Error('Failed to save food item')
+        }
+
+        const user = await UserInfo.findById(userId);
+        if (!user) {
+          throw new Error('User not found');
+        }
+        user.foodItems.push(savedFoodItem._id as Types.ObjectId);
+        // updating the user's current calories with the food calorie from the API response
+        const currentCalories = (user.currentCalories || 0) + apiFoodCalorieResponse.calories;
+        // updating the user's current calorie count with the new total value
+        user.currentCalories = currentCalories;
+        await user.save();
+
+        return savedFoodItem;
+
+      } catch (error) {
+        console.error('Error adding food item:', error);
+        return null;
+      }
+    },
   },
 };
 

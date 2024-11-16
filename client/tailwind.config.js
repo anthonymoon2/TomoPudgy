@@ -9,7 +9,10 @@ export default {
   theme: {
     extend: {
       color: {
-        'custom-beige': '#1E40AF', // Add your custom color
+        'custom-beige': '#1E40AF', 
+      },
+      fontFamily: {
+        custom: ['"Minecraft", sans-serif'], 
       },
     },
   },
