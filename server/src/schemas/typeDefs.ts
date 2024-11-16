@@ -13,10 +13,12 @@ const typeDefs = `
       feet: Int
       inches: Int
       gender: Boolean
+
     age: Int
     recommendedCalorieCalculation: Float
     dailyCaloricIntake: Float
     currentCalories: Float
+
     foodItems: [FoodItem!]!
     }
     
@@ -31,17 +33,6 @@ const typeDefs = `
         _id: ID!
         }
         
-        type Mutation {
-          createUser(username: String!, password: String!): UserInfo
-          loginUser(username: String!, password: String! ): UserInfo
-          addUserInfo(
-            _id: ID!,
-            weight: Float,
-            feet: Int,
-            inches: Int,
-            gender: Boolean,
-      age: Int
-      ): UserInfo
       recommendedCalorieCalculation(
       _id: ID!,
       weight: Float!,
@@ -54,5 +45,26 @@ const typeDefs = `
       addFoodItemToUser(userId: String!, foodName: String!): FoodItem
       }
       `;
+
+  type Auth {
+  token: ID!
+  userLogin: UserInfo
+  }
+
+
+  type Mutation {
+    createUser(username: String!, password: String!): Auth
+    loginUser(username: String!, password: String! ): Auth
+    addUserInfo(
+      _id: ID!,
+      weight: Float,
+      feet: Int,
+      inches: Int,
+      gender: Boolean,
+      age: Int
+    ): UserInfo
+  }
+`;
+
 
 export default typeDefs;

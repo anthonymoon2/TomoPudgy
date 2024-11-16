@@ -7,7 +7,7 @@ export interface IUserInfo extends Document {
   weight: number;
   feet: number;
   inches: number;
-  gender: Boolean;
+  gender: boolean;
   age: number;
   recommendedCalorieCalculation: number;
   dailyCaloricIntake: number;
@@ -32,6 +32,7 @@ const UserInfoSchema = new Schema<IUserInfo>({
   },
   inches: {
     type: Number,
+
   },
   gender: {
     type: Boolean,
@@ -41,7 +42,6 @@ const UserInfoSchema = new Schema<IUserInfo>({
   },
   recommendedCalorieCalculation: {
     type: Number,
-    default: 2000,
   },
   dailyCaloricIntake: {
     type: Number,
