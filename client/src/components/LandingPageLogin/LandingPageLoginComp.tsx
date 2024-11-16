@@ -54,18 +54,27 @@ const Login = () => {
   };
 
   const handleLoginSubmit = async () => {
-
     try {
       const { data } = await login({
         variables: { ...formState },
       });
-      Auth.login(data.login.token);
-      navigate("/home");
+  
+      console.log("Login response data:", data);
+  
+      const token = data?.loginUser?.token; // Adjust the path based on actual response
+      if (token) {
+        Auth.login(token);
+      } else {
+        alert("Login failed: Token not found.");
+      }
     } catch (e) {
-      console.error(e);
+      console.error("Error during login:", e);
+      alert("An error occurred while logging in. Please try again.");
     }
+  
     setFormState({ username: "", password: "" });
   };
+  
 
   const handleRegisterSubmit = async () => {
 
