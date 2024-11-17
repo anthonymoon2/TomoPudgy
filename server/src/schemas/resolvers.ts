@@ -136,32 +136,33 @@ const resolvers = {
     //FIFTH STEP
     addFoodItemToUser: async (_: any, { userId, foodName }: { userId: string; foodName: string; }): Promise<IFoodItem | null> => {
       try {
-        const apiFoodCalorieResponse = await fetchCalorieData(foodName);
-        if (!apiFoodCalorieResponse || typeof apiFoodCalorieResponse.calories !== 'number') {
-          throw new Error('Invalid calorie data from external source');
+        // Fetch the calorie data from the calorie response for the foodName from the API (returns only the calorie count)
+        const calories = await fetchCalorieData(foodName);
+        if (typeof calories !== 'number') {
+          throw new Error('Invalid calorie data');
         }
+        // Create the NEW FoodItem document
         const foodItem = new FoodItem({
-          name: foodName,
-          calories: apiFoodCalorieResponse.calories,
+          name: foodName.toLowerCase(),
+          calories,
         });
         await foodItem.save();
+        // Find the user._id and add to foodItem[]
         const user = await UserInfo.findById(userId);
         if (!user) {
           throw new Error('User not found');
         }
-        // Add the new food item's ID to the user's foodItems array
         user.foodItems.push(foodItem._id as Types.ObjectId);
-        // Update the user's current calorie count
-        const currentCalories = (user.currentCalories || 0) + foodItem.calories;
-        user.currentCalories = currentCalories;
+        // Update the user document with current calorie count based on added food
+        user.currentCalories = (user.currentCalories || 0) + foodItem.calories;
         await user.save();
-        return foodItem;
+        return foodItem; // Return the created food item
       } catch (error) {
         console.error('Error adding food item:', error);
         return null;
       }
     },
-
+    
 // SXTH & FINAL STEP: WONT WORK IF DONE OUT OF ORDER
     compareUserCalories: async (_: any, { _id }: { _id: string; }): Promise<Object | null> => {
       try {
