@@ -6,7 +6,7 @@ export interface IFoodItem extends Document {
 }
 
 const FoodItemSchema = new Schema<IFoodItem>({
-  name: {type: String, required: true },
+  name: { type: String, required: true }, // Removed unique constraint
   calories: { type: Number, required: true },
 });
 

@@ -13,7 +13,11 @@ export interface IUserInfo extends Document {
   dailyCaloricIntake: number;
   currentCalories: number;
   foodItems: Types.ObjectId[];
+<<<<<<< HEAD
   isCorrectPassword(password: string): Promise<boolean>;
+=======
+  isOverRecommendedCalories: boolean
+>>>>>>> b0e8cc520f645e151234a90d75b1907fbef650bb
 }
 
 const UserInfoSchema = new Schema<IUserInfo>({
@@ -47,13 +51,17 @@ const UserInfoSchema = new Schema<IUserInfo>({
   dailyCaloricIntake: {
     type: Number,
   },
-currentCalories: {
+  currentCalories: {
     type: Number,
   },
-foodItems: [{
-  type: Types.ObjectId,
-  ref: 'FoodItem',
+  foodItems: [{
+    type: Types.ObjectId,
+    ref: 'FoodItem',
   }],
+  isOverRecommendedCalories: {
+    type: Boolean,
+    default: null
+  },
 });
 
 // set up pre-save middleware to create password
