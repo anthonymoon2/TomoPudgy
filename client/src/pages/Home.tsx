@@ -1,20 +1,14 @@
 import AnimatedGifComponent from "../components/SpriteAnimation";
-<<<<<<< HEAD
 import { Navigate, useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import Auth from '../utils/auth';
 import { useState, type FormEvent, type ChangeEvent } from "react";
 import { GET_USER_INFO, QUERY_ME } from '../utils/queries';
-=======
-
-// import { useState, type FormEvent, type ChangeEvent } from "react";
->>>>>>> b0e8cc520f645e151234a90d75b1907fbef650bb
 
 // import Meal from "../components/Meal/Meal";
 
 const Home = () => {
 
-<<<<<<< HEAD
     const { profileId } = useParams();
 
     // Debugging: Log the logged-in user profile
@@ -77,17 +71,6 @@ const Home = () => {
             [name]: value,
         });
     };
-=======
-    // const [formState, setFormState] = useState({ meal: ""});
-
-    // const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    //     const { name, value } = event.target;
-    //     setFormState({
-    //       ...formState,
-    //       [name]: value,
-    //     });
-    // }
->>>>>>> b0e8cc520f645e151234a90d75b1907fbef650bb
 
     return (
         <div className="grid grid-cols-[2fr_1fr] gap-[50px] m-[0px_50px] h-[500px] minecraftFont">
@@ -106,7 +89,6 @@ const Home = () => {
                             <label htmlFor="meal" className="block">
                                 Add Meal
                             </label>
-<<<<<<< HEAD
 
                             <input
                                 placeholder="Steak and Eggs"
@@ -116,10 +98,6 @@ const Home = () => {
                                 onChange={handleChange}
                                 required
                             />
-=======
-{/* 
-                            <input placeholder="Steak and Eggs" name="meal" type="text" value={formState.meal} onChange={handleChange} required /> */}
->>>>>>> b0e8cc520f645e151234a90d75b1907fbef650bb
 
                             <button
                                 className="mt-[20px] bg-white p-[4px] hover:bg-neutral-200 rounded-[10px] border-[2px] border-solid border-black"
