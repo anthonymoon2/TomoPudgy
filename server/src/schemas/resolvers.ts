@@ -1,9 +1,18 @@
-import bcrypt from 'bcryptjs';
 import UserInfo, { IUserInfo } from "../models/UserInfo.js";
 import FoodItem, { IFoodItem } from '../models/FoodItem.js';
 import { Types } from 'mongoose';
 import fetchCalorieData from '../utils/fetchCalorieData.js';
-import { signToken } from '../utils/auth.js';
+import { signToken, AuthenticationError } from '../utils/auth.js';
+
+interface AddProfileArgs{
+  input: {
+    username: string;
+    password: string;
+  }
+}
+interface Context {
+  user?: IUserInfo | null;
+}
 
 const calculateBMR = (weight: number, height: number, age: number, gender: boolean): number => {
   const bmr = gender
@@ -35,6 +44,13 @@ const resolvers = {
         return null;
       }
     },
+    me: async (_parent: any, _args: any, context: Context): Promise<IUserInfo | null> => {
+      console.log("Context User:", context.user);
+      if (context.user) {
+        return await UserInfo.findOne({ _id: context.user._id });
+      }
+      throw new AuthenticationError('QUERY_ME: You are not authenticated');
+    },
   },
 
   Mutation: {
@@ -64,39 +80,10 @@ const resolvers = {
         throw new Error("Error updating recommended calories.");
       }
     },
-    createUser: async (_parent: any, { username, password }: { username: string; password: string }) => {
-      try {
-        console.log('Attempting to create user with username:', username); // Log the incoming username
-    
-        if (!username || !password) {
-          console.log('Error: Username or password is missing.');
-          throw new Error("Username and password are required.");
-        }
-    
-        const existingUser = await UserInfo.findOne({ username });
-        if (existingUser) {
-          console.log('Error: Username already exists.');
-          throw new Error("Username already exists.");
-        }
-    
-        console.log('Hashing password...');
-        const hashedPassword = await bcrypt.hash(password, 10);
-        console.log('Password hashed successfully.');
-    
-        const userLogin = await UserInfo.create({
-          username,
-          password: hashedPassword,
-        });
-    
-        console.log('User created successfully:', userLogin);
-    
-        const token = signToken(userLogin.username, userLogin._id);
-    
-        return { token, userLogin };
-      } catch (err) {
-        console.error("Error creating user:", err);
-        throw new Error("Error creating user.");
-      }
+    createUser: async (_parent: any, { input }: AddProfileArgs): Promise<{ token: string; profile: IUserInfo }> => {
+      const profile = await UserInfo.create({ ...input });
+      const token = signToken(profile.username, profile._id);
+      return { token, profile };
     },
     loginUser: async (
       _parent: any,
@@ -105,12 +92,12 @@ const resolvers = {
       try {
         const userLogin = await UserInfo.findOne({ username });
         if (!userLogin) {
-          throw new Error("User not found.");
+          throw AuthenticationError;
         }
 
-        const isMatch = await bcrypt.compare(password, userLogin.password);
+        const isMatch = await userLogin.isCorrectPassword(password);
         if (!isMatch) {
-          throw new Error("Invalid credentials.");
+          throw AuthenticationError;
         }
         const token = signToken(userLogin.username, userLogin._id);
         return {token, userLogin};
