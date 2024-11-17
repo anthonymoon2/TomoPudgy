@@ -7,11 +7,41 @@ export const GET_USER_INFO = gql`
       username
       password
       weight
-      height
+      feet
+      inches
       gender
       age
       recommendedCalorieCalculation
       dailyCaloricIntake
+      currentCalories
+      foodItems {
+        _id       
+        name      
+        calories  
+      }
+    }
+  }
+`;
+
+export const QUERY_ME = gql`
+  query me {
+    me {
+      _id
+      username
+      password
+      weight
+      feet
+      inches
+      gender
+      age
+      recommendedCalorieCalculation
+      dailyCaloricIntake
+      currentCalories
+      foodItems {
+        _id       
+        name      
+        calories  
+      }
     }
   }
 `;

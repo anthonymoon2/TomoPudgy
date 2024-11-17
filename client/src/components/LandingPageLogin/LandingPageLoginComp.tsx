@@ -62,6 +62,8 @@ const Login = () => {
       console.log("Login response data:", data);
   
       const token = data?.loginUser?.token; // Adjust the path based on actual response
+
+      console.log("Login Token: ", token);
       if (token) {
         Auth.login(token);
       } else {
@@ -80,10 +82,18 @@ const Login = () => {
 
     try {
       const { data } = await register({
-        variables: { ...formState },
+        variables: {input: formState },
       });
+      console.log("Token: ", data.createUser.token);
       if (data) {
         alert("Registration successful! Please log in.");
+      }
+      const token = data?.createUser?.token; // Adjust the path based on actual response
+      console.log(token);
+      if (token) {
+        Auth.login(token);
+      } else {
+        alert("Login failed: Token not found.");
       }
       navigate("/profile");
     } catch (e) {

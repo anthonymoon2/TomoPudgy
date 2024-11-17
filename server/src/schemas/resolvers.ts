@@ -1,9 +1,18 @@
-import bcrypt from 'bcryptjs';
 import UserInfo, { IUserInfo } from "../models/UserInfo.js";
 import FoodItem, { IFoodItem } from '../models/FoodItem.js';
 import { Types } from 'mongoose';
 import fetchCalorieData from '../utils/fetchCalorieData.js';
-import { signToken } from '../utils/auth.js';
+import { signToken, AuthenticationError } from '../utils/auth.js';
+
+interface AddProfileArgs{
+  input: {
+    username: string;
+    password: string;
+  }
+}
+interface Context {
+  user?: IUserInfo | null;
+}
 
 //TIED TO FOURTH STEP
 const calculateBMR = (weight: number, height: number, age: number, gender: boolean): number => {
@@ -36,6 +45,13 @@ const resolvers = {
         console.error('Error fetching user info:', error);
         return null;
       }
+    },
+    me: async (_parent: any, _args: any, context: Context): Promise<IUserInfo | null> => {
+      console.log("Context User:", context.user);
+      if (context.user) {
+        return await UserInfo.findOne({ _id: context.user._id });
+      }
+      throw new AuthenticationError('QUERY_ME: You are not authenticated');
     },
   },
 
@@ -132,6 +148,12 @@ const resolvers = {
         throw new Error("Error updating recommended calories.");
       }
     },
+<<<<<<< HEAD
+    createUser: async (_parent: any, { input }: AddProfileArgs): Promise<{ token: string; profile: IUserInfo }> => {
+      const profile = await UserInfo.create({ ...input });
+      const token = signToken(profile.username, profile._id);
+      return { token, profile };
+=======
 
     //FIFTH STEP
     addFoodItemToUser: async (_: any, { userId, foodName }: { userId: string; foodName: string; }): Promise<IFoodItem | null> => {
@@ -161,11 +183,59 @@ const resolvers = {
         console.error('Error adding food item:', error);
         return null;
       }
+>>>>>>> b0e8cc520f645e151234a90d75b1907fbef650bb
     },
     
 // SXTH & FINAL STEP: WONT WORK IF DONE OUT OF ORDER
     compareUserCalories: async (_: any, { _id }: { _id: string; }): Promise<Object | null> => {
       try {
+<<<<<<< HEAD
+        const userLogin = await UserInfo.findOne({ username });
+        if (!userLogin) {
+          throw AuthenticationError;
+        }
+
+        const isMatch = await userLogin.isCorrectPassword(password);
+        if (!isMatch) {
+          throw AuthenticationError;
+        }
+        const token = signToken(userLogin.username, userLogin._id);
+        return {token, userLogin};
+
+      } catch (err) {
+        console.error("Error logging in:", err);
+        throw new Error("Error logging in.");
+      }
+    },
+
+    addUserInfo: async (
+      _parent: any,
+      { _id, weight, age, feet, inches, gender }: { _id: string; weight: number, age: number, feet: number, inches: number, gender: boolean }
+    ): Promise<IUserInfo | null> => {
+      try {
+        const updateData = { weight, age, feet, inches, gender }
+        const updatedUserInfo = await UserInfo.findByIdAndUpdate(
+          _id,
+          updateData,
+          { new: true }
+        );
+        console.log(updatedUserInfo)
+        if (!updatedUserInfo) {
+          throw new Error("User not found.");
+        }
+        return updatedUserInfo;
+      } catch (err) {
+        console.error("Error updating UserInfo:", err);
+        throw new Error("Error updating user information.");
+      }
+    },
+
+
+    compareUserCalories: async ( _: any, { _id}: { _id: string;}): Promise<Object | null> => {
+      try {
+        //retrieving the user id from the database
+=======
+>>>>>>> b0e8cc520f645e151234a90d75b1907fbef650bb
         const user = await UserInfo.findById(_id);
         if (!user) {
           throw new Error('User not found');

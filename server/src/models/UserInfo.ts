@@ -1,5 +1,5 @@
 import { Schema, Types, model, type Document } from 'mongoose';
-
+import bcrypt from 'bcryptjs';
 export interface IUserInfo extends Document {
   _id: String;
   username: string;
@@ -13,7 +13,11 @@ export interface IUserInfo extends Document {
   dailyCaloricIntake: number;
   currentCalories: number;
   foodItems: Types.ObjectId[];
+<<<<<<< HEAD
+  isCorrectPassword(password: string): Promise<boolean>;
+=======
   isOverRecommendedCalories: boolean
+>>>>>>> b0e8cc520f645e151234a90d75b1907fbef650bb
 }
 
 const UserInfoSchema = new Schema<IUserInfo>({
@@ -59,6 +63,21 @@ const UserInfoSchema = new Schema<IUserInfo>({
     default: null
   },
 });
+
+// set up pre-save middleware to create password
+UserInfoSchema.pre<IUserInfo>('save', async function (next) {
+  if (this.isNew || this.isModified('password')) {
+    const saltRounds = 10;
+    this.password = await bcrypt.hash(this.password, saltRounds);
+  }
+
+  next();
+});
+
+// compare the incoming password with the hashed password
+UserInfoSchema.methods.isCorrectPassword = async function (password: string): Promise<boolean> {
+  return bcrypt.compare(password, this.password);
+};
 
 const UserInfo = model<IUserInfo>('UserInfo', UserInfoSchema);
 export default UserInfo; 
