@@ -34,6 +34,11 @@ class AuthService {
     return loggedUser;
   }
 
+  register(idToken: string){
+    localStorage.setItem('id_token', idToken);
+    window.location.assign('/profile');
+  }
+  
   login(idToken: string) {
     localStorage.setItem('id_token', idToken);
     window.location.assign('/me');
