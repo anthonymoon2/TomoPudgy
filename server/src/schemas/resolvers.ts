@@ -58,26 +58,10 @@ const resolvers = {
   Mutation: {
 
     //  FIRST STEP
-    createUser: async (_parent: any, { username, password }: { username: string; password: string }) => {
-      try {
-        if (!username || !password) {
-          throw new Error("Username and password are required.");
-        }
-        const existingUser = await UserInfo.findOne({ username });
-        if (existingUser) {
-          throw new Error("Username already exists.");
-        }
-        const hashedPassword = await bcrypt.hash(password, 10);
-        const userLogin = await UserInfo.create({
-          username,
-          password: hashedPassword,
-        });
-        const token = signToken(userLogin.username, userLogin._id);
-        return { token, userLogin };
-      } catch (err) {
-        console.error("Error creating user:", err);
-        throw new Error("Error creating user.");
-      }
+    createUser: async (_parent: any, { input }: AddProfileArgs): Promise<{ token: string; profile: IUserInfo }> => {
+      const profile = await UserInfo.create({ ...input });
+      const token = signToken(profile.username, profile._id);
+      return { token, profile };
     },
 
     // SECOND STEP
@@ -88,14 +72,16 @@ const resolvers = {
       try {
         const userLogin = await UserInfo.findOne({ username });
         if (!userLogin) {
-          throw new Error("User not found.");
+          throw AuthenticationError;
         }
-        const isMatch = await bcrypt.compare(password, userLogin.password);
+
+        const isMatch = await userLogin.isCorrectPassword(password);
         if (!isMatch) {
-          throw new Error("Invalid credentials.");
+          throw AuthenticationError;
         }
         const token = signToken(userLogin.username, userLogin._id);
-        return { token, userLogin };
+        return {token, userLogin};
+
       } catch (err) {
         console.error("Error logging in:", err);
         throw new Error("Error logging in.");
@@ -148,12 +134,7 @@ const resolvers = {
         throw new Error("Error updating recommended calories.");
       }
     },
-<<<<<<< HEAD
-    createUser: async (_parent: any, { input }: AddProfileArgs): Promise<{ token: string; profile: IUserInfo }> => {
-      const profile = await UserInfo.create({ ...input });
-      const token = signToken(profile.username, profile._id);
-      return { token, profile };
-=======
+    
 
     //FIFTH STEP
     addFoodItemToUser: async (_: any, { userId, foodName }: { userId: string; foodName: string; }): Promise<IFoodItem | null> => {
@@ -183,59 +164,12 @@ const resolvers = {
         console.error('Error adding food item:', error);
         return null;
       }
->>>>>>> b0e8cc520f645e151234a90d75b1907fbef650bb
     },
     
 // SXTH & FINAL STEP: WONT WORK IF DONE OUT OF ORDER
-    compareUserCalories: async (_: any, { _id }: { _id: string; }): Promise<Object | null> => {
-      try {
-<<<<<<< HEAD
-        const userLogin = await UserInfo.findOne({ username });
-        if (!userLogin) {
-          throw AuthenticationError;
-        }
-
-        const isMatch = await userLogin.isCorrectPassword(password);
-        if (!isMatch) {
-          throw AuthenticationError;
-        }
-        const token = signToken(userLogin.username, userLogin._id);
-        return {token, userLogin};
-
-      } catch (err) {
-        console.error("Error logging in:", err);
-        throw new Error("Error logging in.");
-      }
-    },
-
-    addUserInfo: async (
-      _parent: any,
-      { _id, weight, age, feet, inches, gender }: { _id: string; weight: number, age: number, feet: number, inches: number, gender: boolean }
-    ): Promise<IUserInfo | null> => {
-      try {
-        const updateData = { weight, age, feet, inches, gender }
-        const updatedUserInfo = await UserInfo.findByIdAndUpdate(
-          _id,
-          updateData,
-          { new: true }
-        );
-        console.log(updatedUserInfo)
-        if (!updatedUserInfo) {
-          throw new Error("User not found.");
-        }
-        return updatedUserInfo;
-      } catch (err) {
-        console.error("Error updating UserInfo:", err);
-        throw new Error("Error updating user information.");
-      }
-    },
-
-
     compareUserCalories: async ( _: any, { _id}: { _id: string;}): Promise<Object | null> => {
       try {
         //retrieving the user id from the database
-=======
->>>>>>> b0e8cc520f645e151234a90d75b1907fbef650bb
         const user = await UserInfo.findById(_id);
         if (!user) {
           throw new Error('User not found');

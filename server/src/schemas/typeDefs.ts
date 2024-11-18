@@ -28,13 +28,6 @@ const typeDefs = `
     currentCalories: Float  
     }
     
-<<<<<<< HEAD
-  type FoodItem {
-    name: String!
-    calories: Float!
-    _id: ID!
-  } 
-=======
 type Compare {
   result: Boolean
   currentCalories: Float
@@ -47,7 +40,6 @@ type Compare {
       calories: Float!
       _id: ID!
     } 
->>>>>>> b0e8cc520f645e151234a90d75b1907fbef650bb
 
   type Auth {
     token: String!
@@ -60,12 +52,7 @@ type Compare {
   }
 
   type Mutation {
-<<<<<<< HEAD
     createUser(input: ProfileInput!): Auth
-=======
-    createUser(username: String!, password: String!): Auth
-
->>>>>>> b0e8cc520f645e151234a90d75b1907fbef650bb
     loginUser(username: String!, password: String! ): Auth
 
     addUserInfo(

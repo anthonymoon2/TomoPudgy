@@ -14,6 +14,7 @@ export interface IUserInfo extends Document {
   currentCalories: number;
   foodItems: Types.ObjectId[];
   isOverRecommendedCalories: boolean
+  isCorrectPassword(password: string): Promise<boolean>;
 }
 
 const UserInfoSchema = new Schema<IUserInfo>({
