@@ -89,6 +89,11 @@ body {
   z-index: 1; /* Ensure it appears above the background */
 }
 
+.backgroundImg {
+  background-image: url("Pixel_Background.png");
+  opacity: 100%;
+}
+
 /* Profile Page */
 .profile-container {
   display: grid;
