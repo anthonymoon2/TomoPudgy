@@ -1,10 +1,39 @@
-import { useMutation } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { useState, type FormEvent, type ChangeEvent } from "react";
 import { UPDATE_USER } from "../utils/mutations";
+import { useParams } from 'react-router-dom';
+
+import Auth from '../utils/auth';
+import { GET_USER_INFO, QUERY_ME } from '../utils/queries';
 
 const Profile = () => {
     const [formState, setFormState] = useState({ weight: "", feet: "", inches: "", age: "", gender: ""});
     const [updateUser] = useMutation(UPDATE_USER);
+
+    // get user data
+    const { profileId } = useParams();
+    console.log('User profile:', Auth.getProfile());
+
+    const { loading, data, error } = useQuery(
+        profileId ? GET_USER_INFO : QUERY_ME,
+        { variables: { profileId: profileId } }
+    );
+    
+    const profile = data?.me || data?.getUserInfo || {};
+    const profileIdString = profile._id;
+    console.log(`PROFILE ID: ${profile._id}`);
+    console.log(`PROFILE NAME: ${profile.username}`);
+    
+    // Handle error case
+    if (error) {
+        console.error('Error fetching data:', error);
+        return <div>Error fetching data...</div>;
+    }
+    // Handle loading state
+    if (loading) {
+        console.log('Loading...');  // Added log to check if we're still in the loading state
+        return <div>Loading...</div>;
+    }
 
     const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = event.target;
@@ -12,14 +41,26 @@ const Profile = () => {
           ...formState,
           [name]: value,
         });
+
+        console.log()
     };
 
     const handleFormSubmit = async (event: FormEvent) => {
         event.preventDefault();
         try {
+            // call mutation and pass in form values
             await updateUser({
-                variables: { ...formState },
+                variables: { 
+                    id: profileIdString, 
+                    weight: parseFloat(formState.weight) || null, 
+                    feet: parseInt(formState.feet) || null, 
+                    inches: parseInt(formState.inches) || null, 
+                    gender: formState.gender === "true", 
+                    age: parseInt(formState.age) || null
+                },
             })
+
+            console.log("User updated successfully")
         } catch (e) {
             console.error(e);
         }
@@ -30,7 +71,8 @@ const Profile = () => {
         <div className="profile-container">
             <div className="profile-container-left-outer">
                 <div className="profile-container-left">
-                    User's Pudgy
+                    <h1>{profile.username}'s Pudgy</h1>
+
                     <div className="profile-container-left-avatar">
                         <img src="/figure1.gif" className="figure-gif"></img>
                     </div>
@@ -50,8 +92,8 @@ const Profile = () => {
                             <option value="" disabled>
                                 Select Gender
                             </option>
-                            <option value="male">Male</option>
-                            <option value="female">Female</option>
+                            <option value="true">Male</option>
+                            <option value="false">Female</option>
                         </select>
 
                         Height
@@ -72,7 +114,8 @@ const Profile = () => {
                                 <option value="" disabled>
                                     Select inches
                                 </option>
-                                <option value="2">1"</option>
+                                <option value="0">0"</option>
+                                <option value="1">1"</option>
                                 <option value="2">2"</option>
                                 <option value="3">3"</option>
                                 <option value="4">4"</option>

@@ -25,15 +25,14 @@ export const LOGIN_USER = gql`
 `;
 
 export const UPDATE_USER = gql`
-  mutation UpdateUser($weight: Integer!, $height: Integer!, $age: Integer!, $gender: String!) {
-    updateUser(weight: $weight, height: $height, age: $age, gender: $gender) {
-      token
-      user {
-        weight
-        height
-        age
-        gender
-      }
+  mutation Mutation($id: ID!, $weight: Float, $feet: Int, $inches: Int, $gender: Boolean, $age: Int) {
+    addUserInfo(_id: $id, weight: $weight, feet: $feet, inches: $inches, gender: $gender, age: $age) {
+      _id
+      weight
+      feet
+      inches
+      gender
+      age
     }
   }
 `
