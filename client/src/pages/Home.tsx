@@ -4,6 +4,8 @@ import Auth from '../utils/auth';
 import { useState, type ChangeEvent } from "react";
 import {  QUERY_ME } from '../utils/queries';
 
+import "../styles/App.css"
+
 // import Meal from "../components/Meal/Meal";
 
 const Home = () => {
@@ -68,7 +70,7 @@ const Home = () => {
     return (
         <div className="grid grid-cols-[2fr_1fr] gap-[50px] m-[0px_50px] h-[500px] minecraftFont">
             <div className="bg-black p-[2px] rounded-[10px]">
-                <div className="h-[500px] bg-customBeige border-[6px] border-solid border-amber-400 rounded-[10px]">
+                <div className="backgroundImg h-[500px] bg-customBeige border-[6px] border-solid border-amber-400 rounded-[10px]">
                     <div>
                         <AnimatedGifComponent />
                     </div>
