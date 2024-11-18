@@ -1,27 +1,29 @@
 import AnimatedGifComponent from "../components/SpriteAnimation";
-import { Navigate, useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import Auth from '../utils/auth';
-import { useState, type FormEvent, type ChangeEvent } from "react";
-import { GET_USER_INFO, QUERY_ME } from '../utils/queries';
+import { useState, type ChangeEvent } from "react";
+import {  QUERY_ME } from '../utils/queries';
 
 // import Meal from "../components/Meal/Meal";
 
 const Home = () => {
+    const [formState, setFormState] = useState({ meal: "" });
 
-    const { profileId } = useParams();
+    const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+        const { name, value } = event.target;
+        setFormState({
+            ...formState,
+            [name]: value,
+        });
+    };
 
     // Debugging: Log the logged-in user profile
     console.log('User profile:', Auth.getProfile());
 
     // Check if profileId is provided in the URL or if we need to use the logged-in user's data
-    const { loading, data, error } = useQuery(
-        profileId ? GET_USER_INFO : QUERY_ME,
-        { variables: { profileId: profileId } }
-    );
+    const { loading, data, error } = useQuery(QUERY_ME);
 
     // Debugging: Log data being fetched and the query in use
-    console.log("Current query:", profileId ? 'GET_USER_INFO' : 'QUERY_ME');
     console.log("Data fetched:", data);
     console.log("Error fetching data:", error);
 
@@ -38,19 +40,13 @@ const Home = () => {
     }
 
     // Debugging: Check if profile data is available
-    const profile = data?.me || data?.getUserInfo || {};
+    const profile = data?.me || {};
     console.log("Profile data:", profile);
-<<<<<<< HEAD
     console.log("User Id: ", profile._id);
-=======
     console.log(`PROFILE ID${profile._id}`);
->>>>>>> a302f9029252679d7594b47e4f3f30d8442f7ec9
 
-    // Check if the logged-in user's profile is the same as the requested profile
-    if (Auth.loggedIn() && Auth.getProfile().data.id === profileId) {
-        console.log("Success - Redirecting");
-        return <Navigate to="/me" />;
-    }
+
+    console.log('success');
 
     // Handle the case where there is no profile username
     if (!profile?.username) {
@@ -67,15 +63,7 @@ const Home = () => {
     console.log('Rendering Home component with profile:', profile);
 
     // Set up form state and form handling
-    const [formState, setFormState] = useState({ meal: "" });
 
-    const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-        const { name, value } = event.target;
-        setFormState({
-            ...formState,
-            [name]: value,
-        });
-    };
 
     return (
         <div className="grid grid-cols-[2fr_1fr] gap-[50px] m-[0px_50px] h-[500px] minecraftFont">
