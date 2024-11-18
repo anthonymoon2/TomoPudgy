@@ -40,7 +40,11 @@ const Home = () => {
     // Debugging: Check if profile data is available
     const profile = data?.me || data?.getUserInfo || {};
     console.log("Profile data:", profile);
+<<<<<<< HEAD
     console.log("User Id: ", profile._id);
+=======
+    console.log(`PROFILE ID${profile._id}`);
+>>>>>>> a302f9029252679d7594b47e4f3f30d8442f7ec9
 
     // Check if the logged-in user's profile is the same as the requested profile
     if (Auth.loggedIn() && Auth.getProfile().data.id === profileId) {
