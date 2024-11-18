@@ -91,7 +91,7 @@ const Login = () => {
       const token = data?.createUser?.token; // Adjust the path based on actual response
       console.log(token);
       if (token) {
-        Auth.login(token);
+        Auth.register(token);
       } else {
         alert("Login failed: Token not found.");
       }
