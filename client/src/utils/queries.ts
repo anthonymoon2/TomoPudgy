@@ -12,6 +12,7 @@ export const GET_USER_INFO = gql`
       age
       recommendedCalorieCalculation
       currentCalories
+      isOverRecommendedCalories
       foodItems {
         _id       
         name      
@@ -33,6 +34,7 @@ export const QUERY_ME = gql`
       age
       recommendedCalorieCalculation
       currentCalories
+      isOverRecommendedCalories
       foodItems {
         _id       
         name      
