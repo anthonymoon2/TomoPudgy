@@ -1,6 +1,19 @@
-.animated-gif {
-    width: 200px; /* Adjust this to your desired size */
-    height: auto; /* Maintains the aspect ratio */
-}
+/* index.css */
 
+/* Style for the container div */
+.animated-gif-container {
+    position: relative;
+    width: 400px; /* Set desired container width */
+    height: 400px; /* Set desired container height */
+    border: 1px solid black; /* Optional: Visualize the container */
+    overflow: hidden; /* Ensure GIF doesn't go outside the container */
+    background-color: #f8f8f8; /* Optional: Background color */
+  }
+  
+  /* Style for the GIF */
+  .animated-gif {
+    position: absolute;
+    width: 200px; /* Set desired width for the GIF */
+    height: 200px; /* Set desired height for the GIF */
+  }
   
