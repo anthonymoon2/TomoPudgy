@@ -1,12 +1,16 @@
 import AnimatedGifComponent from "../components/SpriteAnimation";
-import { useQuery } from '@apollo/client';
+import { useQuery, useMutation } from '@apollo/client';
 import Auth from '../utils/auth';
-import { useState, type ChangeEvent } from "react";
+import { useState, type ChangeEvent, FormEvent } from "react";
 import {  QUERY_ME } from '../utils/queries';
+import { ADD_USER_MEAL } from "../utils/mutations";
 
 // import Meal from "../components/Meal/Meal";
 
 const Home = () => {
+    // mutation for adding meal to user meal array
+    const [addUserMeal] = useMutation(ADD_USER_MEAL);
+
     const [formState, setFormState] = useState({ meal: "" });
 
     const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -27,26 +31,21 @@ const Home = () => {
     console.log("Data fetched:", data);
     console.log("Error fetching data:", error);
 
+    //console.log(`MEALS: `, data?.me?.foodItems?.[0]);
+
     // Handle error case
     if (error) {
         console.error('Error fetching data:', error);
-        return <div>Error fetching data...</div>;
-    }
-
+        return <div>Error fetching data.. </div>;
+    }3
     // Handle loading state
     if (loading) {
         console.log('Loading...');  // Added log to check if we're still in the loading state
         return <div>Loading...</div>;
     }
 
-    // Debugging: Check if profile data is available
+    // add profile id to variable
     const profile = data?.me || {};
-    console.log("Profile data:", profile);
-    console.log("User Id: ", profile._id);
-    console.log(`PROFILE ID${profile._id}`);
-
-
-    console.log('success');
 
     // Handle the case where there is no profile username
     if (!profile?.username) {
@@ -59,11 +58,27 @@ const Home = () => {
         );
     }
 
-    // Debugging: Log rendering state
-    console.log('Rendering Home component with profile:', profile);
+    const profileIdString = profile._id;
+    console.log(`PROFILE ID: ${profileIdString}`);
 
     // Set up form state and form handling
+    const handleFormSubmit = async (event: FormEvent) => {
+        event.preventDefault();
+        try {
+            // call mutation and pass in form values
+            await addUserMeal({
+                variables: { 
+                    userId: profileIdString, 
+                    foodName: formState.meal
+                },
+            })
 
+            console.log("Meal added successfully")
+        } catch (e) {
+            console.error(e);
+        }
+        setFormState({ meal: "" });
+    }
 
     return (
         <div className="grid grid-cols-[2fr_1fr] gap-[50px] m-[0px_50px] h-[500px] minecraftFont">
@@ -94,6 +109,7 @@ const Home = () => {
 
                             <button
                                 className="mt-[20px] bg-white p-[4px] hover:bg-neutral-200 rounded-[10px] border-[2px] border-solid border-black"
+                                onClick={handleFormSubmit}
                             >
                                 Submit
                             </button>

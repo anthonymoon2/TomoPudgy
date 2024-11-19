@@ -35,4 +35,13 @@ export const UPDATE_USER = gql`
       age
     }
   }
-`
+`;
+
+export const ADD_USER_MEAL = gql`
+  mutation Mutation($userId: String!, $foodName: String!) {
+    addFoodItemToUser(userId: $userId, foodName: $foodName) {
+      _id
+      name
+    }
+  }
+`;
