@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useLazyQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import { QUERY_ME } from "../../utils/queries"; // Adjusted import path for QUERY_ME
 import "./index.css";
 
 interface AnimatedGifComponentProps {
   containerRef: React.RefObject<HTMLDivElement>;
+  isOverRecommendedCalories: boolean | null;
 }
 
-const AnimatedGifComponent: React.FC<AnimatedGifComponentProps> = ({ containerRef }) => {
+const AnimatedGifComponent: React.FC<AnimatedGifComponentProps> = ({ containerRef, isOverRecommendedCalories}) => {
   const gifRef = useRef<HTMLImageElement>(null); // Ref for the GIF
   const [position, setPosition] = useState({ x: 0, y: 0 }); // Current position
   const [direction, setDirection] = useState({ x: "right", y: "down" }); // Current direction
@@ -21,13 +22,8 @@ const AnimatedGifComponent: React.FC<AnimatedGifComponentProps> = ({ containerRe
   const maxPauseTime = 7000; // Maximum pause duration (ms)
 
   // Lazy query to fetch the latest data
-  const [fetchData, { data, loading, error }] = useLazyQuery(QUERY_ME);
+  const { data, error } = useQuery(QUERY_ME);
 
-  // Function to handle the button click and update the calorie state
-  const handleFetchCalories = () => {
-    fetchData();
-    setQueryTimestamp(Date.now()); // Update timestamp to force state re-evaluation
-  };
 
   // Function to reset the displayed status without overriding query data
   const handleResetCalories = () => {
@@ -42,8 +38,8 @@ const AnimatedGifComponent: React.FC<AnimatedGifComponentProps> = ({ containerRe
     }, minPauseTime);
 
 
-    if (data?.me?.isOverRecommendedCalories !== undefined) {
-      setDisplayedCaloriesStatus(data.me.isOverRecommendedCalories); // Sync query result to display state
+    if (isOverRecommendedCalories !== undefined) {
+      setDisplayedCaloriesStatus(isOverRecommendedCalories); // Sync query result to display state
     }
     return () => clearTimeout(initialPauseTimeout);
   }, [data, queryTimestamp]);
@@ -182,9 +178,6 @@ const AnimatedGifComponent: React.FC<AnimatedGifComponentProps> = ({ containerRe
   return (
     <div>
       <div style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
-        <button onClick={handleFetchCalories} disabled={loading}>
-          {loading ? "Loading..." : "Check Calorie Status"}
-        </button>
         <button onClick={handleResetCalories}>Reset Status</button>
       </div>
       {error && <p>Error fetching data: {error.message}</p>}

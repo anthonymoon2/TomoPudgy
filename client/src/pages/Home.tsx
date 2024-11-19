@@ -99,8 +99,10 @@ const Home = () => {
 
   const foodItems = data?.me?.foodItems || [];
 
-  console.log(JSON.stringify(profile.isOverRecommendedCalories));
+  const isOverRecommendedCalories = profile.isOverRecommendedCalories;
 
+  console.log(JSON.stringify(profile.isOverRecommendedCalories));
+  
   return (
     <div className="container-overlap grid grid-cols-[2fr_1fr] gap-[50px] m-[0px_50px] h-[500px] minecraftFont">
       <div className="bg-black p-[2px] rounded-[10px]">
@@ -108,7 +110,7 @@ const Home = () => {
           ref={containerRef}
           className="h-[500px] bg-customBeige border-[6px] border-solid border-amber-400 rounded-[10px] backgroundImg"
         >
-          <AnimatedGifComponent containerRef={containerRef} />
+          <AnimatedGifComponent containerRef={containerRef} isOverRecommendedCalories={isOverRecommendedCalories}  />
         </div>
       </div>
 
