@@ -31,8 +31,8 @@ type Compare {
 
       
     type FoodItem {
-      name: String!
-      calories: Float!
+      name: String
+      calories: Float
       _id: ID!
     } 
 

@@ -21,6 +21,7 @@ const Profile = () => {
     
     const profile = data?.me || data?.getUserInfo || {};
     const profileIdString = profile._id;
+    console.log("PROFILE: ", profile);
     console.log(`PROFILE ID: ${profile._id}`);
     console.log(`PROFILE NAME: ${profile.username}`);
     

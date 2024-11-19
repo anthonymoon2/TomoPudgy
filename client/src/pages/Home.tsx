@@ -20,6 +20,8 @@ const Home = () => {
 
   const { loading, data, error } = useQuery(QUERY_ME);
 
+  console.log(data);
+
   if (error) return <div>Error fetching data...</div>;
   if (loading) return <div>Loading...</div>;
 
