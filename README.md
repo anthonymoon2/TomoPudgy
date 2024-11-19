@@ -1,7 +1,7 @@
 # tomogachi-diet-tracker
 
 ## Description
-Our TamaPudgy is a full-stack MERN (MongoDB, Express, React, Node.js) application providing an intuitive platform for users that is designed to help their track their daily food intake and calorie consumption. We utilized CalorieNinjas API that allows users to obtain calorie data for every food items input. TamaPudgy is a useful tool for anyone trying to better manage their diet because it allows users to quickly receive precise calorie and nutritional information for almost any food item they enter. 
+Our TamaPudgy is a full-stack MERN (MongoDB, Express, React, Node.js) application providing an intuitive platform for users that is designed to help their track their daily food intake and calorie consumption. We utilized [CalorieNinjas API](https://calorieninjas.com/) that allows users to obtain calorie data for every food items input. TamaPudgy is a useful tool for anyone trying to better manage their diet because it allows users to quickly receive precise calorie and nutritional information for almost any food item they enter. 
 
 The app features a playful virtual pet avatar whose weight reflects the user's calorie intake. If you consume more calories than is advised, your pet avatar will gain weight and if you consume less calories than advised, your pet avatar will lose weight. In a fun and interesting approach, this dynamic feedback system assists users in maintaining their diet.
 
@@ -14,14 +14,13 @@ The app features a playful virtual pet avatar whose weight reflects the user's c
 - [Screenshots](#screenshots)
 - [License](#license)
 - [Badge](#badge)
-- [](#)
 
 ## Features
 * Track Food Items: Add food items and view calorie information in real-time.
 * Daily Intake Summary: Automatically calculate and display the total daily calories.
 * Custom Recommendations: Compare your daily calorie intake to recommended values.
 * GraphQL API Integration: Simplified data querying for efficient communication between front-end and back-end.
-* Third-Party API: Leverages the CalorieNinjas API to fetch nutritional data for food items.
+* Third-Party API: Leverages the [CalorieNinjas API](https://calorieninjas.com/) to fetch nutritional data for food items.
 
 ## Usage
 - Add food items using the search bar.
@@ -43,7 +42,7 @@ Back-End:
 * Express.js
 * Apollo Server
 * MongoDB (via Mongoose)
-* CalorieNinjas API
+* [CalorieNinjas API](https://calorieninjas.com/)
 
 ## Installation Steps
 1. Clone the repository:
