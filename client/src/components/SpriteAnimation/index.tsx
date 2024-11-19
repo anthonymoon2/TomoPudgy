@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useLazyQuery } from "@apollo/client";
+import { QUERY_ME } from "../../utils/queries"; // Adjusted import path for QUERY_ME
 import "./index.css";
 
 interface AnimatedGifComponentProps {
@@ -9,15 +11,37 @@ const AnimatedGifComponent: React.FC<AnimatedGifComponentProps> = ({ containerRe
   const gifRef = useRef<HTMLImageElement>(null); // Ref for the GIF
   const [position, setPosition] = useState({ x: 0, y: 0 }); // Current position
   const [direction, setDirection] = useState({ x: "right", y: "down" }); // Current direction
-  const [gifSource, setGifSource] = useState("spriteMoveRight.gif"); // Current GIF source
+  const [gifSource, setGifSource] = useState("spriteMoveRight.gif"); // Default GIF source
   const [isMoving, setIsMoving] = useState(true); // Movement state
-  const moveSpeed = 1; // Speed of movement
+  const [displayedCaloriesStatus, setDisplayedCaloriesStatus] = useState<null | boolean>(null); // Display state for the calorie status
+  const [queryTimestamp, setQueryTimestamp] = useState<number | null>(null); // Forces re-render on query
 
   const pauseProbability = 0.0025; // Chance of pausing
-  const minPauseTime = 2000; // Minimum pause duration (ms)
-  const maxPauseTime = 5000; // Maximum pause duration (ms)
+  const minPauseTime = 5000; // Minimum pause duration (ms)
+  const maxPauseTime = 7000; // Maximum pause duration (ms)
 
-  // Function to generate random direction
+  // Lazy query to fetch the latest data
+  const [fetchData, { data, loading, error }] = useLazyQuery(QUERY_ME);
+
+  // Function to handle the button click and update the calorie state
+  const handleFetchCalories = () => {
+    fetchData();
+    setQueryTimestamp(Date.now()); // Update timestamp to force state re-evaluation
+  };
+
+  // Function to reset the displayed status without overriding query data
+  const handleResetCalories = () => {
+    setDisplayedCaloriesStatus(null); // Reset visible state to default
+    setQueryTimestamp(null); // Clear timestamp to reset visuals
+  };
+
+  // Update displayed state based on query result
+  useEffect(() => {
+    if (data?.me?.isOverRecommendedCalories !== undefined) {
+      setDisplayedCaloriesStatus(data.me.isOverRecommendedCalories); // Sync query result to display state
+    }
+  }, [data, queryTimestamp]);
+
   const getRandomDirection = () => ({
     x: Math.random() < 0.5 ? "left" : "right",
     y: Math.random() < 0.5 ? "up" : "down",
@@ -30,6 +54,12 @@ const AnimatedGifComponent: React.FC<AnimatedGifComponentProps> = ({ containerRe
       const containerWidth = containerRef.current.offsetWidth; // Container width
       const containerHeight = containerRef.current.offsetHeight; // Container height
 
+      const moveSpeed = displayedCaloriesStatus === true
+        ? 0.5 // Fat movement speed
+        : displayedCaloriesStatus === false
+        ? 1.5 // Skinny movement speed
+        : 1; // Default movement speed
+
       setPosition((prevPosition) => {
         let { x, y } = prevPosition;
 
@@ -38,14 +68,26 @@ const AnimatedGifComponent: React.FC<AnimatedGifComponentProps> = ({ containerRe
           x += moveSpeed;
           if (x >= containerWidth - gifWidth) {
             setDirection((prev) => ({ ...prev, x: "left" }));
-            setGifSource("spriteMoveLeft.gif");
+            setGifSource(
+              displayedCaloriesStatus === true
+                ? "fatSpriteLeftMovement.gif"
+                : displayedCaloriesStatus === false
+                ? "skinnySpriteLeftMovement.gif"
+                : "spriteMoveLeft.gif"
+            );
             x = containerWidth - gifWidth;
           }
         } else {
           x -= moveSpeed;
           if (x <= 0) {
             setDirection((prev) => ({ ...prev, x: "right" }));
-            setGifSource("spriteMoveRight.gif");
+            setGifSource(
+              displayedCaloriesStatus === true
+                ? "fatSpriteRightMovement.gif"
+                : displayedCaloriesStatus === false
+                ? "skinnySpriteRightMovement.gif"
+                : "spriteMoveRight.gif"
+            );
             x = 0;
           }
         }
@@ -74,8 +116,20 @@ const AnimatedGifComponent: React.FC<AnimatedGifComponentProps> = ({ containerRe
     if (Math.random() < pauseProbability) {
       setIsMoving(false); // Pause movement
 
-      // Set paused sprite based on current direction
-      setGifSource(direction.x === "right" ? "spriteRight.gif" : "sprite.gif");
+      // Set paused sprite based on current direction and calorie state
+      setGifSource(
+        direction.x === "right"
+          ? displayedCaloriesStatus === true
+            ? "spriteRightFat.gif"
+            : displayedCaloriesStatus === false
+            ? "spriteSkinnyRight.gif" 
+            : "spriteRight.gif"
+          : displayedCaloriesStatus === true
+          ? "spriteLeftFat.gif"
+          : displayedCaloriesStatus === false
+          ? "spriteSkinnyLeft.gif"
+          : "sprite.gif"
+      );
 
       const pauseTime = Math.floor(Math.random() * (maxPauseTime - minPauseTime + 1)) + minPauseTime;
 
@@ -83,8 +137,20 @@ const AnimatedGifComponent: React.FC<AnimatedGifComponentProps> = ({ containerRe
         const newDirection = getRandomDirection();
         setDirection(newDirection); // Set new random direction
 
-        // Set the movement sprite based on new direction
-        setGifSource(newDirection.x === "right" ? "spriteMoveRight.gif" : "spriteMoveLeft.gif");
+        // Set the movement sprite based on new direction and calorie state
+        setGifSource(
+          newDirection.x === "right"
+            ? displayedCaloriesStatus === true
+              ? "fatSpriteRightMovement.gif"
+              : displayedCaloriesStatus === false
+              ? "skinnySpriteRightMovement.gif"
+              : "spriteMoveRight.gif"
+            : displayedCaloriesStatus === true
+            ? "fatSpriteLeftMovement.gif"
+            : displayedCaloriesStatus === false
+            ? "skinnySpriteLeftMovement.gif"
+            : "spriteMoveLeft.gif"
+        );
 
         setIsMoving(true); // Resume movement
       }, pauseTime);
@@ -103,19 +169,56 @@ const AnimatedGifComponent: React.FC<AnimatedGifComponentProps> = ({ containerRe
     updatePosition();
 
     return () => cancelAnimationFrame(animationFrameId); // Cleanup on unmount
-  }, [direction, isMoving]);
+  }, [direction, isMoving, displayedCaloriesStatus]);
 
   return (
-    <img
-      ref={gifRef}
-      src={gifSource}
-      alt="Animated GIF"
-      className="animated-gif"
-      style={{
-        transform: `translate(${position.x}px, ${position.y}px)`,
-      }}
-    />
-  );
+    <div>
+      <div style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
+        <button onClick={handleFetchCalories} disabled={loading}>
+          {loading ? "Loading..." : "Check Calorie Status"}
+        </button>
+        <button onClick={handleResetCalories}>Reset Status</button>
+      </div>
+      {error && <p>Error fetching data: {error.message}</p>}
+      <img
+        ref={gifRef}
+        src={gifSource}
+        alt="Animated GIF"
+        className="animated-gif"
+        style={{
+          transform: `translate(${position.x}px, ${position.y}px)`,
+        }}
+      />
+  
+      {/* Speech Bubble for Right Direction */}
+      {!isMoving && direction.x === "right" && (
+        <img
+          src="speech_bubble_right.png"
+          alt="Speech Bubble"
+          className="speech-bubble"
+          style={{
+            position: "absolute",
+            top: position.y + 160, // Position the bubble above the GIF
+            left: position.x + 170, // Center the bubble horizontally relative to the GIF
+          }}
+        />
+      )}
+  
+      {/* Speech Bubble for Left Direction */}
+      {!isMoving && direction.x === "left" && (
+        <img
+          src="speech_bubble_left.png"
+          alt="Speech Bubble"
+          className="speech-bubble"
+          style={{
+            position: "absolute",
+            top: position.y + 160, // Position the bubble above the GIF
+            left: position.x - 40, // Adjust the bubble position to the left of the GIF
+          }}
+        />
+      )}
+    </div>
+  );  
 };
 
 export default AnimatedGifComponent;
