@@ -11,41 +11,35 @@ const typeDefs = `
   type UserInfo {
     _id: ID!
     username: String!
-    password: String!
     weight: Float
     feet: Int
     inches: Int
     gender: Boolean
     age: Int
     recommendedCalorieCalculation: Float
-    dailyCaloricIntake: Float
     currentCalories: Float
+    isOverRecommendedCalories: Boolean
     foodItems: [FoodItem!]!
   }
-  
+      
   type Compare {
     result: Boolean
-    currentCalories: Float  
-    }
-    
-type Compare {
-  result: Boolean
-  currentCalories: Float
-  weight: Float
-}
+    currentCalories: Float
+    weight: Float
+  }
 
-      
-    type FoodItem {
-      name: String!
-      calories: Float!
-      _id: ID!
-    } 
+        
+  type FoodItem {
+    name: String!
+    calories: Float!
+    _id: ID!
+  } 
 
   type Auth {
     token: String!
     userLogin: UserInfo
   }
-  
+    
   input ProfileInput {
     username: String!
     password: String!
@@ -62,10 +56,10 @@ type Compare {
       inches: Int,
       gender: Boolean,
       age: Int
-    ): UserInfo
-    recommendedCalorieCalculation(_id: ID!): Float
-      compareUserCalories(_id: String!): Compare
-      addFoodItemToUser(userId: String!, foodName: String!): FoodItem
+      ): UserInfo
+      recommendedCalorieCalculation(_id: ID!): Float
+        compareUserCalories(_id: String!): Compare
+        addFoodItemToUser(userId: String!, foodName: String!): FoodItem
 
   }
 `;

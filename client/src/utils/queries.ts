@@ -5,15 +5,14 @@ export const GET_USER_INFO = gql`
     getUserInfo(_id: $id) {
       _id
       username
-      password
       weight
       feet
       inches
       gender
       age
       recommendedCalorieCalculation
-      dailyCaloricIntake
       currentCalories
+      isOverRecommendedCalories
       foodItems {
         _id       
         name      
@@ -28,20 +27,18 @@ export const QUERY_ME = gql`
     me {
       _id
       username
-      password
       weight
       feet
       inches
       gender
       age
       recommendedCalorieCalculation
-      dailyCaloricIntake
       currentCalories
+      isOverRecommendedCalories
       foodItems {
         _id       
         name      
         calories  
-      }
     }
   }
 `;
