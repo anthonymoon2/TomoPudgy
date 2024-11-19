@@ -10,7 +10,12 @@ import { CALCULATE_RECOMMENDED_CALORIES } from "../utils/mutations";
 const Profile = () => {
     const [formState, setFormState] = useState({ weight: "", feet: "", inches: "", age: "", gender: ""});
     const [updateUser] = useMutation(UPDATE_USER);
-    const [calculateRecomendedCalories] = useMutation(CALCULATE_RECOMMENDED_CALORIES);
+    const [calculateRecomendedCalories] = useMutation(CALCULATE_RECOMMENDED_CALORIES, {
+        refetchQueries: [
+            { query: GET_USER_INFO },
+            { query: QUERY_ME }
+        ],
+    });
     // get user data
     const { profileId } = useParams();
     console.log('User profile:', Auth.getProfile());
