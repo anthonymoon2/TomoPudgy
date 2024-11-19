@@ -1,7 +1,7 @@
-# tomogachi-diet-tracker
+# TomoPudgy-Diet-Tracker
 
 ## Description
-Our TamaPudgy is a full-stack MERN (MongoDB, Express, React, Node.js) application providing an intuitive platform for users that is designed to help their track their daily food intake and calorie consumption. We utilized CalorieNinjas API that allows users to obtain calorie data for every food items input. TamaPudgy is a useful tool for anyone trying to better manage their diet because it allows users to quickly receive precise calorie and nutritional information for almost any food item they enter. 
+Our TamaPudgy is a full-stack MERN (MongoDB, Express, React, Node.js) application providing an intuitive platform for users that is designed to help their track their daily food intake and calorie consumption. We utilized [CalorieNinjas API](https://calorieninjas.com/) that allows users to obtain calorie data for every food items input. TamaPudgy is a useful tool for anyone trying to better manage their diet because it allows users to quickly receive precise calorie and nutritional information for almost any food item they enter. 
 
 The app features a playful virtual pet avatar whose weight reflects the user's calorie intake. If you consume more calories than is advised, your pet avatar will gain weight and if you consume less calories than advised, your pet avatar will lose weight. In a fun and interesting approach, this dynamic feedback system assists users in maintaining their diet.
 
@@ -13,20 +13,20 @@ The app features a playful virtual pet avatar whose weight reflects the user's c
 - [Contributors](#contributors)
 - [Screenshots](#screenshots)
 - [License](#license)
+- [Moving Forward](#moving-forward)
 - [Badge](#badge)
-- [](#)
 
 ## Features
 * Track Food Items: Add food items and view calorie information in real-time.
 * Daily Intake Summary: Automatically calculate and display the total daily calories.
 * Custom Recommendations: Compare your daily calorie intake to recommended values.
 * GraphQL API Integration: Simplified data querying for efficient communication between front-end and back-end.
-* Third-Party API: Leverages the CalorieNinjas API to fetch nutritional data for food items.
+* Third-Party API: Leverages the [CalorieNinjas API](https://calorieninjas.com/) to fetch nutritional data for food items.
 
 ## Usage
 - Add food items using the search bar.
 - View daily calorie totals and recommendations on your dashboard.
-- Monitor your virtual pet's weight as it reacts to your calorie intake.
+- Monitor your virtual pet's weight as it reflect to your calorie intake.
 
 ## Technologies Used
 Front-End:
@@ -43,7 +43,7 @@ Back-End:
 * Express.js
 * Apollo Server
 * MongoDB (via Mongoose)
-* CalorieNinjas API
+* [CalorieNinjas API](https://calorieninjas.com/)
 
 ## Installation Steps
 1. Clone the repository:
@@ -89,6 +89,7 @@ Back-End:
 ### Profile Page
 ![alt text](./assets/Profile%20Page.PNG)
 
+
 ## License
 This project is licensed under the [MIT License](<![License](https://opensource.org/licenses/MIT)>).
 (Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including
@@ -97,5 +98,12 @@ without limitation the rights to use, copy, modify, merge, publish, distribute, 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.)
 
+
 ## Badge
 ![License](https://img.shields.io/badge/License-MIT-yellow.svg)
+
+## Moving Forward
+### As we continue to improve TamaPudgy, we have exciting features and enhancements planned for future releases. Some of these include:
+    Meal Suggestions: Implementing meal recommendations tailored to user's dietary preferences and goals.
+    
+    Diet Journal: A feature where users can track their meal and calorie history, view past logs, and monitor their progress over time. As this will improve the user's eating habits and make adjustments to improve their diet.
