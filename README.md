@@ -1,4 +1,4 @@
-# tomogachi-diet-tracker
+# TomoPudgy-Diet-Tracker
 
 ## Description
 Our TamaPudgy is a full-stack MERN (MongoDB, Express, React, Node.js) application providing an intuitive platform for users that is designed to help their track their daily food intake and calorie consumption. We utilized [CalorieNinjas API](https://calorieninjas.com/) that allows users to obtain calorie data for every food items input. TamaPudgy is a useful tool for anyone trying to better manage their diet because it allows users to quickly receive precise calorie and nutritional information for almost any food item they enter. 
