@@ -90,8 +90,8 @@ body {
 }
 
 .backgroundImg {
-  background-image: url("Pixel_Background.png");
-  opacity: 100%;
+  background-image: url("../../public/Pixel_Background.png");
+  opacity: 75%;
 }
 
 /* Profile Page */
