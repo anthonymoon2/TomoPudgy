@@ -91,7 +91,7 @@ const Login = () => {
       const token = data?.createUser?.token; // Adjust the path based on actual response
       console.log(token);
       if (token) {
-        Auth.login(token);
+        Auth.register(token);
       } else {
         alert("Login failed: Token not found.");
       }
@@ -123,8 +123,6 @@ const Login = () => {
                   onChange={handleChange}
                   required
                   className={`mb-4 p-2 border rounded ${currentFocus === 0 ? "border-purple-500 ring-2 ring-purple-500" : "border-gray-300"}`}
-                  tabIndex={-1}
-                  disabled={currentFocus !== 0}
                 />
                 <input
                   ref={inputRefs[1]}
@@ -135,8 +133,6 @@ const Login = () => {
                   onChange={handleChange}
                   required
                   className={`mb-4 p-2 border rounded ${currentFocus === 1 ? "border-purple-500 ring-2 ring-purple-500" : "border-gray-300"}`}
-                  tabIndex={-1}
-                  disabled={currentFocus !== 1}
                 />
                 <div className="flex justify-between">
                   <button
@@ -144,8 +140,6 @@ const Login = () => {
                     type="button"
                     onClick={handleRegisterSubmit}
                     className={`bg-blue-500 text-white font-bold py-2 px-4 rounded ${currentFocus === 2 ? "border-purple-500 ring-4 ring-purple-500" : "border-gray-300"}`}
-                    tabIndex={-1}
-                    disabled={currentFocus !== 2}
                   >
                     Register
                   </button>
@@ -154,8 +148,6 @@ const Login = () => {
                     type="button"
                     onClick={handleLoginSubmit}
                     className={`bg-green-500 text-white font-bold py-2 px-4 rounded ${currentFocus === 3 ? "border-purple-500 ring-4 ring-purple-500" : "border-gray-300"}`}
-                    tabIndex={-1}
-                    disabled={currentFocus !== 3}
                   >
                     Login
                   </button>

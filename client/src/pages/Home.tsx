@@ -1,35 +1,29 @@
+import { useRef } from "react";
 import AnimatedGifComponent from "../components/SpriteAnimation";
 import { useQuery, useMutation } from '@apollo/client';
-import Auth from '../utils/auth';
 import { useState, type ChangeEvent, FormEvent } from "react";
-import {  QUERY_ME } from '../utils/queries';
 import { ADD_USER_MEAL } from "../utils/mutations";
+import { QUERY_ME } from "../utils/queries";
 
-// import Meal from "../components/Meal/Meal";
 
 const Home = () => {
-    // mutation for adding meal to user meal array
-    const [addUserMeal] = useMutation(ADD_USER_MEAL);
+  // mutation for adding meal to user meal array
+  const [addUserMeal] = useMutation(ADD_USER_MEAL);
 
-    const [formState, setFormState] = useState({ meal: "" });
+  const [formState, setFormState] = useState({ meal: "" });
+  const containerRef = useRef<HTMLDivElement>(null); // Ref for the container
 
-    const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-        const { name, value } = event.target;
-        setFormState({
-            ...formState,
-            [name]: value,
-        });
-    };
+  const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = event.target;
+    setFormState({
+      ...formState,
+      [name]: value,
+    });
+  };
 
-    // Debugging: Log the logged-in user profile
-    console.log('User profile:', Auth.getProfile());
+  const { loading, data, error } = useQuery(QUERY_ME);
 
-    // Check if profileId is provided in the URL or if we need to use the logged-in user's data
-    const { loading, data, error } = useQuery(QUERY_ME);
-
-    // Debugging: Log data being fetched and the query in use
-    console.log("Data fetched:", data);
-    console.log("Error fetching data:", error);
+  console.log(data);
 
     //console.log(`MEALS: `, data?.me?.foodItems?.[0]);
 
@@ -80,57 +74,62 @@ const Home = () => {
         setFormState({ meal: "" });
     }
 
+  if (!profile?.username) {
     return (
-        <div className="grid grid-cols-[2fr_1fr] gap-[50px] m-[0px_50px] h-[500px] minecraftFont">
-            <div className="bg-black p-[2px] rounded-[10px]">
-                <div className="h-[500px] bg-customBeige border-[6px] border-solid border-amber-400 rounded-[10px]">
-                    <div>
-                        <AnimatedGifComponent />
-                    </div>
-                </div>
-            </div>
-
-            <div className="bg-black p-[2px] rounded-[10px]">
-                <div className="grid justify-center h-[500px] bg-customBeige border-[6px] border-solid border-amber-400 rounded-[10px]">
-                    <div className="mt-[20px] bg-amber-400 border-[2px] border-solid border-black h-[100px] p-[10px] rounded-[10px]">
-                        <form className="grid">
-                            <label htmlFor="meal" className="block">
-                                Add Meal
-                            </label>
-
-                            <input
-                                placeholder="Steak and Eggs"
-                                name="meal"
-                                type="text"
-                                value={formState.meal}
-                                onChange={handleChange}
-                                required
-                            />
-
-                            <button
-                                className="mt-[20px] bg-white p-[4px] hover:bg-neutral-200 rounded-[10px] border-[2px] border-solid border-black"
-                                onClick={handleFormSubmit}
-                            >
-                                Submit
-                            </button>
-                        </form>
-                    </div>
-
-                    <div className="bg-amber-400 border-[2px] border-solid border-black h-[300px] p-[10px] rounded-[10px] text-center">
-                        <h1 className="mb-[10px]">My Meals Today</h1>
-
-                        <div className="border-[2px] border-solid border-black p-[10px] rounded-[10px] bg-customBeige h-[90%] overflow-y-auto">
-                            <div className="bg-white h-[100px] border-[2px] border-solid border-black rounded-[10px] text-left p-[5px] mb-3">
-                                <p>
-                                    Steak and Eggs
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+      <h4>
+        You need to be logged in to see your profile page. Use the navigation links above to sign up or log in!
+      </h4>
     );
+  }
+
+  return (
+    <div className="grid grid-cols-[2fr_1fr] gap-[50px] m-[0px_50px] h-[500px] minecraftFont">
+      <div className="bg-black p-[2px] rounded-[10px]">
+        <div
+          ref={containerRef}
+          className="h-[500px] bg-customBeige border-[6px] border-solid border-amber-400 rounded-[10px]"
+        >
+          <AnimatedGifComponent containerRef={containerRef} />
+        </div>
+      </div>
+
+      <div className="bg-black p-[2px] rounded-[10px]">
+        <div className="grid justify-center h-[500px] bg-customBeige border-[6px] border-solid border-amber-400 rounded-[10px]">
+          <div className="mt-[20px] bg-amber-400 border-[2px] border-solid border-black h-[100px] p-[10px] rounded-[10px]">
+            <form className="grid">
+              <label htmlFor="meal" className="block">
+                Add Meal
+              </label>
+              <input
+                placeholder="Steak and Eggs"
+                name="meal"
+                type="text"
+                value={formState.meal}
+                onChange={handleChange}
+                required
+              />
+              <button
+                className="mt-[20px] bg-white p-[4px] hover:bg-neutral-200 rounded-[10px] border-[2px] border-solid border-black "
+                onClick={handleFormSubmit}
+              >
+                Submit
+              </button>
+            </form>
+          </div>
+
+          <div className="bg-amber-400 border-[2px] border-solid border-black h-[300px] p-[10px] rounded-[10px] text-center">
+            <h1 className="mb-[10px]">My Meals Today</h1>
+
+            <div className="border-[2px] border-solid border-black p-[10px] rounded-[10px] bg-customBeige h-[90%] overflow-y-auto">
+              <div className="bg-white h-[100px] border-[2px] border-solid border-black rounded-[10px] text-left p-[5px] mb-3">
+                <p>Steak and Eggs</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default Home;

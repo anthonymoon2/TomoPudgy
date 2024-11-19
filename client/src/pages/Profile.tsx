@@ -21,6 +21,7 @@ const Profile = () => {
     
     const profile = data?.me || data?.getUserInfo || {};
     const profileIdString = profile._id;
+    console.log("PROFILE: ", profile);
     console.log(`PROFILE ID: ${profile._id}`);
     console.log(`PROFILE NAME: ${profile.username}`);
     
@@ -34,6 +35,14 @@ const Profile = () => {
         console.log('Loading...');  // Added log to check if we're still in the loading state
         return <div>Loading...</div>;
     }
+
+    if (!profile?.username) {
+        return (
+          <h4>
+            You need to be logged in to see your profile page. Use the navigation links above to sign up or log in!
+          </h4>
+        );
+      }
 
     const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = event.target;
