@@ -49,7 +49,7 @@ const resolvers = {
     me: async (_parent: any, _args: any, context: Context): Promise<IUserInfo | null> => {
       console.log("Context User:", context.user);
       if (context.user) {
-        return await UserInfo.findOne({ _id: context.user._id });
+        return await UserInfo.findOne({ _id: context.user._id }).populate("foodItems");
       }
       throw new AuthenticationError('QUERY_ME: You are not authenticated');
     },

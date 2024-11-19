@@ -5,7 +5,6 @@ import { useState, type ChangeEvent, FormEvent } from "react";
 import { ADD_USER_MEAL } from "../utils/mutations";
 import { QUERY_ME } from "../utils/queries";
 
-
 const Home = () => {
   // mutation for adding meal to user meal array
   const [addUserMeal] = useMutation(ADD_USER_MEAL);
@@ -24,8 +23,6 @@ const Home = () => {
   const { loading, data, error } = useQuery(QUERY_ME);
 
   console.log(data);
-
-    //console.log(`MEALS: `, data?.me?.foodItems?.[0]);
 
     // Handle error case
     if (error) {
@@ -72,7 +69,9 @@ const Home = () => {
             console.error(e);
         }
         setFormState({ meal: "" });
-    }
+
+        window.location.reload();
+  }
 
   if (!profile?.username) {
     return (
@@ -81,6 +80,8 @@ const Home = () => {
       </h4>
     );
   }
+
+  const foodItems = data?.me?.foodItems || [];
 
   return (
     <div className="grid grid-cols-[2fr_1fr] gap-[50px] m-[0px_50px] h-[500px] minecraftFont">
@@ -121,11 +122,18 @@ const Home = () => {
             <h1 className="mb-[10px]">My Meals Today</h1>
 
             <div className="border-[2px] border-solid border-black p-[10px] rounded-[10px] bg-customBeige h-[90%] overflow-y-auto">
-              <div className="bg-white h-[100px] border-[2px] border-solid border-black rounded-[10px] text-left p-[5px] mb-3">
-                <p>Steak and Eggs</p>
-              </div>
+              {foodItems.map((item: { name: string; calories: number }, index: number) => (
+                <div
+                  key={index}
+                  className="bg-gray-50 border-[2px] border-solid border-black rounded-[10px] p-[5px] mb-3 text-center"
+                >
+                  <h1 className="mb-[10px] text-xl">-{item.name}-</h1>
+                  <p>Calories: {item.calories}</p>
+                </div>
+              ))}
             </div>
           </div>
+          
         </div>
       </div>
     </div>
