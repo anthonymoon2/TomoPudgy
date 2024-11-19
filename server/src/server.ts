@@ -4,6 +4,8 @@ import { expressMiddleware } from '@apollo/server/express4';
 import { authenticateToken } from './utils/auth.js';
 import path from 'path';
 import dotenv from 'dotenv';
+import cron from 'node-cron';
+import { resetCaloriesForAllUsers } from './utils/resetCaloriesAndFood.js';
 
 dotenv.config();
 
@@ -22,6 +24,18 @@ const startApolloServer = async () => {
   
   app.use(express.urlencoded({ extended: true }));
   app.use(express.json());
+
+  const usTimeZones = ['America/Los_Angeles'];
+
+  usTimeZones.forEach((timezone) => {
+    cron.schedule('0 0 * * *', async () => {
+      console.log(`Running daily calorie reset for timezone: ${timezone}...`);
+      await resetCaloriesForAllUsers();
+    }, {
+      scheduled: true,
+      timezone: timezone
+    });
+  });
   
   app.use('/graphql', expressMiddleware(server as any,
     {
