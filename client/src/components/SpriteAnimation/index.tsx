@@ -6,30 +6,29 @@ interface AnimatedGifComponentProps {
 }
 
 const AnimatedGifComponent: React.FC<AnimatedGifComponentProps> = ({ containerRef }) => {
-  const gifRef = useRef<HTMLImageElement>(null);
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-  const [direction, setDirection] = useState({ x: "right", y: "down" });
-  const [gifSource, setGifSource] = useState("spriteMoveRight.gif");
-  const [isMoving, setIsMoving] = useState(true);
-  const moveSpeed = 1;
+  const gifRef = useRef<HTMLImageElement>(null); // Ref for the GIF
+  const [position, setPosition] = useState({ x: 0, y: 0 }); // Current position
+  const [direction, setDirection] = useState({ x: "right", y: "down" }); // Current direction
+  const [gifSource, setGifSource] = useState("spriteMoveRight.gif"); // Current GIF source
+  const [isMoving, setIsMoving] = useState(true); // Movement state
+  const moveSpeed = 1; // Speed of movement
 
   const pauseProbability = 0.0025; // Chance of pausing
-  const minPauseTime = 2000; // Minimum pause time in milliseconds
-  const maxPauseTime = 5000; // Maximum pause time in milliseconds
+  const minPauseTime = 2000; // Minimum pause duration (ms)
+  const maxPauseTime = 5000; // Maximum pause duration (ms)
 
-  // Function to generate a random direction (right/left for x, up/down for y)
-  const getRandomDirection = () => {
-    const x = Math.random() < 0.5 ? "left" : "right";
-    const y = Math.random() < 0.5 ? "up" : "down";
-    return { x, y };
-  };
+  // Function to generate random direction
+  const getRandomDirection = () => ({
+    x: Math.random() < 0.5 ? "left" : "right",
+    y: Math.random() < 0.5 ? "up" : "down",
+  });
 
   const moveGif = () => {
     if (gifRef.current && containerRef.current && isMoving) {
-      const gifWidth = gifRef.current.offsetWidth;
-      const gifHeight = gifRef.current.offsetHeight;
-      const containerWidth = containerRef.current.offsetWidth;
-      const containerHeight = containerRef.current.offsetHeight;
+      const gifWidth = gifRef.current.offsetWidth; // Dynamically get GIF width
+      const gifHeight = gifRef.current.offsetHeight; // Dynamically get GIF height
+      const containerWidth = containerRef.current.offsetWidth; // Container width
+      const containerHeight = containerRef.current.offsetHeight; // Container height
 
       setPosition((prevPosition) => {
         let { x, y } = prevPosition;
@@ -75,19 +74,16 @@ const AnimatedGifComponent: React.FC<AnimatedGifComponentProps> = ({ containerRe
     if (Math.random() < pauseProbability) {
       setIsMoving(false); // Pause movement
 
-      // Set paused sprite based on current horizontal direction
+      // Set paused sprite based on current direction
       setGifSource(direction.x === "right" ? "spriteRight.gif" : "sprite.gif");
 
-      // Calculate random pause duration
       const pauseTime = Math.floor(Math.random() * (maxPauseTime - minPauseTime + 1)) + minPauseTime;
 
-      // Resume movement after pause
       setTimeout(() => {
-        // Randomly change directions
         const newDirection = getRandomDirection();
-        setDirection(newDirection);
+        setDirection(newDirection); // Set new random direction
 
-        // Set the correct moving sprite based on the new horizontal direction
+        // Set the movement sprite based on new direction
         setGifSource(newDirection.x === "right" ? "spriteMoveRight.gif" : "spriteMoveLeft.gif");
 
         setIsMoving(true); // Resume movement
@@ -99,8 +95,8 @@ const AnimatedGifComponent: React.FC<AnimatedGifComponentProps> = ({ containerRe
     let animationFrameId: number;
 
     const updatePosition = () => {
-      moveGif(); // Update position
-      randomPause(); // Randomly pause and potentially change directions
+      moveGif();
+      randomPause();
       animationFrameId = requestAnimationFrame(updatePosition);
     };
 
