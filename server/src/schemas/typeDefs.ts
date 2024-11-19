@@ -11,22 +11,15 @@ const typeDefs = `
   type UserInfo {
     _id: ID!
     username: String!
-    password: String!
     weight: Float
     feet: Int
     inches: Int
     gender: Boolean
     age: Int
     recommendedCalorieCalculation: Float
-    dailyCaloricIntake: Float
     currentCalories: Float
     foodItems: [FoodItem!]!
   }
-  
-  type Compare {
-    result: Boolean
-    currentCalories: Float  
-    }
     
 type Compare {
   result: Boolean
