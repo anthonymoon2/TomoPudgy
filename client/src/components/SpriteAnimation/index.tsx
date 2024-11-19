@@ -17,8 +17,8 @@ const AnimatedGifComponent: React.FC<AnimatedGifComponentProps> = ({ containerRe
   const [queryTimestamp, setQueryTimestamp] = useState<number | null>(null); // Forces re-render on query
 
   const pauseProbability = 0.0025; // Chance of pausing
-  const minPauseTime = 2000; // Minimum pause duration (ms)
-  const maxPauseTime = 5000; // Maximum pause duration (ms)
+  const minPauseTime = 5000; // Minimum pause duration (ms)
+  const maxPauseTime = 7000; // Maximum pause duration (ms)
 
   // Lazy query to fetch the latest data
   const [fetchData, { data, loading, error }] = useLazyQuery(QUERY_ME);
@@ -122,7 +122,7 @@ const AnimatedGifComponent: React.FC<AnimatedGifComponentProps> = ({ containerRe
           ? displayedCaloriesStatus === true
             ? "spriteRightFat.gif"
             : displayedCaloriesStatus === false
-            ? "spriteSkinnyRight.gif"
+            ? "spriteSkinnyRight.gif" 
             : "spriteRight.gif"
           : displayedCaloriesStatus === true
           ? "spriteLeftFat.gif"
@@ -189,8 +189,36 @@ const AnimatedGifComponent: React.FC<AnimatedGifComponentProps> = ({ containerRe
           transform: `translate(${position.x}px, ${position.y}px)`,
         }}
       />
+  
+      {/* Speech Bubble for Right Direction */}
+      {!isMoving && direction.x === "right" && (
+        <img
+          src="speech_bubble_right.png"
+          alt="Speech Bubble"
+          className="speech-bubble"
+          style={{
+            position: "absolute",
+            top: position.y + 160, // Position the bubble above the GIF
+            left: position.x + 170, // Center the bubble horizontally relative to the GIF
+          }}
+        />
+      )}
+  
+      {/* Speech Bubble for Left Direction */}
+      {!isMoving && direction.x === "left" && (
+        <img
+          src="speech_bubble_left.png"
+          alt="Speech Bubble"
+          className="speech-bubble"
+          style={{
+            position: "absolute",
+            top: position.y + 160, // Position the bubble above the GIF
+            left: position.x - 40, // Adjust the bubble position to the left of the GIF
+          }}
+        />
+      )}
     </div>
-  );
+  );  
 };
 
 export default AnimatedGifComponent;
