@@ -36,7 +36,7 @@ const Home = () => {
   }
 
   return (
-    <div className="grid grid-cols-[2fr_1fr] gap-[50px] m-[0px_50px] h-[500px] minecraftFont">
+    <div className="container-overlap grid grid-cols-[2fr_1fr] gap-[50px] m-[0px_50px] h-[500px] minecraftFont">
       <div className="bg-black p-[2px] rounded-[10px]">
         <div
           ref={containerRef}
@@ -46,7 +46,7 @@ const Home = () => {
         </div>
       </div>
 
-      <div className="bg-black p-[2px] rounded-[10px]">
+      <div className="container-overlap bg-black p-[2px] rounded-[10px]">
         <div className="grid justify-center h-[500px] bg-customBeige border-[6px] border-solid border-amber-400 rounded-[10px]">
           <div className="mt-[20px] bg-amber-400 border-[2px] border-solid border-black h-[100px] p-[10px] rounded-[10px]">
             <form className="grid">
