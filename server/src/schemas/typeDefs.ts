@@ -50,18 +50,18 @@ type Compare {
     createUser(input: ProfileInput!): Auth
     loginUser(username: String!, password: String! ): Auth
 
-    addUserInfo(
-      _id: ID!,
-      weight: Float,
-      feet: Int,
-      inches: Int,
-      gender: Boolean,
-      age: Int
-    ): UserInfo
-    recommendedCalorieCalculation(_id: ID!): Float
-      compareUserCalories(_id: String!): Compare
-      addFoodItemToUser(userId: String!, foodName: String!): FoodItem
+  addUserInfo(
+    _id: ID!,
+    weight: Float,
+    feet: Int,
+    inches: Int,
+    gender: Boolean,
+    age: Int,
+  ): UserInfo
 
+  recommendedCalorieCalculation(_id: ID!): Float
+  compareUserCalories(_id: String!): Compare
+  addFoodItemToUser(userId: String!, foodName: String!): FoodItem
   }
 `;
 

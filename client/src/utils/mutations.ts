@@ -33,6 +33,7 @@ export const UPDATE_USER = gql`
       inches
       gender
       age
+      recommendedCalorieCalculation
     }
   }
 `;
@@ -45,3 +46,19 @@ export const ADD_USER_MEAL = gql`
     }
   }
 `;
+
+export const CALCULATE_RECOMMENDED_CALORIES = gql`
+  mutation Mutation($id: ID!) {
+    recommendedCalorieCalculation(_id: $id)
+  }
+`
+
+export const COMPARE_USER_CALORIES = gql`
+  mutation CompareUserCalories($userId: String!) {
+    compareUserCalories(_id: $userId) {
+      weight
+      result
+      currentCalories
+    }
+  }
+`

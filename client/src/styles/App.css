@@ -101,6 +101,10 @@ body {
   gap: 50px;
   margin: 0 30px;
 }
+.profile-container-left-outer{
+  display: grid;
+  grid-template-columns: 1fr;
+}
 .profile-container-left-outer,
 .profile-container-right-outer {
   background-color: black;
@@ -121,6 +125,28 @@ body {
   text-align: center;
   padding-top: 25px;
   font-size: 30px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding: 10px;
+}
+.profile-container-left-right{
+  display: flex;
+  align-items: center; 
+  padding: 0px 20px;
+}
+.profile-container-left-right-outer{
+  background-color: black;
+  padding: 2px;
+  border-radius: 10px;
+}
+.profile-container-left-right-inner{
+  display: grid;
+  border: solid;
+  border-width: 2px;
+  background-color: #ffcc00;
+  border-radius: 10px;
+  padding: 5px;
+  font-size: 20px;
 }
 .profile-container-left-box {
   background-color: #ffcc00;
@@ -212,6 +238,18 @@ body {
 .directionLeft,
 .directionRight {
   transform: translateY(-10px);
+}
+
+.form-submit-button{
+  background-color: white;
+  border: solid black;
+  border-radius: 10px;
+  width: 30%;
+  padding: 5px;
+  margin-top: 20px;
+}
+.form-submit-button:hover{
+  background-color: #d9d9d9;
 }
 
 /* Media query for smaller screens */

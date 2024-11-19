@@ -5,11 +5,12 @@ import { useParams } from 'react-router-dom';
 
 import Auth from '../utils/auth';
 import { GET_USER_INFO, QUERY_ME } from '../utils/queries';
+import { CALCULATE_RECOMMENDED_CALORIES } from "../utils/mutations";
 
 const Profile = () => {
     const [formState, setFormState] = useState({ weight: "", feet: "", inches: "", age: "", gender: ""});
     const [updateUser] = useMutation(UPDATE_USER);
-
+    const [calculateRecomendedCalories] = useMutation(CALCULATE_RECOMMENDED_CALORIES);
     // get user data
     const { profileId } = useParams();
     console.log('User profile:', Auth.getProfile());
@@ -23,7 +24,10 @@ const Profile = () => {
     const profileIdString = profile._id;
     console.log("PROFILE: ", profile);
     console.log(`PROFILE ID: ${profile._id}`);
-    console.log(`PROFILE NAME: ${profile.username}`);
+    console.log(`PROFILE feet: ${profile.feet}`);
+    console.log(`PROFILE inches: ${profile.inches}`);
+    console.log(`PROFILE weight: ${profile.weight}`);
+    console.log(`rec calories: ${profile.recommendedCalorieCalculation}`);
     
     // Handle error case
     if (error) {
@@ -57,7 +61,7 @@ const Profile = () => {
     const handleFormSubmit = async (event: FormEvent) => {
         event.preventDefault();
         try {
-            // call mutation and pass in form values
+            // First mutation: updateUser
             await updateUser({
                 variables: { 
                     id: profileIdString, 
@@ -68,8 +72,14 @@ const Profile = () => {
                     age: parseInt(formState.age) || null
                 },
             })
-
             console.log("User updated successfully")
+
+            // Second mutation: calculateRecomendedCalories
+            const { data } = await calculateRecomendedCalories({
+                variables: { id: profileIdString },
+            });
+
+            console.log("Recommended calories calculated:", data);
         } catch (e) {
             console.error(e);
         }
@@ -80,10 +90,21 @@ const Profile = () => {
         <div className="profile-container">
             <div className="profile-container-left-outer">
                 <div className="profile-container-left">
-                    <h1>{profile.username}'s Pudgy</h1>
+                    <div className="profile-container-left-left">
+                        <h1>{profile.username}'s Pudgy</h1>
 
-                    <div className="profile-container-left-avatar">
-                        <img src="/figure1.gif" className="figure-gif"></img>
+                        <div className="profile-container-left-avatar">
+                            <img src="/figure1.gif" className="figure-gif"></img>
+                        </div>
+                    </div>
+                    <div className="profile-container-left-right">
+                        <div className="profile-container-left-right-outer">
+                            <div className="profile-container-left-right-inner">
+                                <h3>weight: {profile.weight}</h3>
+                                <h3>height: {profile.feet}'{profile.inches}"</h3>
+                                <h3>recommended daily calories: {profile.recommendedCalorieCalculation} cals</h3>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
