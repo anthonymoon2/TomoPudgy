@@ -8,7 +8,7 @@ body {
   margin: 0; /* Remove default margin */
 }
 
-.bg-customBeige{
+.bg-customBeige {
   background-color: #dbce9f;
 }
 
@@ -26,7 +26,7 @@ body {
   color: #7c7287;
 }
 
-.minecraftFont{
+.minecraftFont {
   font-family: "Minecraft", sans-serif;
 }
 
@@ -92,6 +92,7 @@ body {
 .backgroundImg {
   background-image: url("../../public/Pixel_Background.png");
   opacity: 100%;
+  background-size: cover;
 }
 
 /* Profile Page */
@@ -247,6 +248,10 @@ body {
     .screenStyle {
       width: 300px;
     }
+  }
+
+  .container-overlap {
+    grid-template-columns: 1fr;
   }
 
   /* === Homepage === */

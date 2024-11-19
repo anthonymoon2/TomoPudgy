@@ -23,6 +23,7 @@
     "wait-on": "^7.2.0"
   },
   "dependencies": {
+    "flowbite": "^2.5.2",
     "jsonwebtoken": "^9.0.2"
   }
 }
