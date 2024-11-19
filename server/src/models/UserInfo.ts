@@ -11,7 +11,6 @@ export interface IUserInfo extends Document {
   gender: boolean;
   age: number;
   recommendedCalorieCalculation: number;
-  dailyCaloricIntake: number;
   currentCalories: number;
   foodItems: Types.ObjectId[];
   isOverRecommendedCalories: boolean
@@ -57,9 +56,6 @@ const UserInfoSchema = new Schema<IUserInfo>({
     type: Number,
   },
   recommendedCalorieCalculation: {
-    type: Number,
-  },
-  dailyCaloricIntake: {
     type: Number,
   },
   currentCalories: {

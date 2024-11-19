@@ -18,15 +18,10 @@ const typeDefs = `
     gender: Boolean
     age: Int
     recommendedCalorieCalculation: Float
-    dailyCaloricIntake: Float
     currentCalories: Float
+    isOverRecommendedCalories: Boolean
     foodItems: [FoodItem!]!
   }
-  
-  type Compare {
-    result: Boolean
-    currentCalories: Float  
-    }
     
 type Compare {
   result: Boolean
