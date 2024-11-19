@@ -90,7 +90,7 @@ body {
 }
 
 .backgroundImg {
-  background-image: url("Pixel_Background.png");
+  background-image: url("../../public/Pixel_Background.png");
   opacity: 100%;
 }
 

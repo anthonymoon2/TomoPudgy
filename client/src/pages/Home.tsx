@@ -40,7 +40,7 @@ const Home = () => {
       <div className="bg-black p-[2px] rounded-[10px]">
         <div
           ref={containerRef}
-          className="h-[500px] bg-customBeige border-[6px] border-solid border-amber-400 rounded-[10px]"
+          className="h-[500px] bg-customBeige border-[6px] border-solid border-amber-400 rounded-[10px] backgroundImg"
         >
           <AnimatedGifComponent containerRef={containerRef} />
         </div>
