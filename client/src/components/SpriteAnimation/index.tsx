@@ -1,108 +1,120 @@
-import React, { useState, useEffect, useRef } from 'react';
-import './index.css';
+import React, { useState, useEffect, useRef } from "react";
+import "./index.css";
 
-const AnimatedGifComponent: React.FC = () => {
-  const gifRef = useRef<HTMLImageElement>(null);
-  const [position, setPosition] = useState(0); // Track the current position of the GIF
-  const [direction, setDirection] = useState<'left' | 'right'>('right'); // Direction the GIF is moving
-  const [gifSource, setGifSource] = useState('spriteMoveRight.gif'); // Track the GIF source (direction)
-  const [isMoving, setIsMoving] = useState(true); // State to control if the GIF is moving or paused
-  const moveSpeed = 1; 
-  const pauseProbability = 0.0025; // Lower probability for less frequent pauses
-  const minPauseTime = 2000; // Minimum pause time in ms
-  const maxPauseTime = 5000; // Maximum pause time in ms
-  const changeDirectionProbability = 0.1; // Probability of changing direction during pause (adjust as needed)
+interface AnimatedGifComponentProps {
+  containerRef: React.RefObject<HTMLDivElement>;
+}
 
-  // Function to move the GIF
+const AnimatedGifComponent: React.FC<AnimatedGifComponentProps> = ({ containerRef }) => {
+  const gifRef = useRef<HTMLImageElement>(null); // Ref for the GIF
+  const [position, setPosition] = useState({ x: 0, y: 0 }); // Current position
+  const [direction, setDirection] = useState({ x: "right", y: "down" }); // Current direction
+  const [gifSource, setGifSource] = useState("spriteMoveRight.gif"); // Current GIF source
+  const [isMoving, setIsMoving] = useState(true); // Movement state
+  const moveSpeed = 1; // Speed of movement
+
+  const pauseProbability = 0.0025; // Chance of pausing
+  const minPauseTime = 2000; // Minimum pause duration (ms)
+  const maxPauseTime = 5000; // Maximum pause duration (ms)
+
+  // Function to generate random direction
+  const getRandomDirection = () => ({
+    x: Math.random() < 0.5 ? "left" : "right",
+    y: Math.random() < 0.5 ? "up" : "down",
+  });
+
   const moveGif = () => {
-    if (gifRef.current && isMoving) {
-      const gifWidth = gifRef.current.offsetWidth;
-      const screenWidth = window.innerWidth;
+    if (gifRef.current && containerRef.current && isMoving) {
+      const gifWidth = gifRef.current.offsetWidth; // Dynamically get GIF width
+      const gifHeight = gifRef.current.offsetHeight; // Dynamically get GIF height
+      const containerWidth = containerRef.current.offsetWidth; // Container width
+      const containerHeight = containerRef.current.offsetHeight; // Container height
 
-      // Move right or left based on the current direction
-      if (direction === 'right') {
-        setPosition((prevPosition) => {
-          const newPosition = prevPosition + moveSpeed;
-          // Reverse direction when the GIF reaches the right side
-          if (newPosition >= screenWidth - gifWidth) {
-            setDirection('left');
-            setGifSource('spriteMoveLeft.gif'); // Change GIF to left-moving sprite
-            return screenWidth - gifWidth; // Prevent overshooting the right edge
+      setPosition((prevPosition) => {
+        let { x, y } = prevPosition;
+
+        // Horizontal movement logic
+        if (direction.x === "right") {
+          x += moveSpeed;
+          if (x >= containerWidth - gifWidth) {
+            setDirection((prev) => ({ ...prev, x: "left" }));
+            setGifSource("spriteMoveLeft.gif");
+            x = containerWidth - gifWidth;
           }
-          return newPosition;
-        });
-      } else {
-        setPosition((prevPosition) => {
-          const newPosition = prevPosition - moveSpeed;
-          // Reverse direction when the GIF reaches the left side
-          if (newPosition <= 0) {
-            setDirection('right');
-            setGifSource('spriteMoveRight.gif'); // Change GIF to right-moving sprite
-            return 0; // Prevent overshooting the left edge
+        } else {
+          x -= moveSpeed;
+          if (x <= 0) {
+            setDirection((prev) => ({ ...prev, x: "right" }));
+            setGifSource("spriteMoveRight.gif");
+            x = 0;
           }
-          return newPosition;
-        });
-      }
+        }
+
+        // Vertical movement logic
+        if (direction.y === "down") {
+          y += moveSpeed;
+          if (y >= containerHeight - gifHeight) {
+            setDirection((prev) => ({ ...prev, y: "up" }));
+            y = containerHeight - gifHeight;
+          }
+        } else {
+          y -= moveSpeed;
+          if (y <= 0) {
+            setDirection((prev) => ({ ...prev, y: "down" }));
+            y = 0;
+          }
+        }
+
+        return { x, y };
+      });
     }
   };
 
-  // Function to randomly pause, resume and potentially change direction
   const randomPause = () => {
     if (Math.random() < pauseProbability) {
-      setIsMoving(false); // Stop moving
+      setIsMoving(false); // Pause movement
 
-      // Switch to the paused image based on the current direction
-      if (direction === 'right') {
-        setGifSource('spriteRight.gif'); // Switch to sprite.gif when pausing right
-      } else {
-        setGifSource('sprite.gif'); // Switch to spriteLeft.gif when pausing left
-      }
+      // Set paused sprite based on current direction
+      setGifSource(direction.x === "right" ? "spriteRight.gif" : "sprite.gif");
 
-      // After a random amount of time, resume movement
       const pauseTime = Math.floor(Math.random() * (maxPauseTime - minPauseTime + 1)) + minPauseTime;
+
       setTimeout(() => {
-        // There is a chance the GIF will change direction when it resumes
-        if (Math.random() < changeDirectionProbability) {
-          setDirection((prevDirection) => (prevDirection === 'right' ? 'left' : 'right'));
-        }
+        const newDirection = getRandomDirection();
+        setDirection(newDirection); // Set new random direction
 
-        setIsMoving(true); // Resume moving
+        // Set the movement sprite based on new direction
+        setGifSource(newDirection.x === "right" ? "spriteMoveRight.gif" : "spriteMoveLeft.gif");
 
-        // After resuming, switch back to the movement gif for the current direction
-        if (direction === 'right') {
-          setGifSource('spriteMoveRight.gif'); // Switch back to right-moving sprite
-        } else {
-          setGifSource('spriteMoveLeft.gif'); // Switch back to left-moving sprite
-        }
+        setIsMoving(true); // Resume movement
       }, pauseTime);
     }
   };
 
   useEffect(() => {
-    // Store the requestAnimationFrame ID to cancel it later
     let animationFrameId: number;
 
-    // Use requestAnimationFrame for smooth updates
     const updatePosition = () => {
       moveGif();
-      randomPause(); // Randomly pause the GIF
-      animationFrameId = requestAnimationFrame(updatePosition); // Store the frame ID
+      randomPause();
+      animationFrameId = requestAnimationFrame(updatePosition);
     };
-    updatePosition(); // Start the animation loop
 
-    return () => cancelAnimationFrame(animationFrameId); // Cancel the animation frame on unmount
-  }, [direction, isMoving]); // Update position whenever direction or isMoving changes
+    updatePosition();
+
+    return () => cancelAnimationFrame(animationFrameId); // Cleanup on unmount
+  }, [direction, isMoving]);
 
   return (
-    <div>
-      <img
-        ref={gifRef}
-        src={gifSource} // Dynamically change the GIF source based on direction or pause state
-        alt="Animated GIF"
-        className="animated-gif"
-        style={{ transform: `translateX(${position}px)` }} // Use the current position for translation
-      />
-    </div>
+    <img
+      ref={gifRef}
+      src={gifSource}
+      alt="Animated GIF"
+      className="animated-gif"
+      style={{
+        transform: `translate(${position.x}px, ${position.y}px)`,
+      }}
+    />
   );
 };
 
