@@ -11,6 +11,7 @@ const typeDefs = `
   type UserInfo {
     _id: ID!
     username: String!
+    password: String!
     weight: Float
     feet: Int
     inches: Int
@@ -18,6 +19,7 @@ const typeDefs = `
     age: Int
     recommendedCalorieCalculation: Float
     currentCalories: Float
+    isOverRecommendedCalories: Boolean
     foodItems: [FoodItem!]!
   }
     
