@@ -13,6 +13,7 @@ The app features a playful virtual pet avatar whose weight reflects the user's c
 - [Contributors](#contributors)
 - [Screenshots](#screenshots)
 - [License](#license)
+- [Moving Forward](#moving-forward)
 - [Badge](#badge)
 
 ## Features
@@ -25,7 +26,7 @@ The app features a playful virtual pet avatar whose weight reflects the user's c
 ## Usage
 - Add food items using the search bar.
 - View daily calorie totals and recommendations on your dashboard.
-- Monitor your virtual pet's weight as it reacts to your calorie intake.
+- Monitor your virtual pet's weight as it reflect to your calorie intake.
 
 ## Technologies Used
 Front-End:
@@ -88,6 +89,7 @@ Back-End:
 ### Profile Page
 ![alt text](./assets/Profile%20Page.PNG)
 
+
 ## License
 This project is licensed under the [MIT License](<![License](https://opensource.org/licenses/MIT)>).
 (Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including
@@ -96,5 +98,12 @@ without limitation the rights to use, copy, modify, merge, publish, distribute, 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.)
 
+
 ## Badge
 ![License](https://img.shields.io/badge/License-MIT-yellow.svg)
+
+## Moving Forward
+### As we continue to improve TamaPudgy, we have exciting features and enhancements planned for future releases. Some of these include:
+    Meal Suggestions: Implementing meal recommendations tailored to user's dietary preferences and goals.
+    
+    Diet Journal: A feature where users can track their meal and calorie history, view past logs, and monitor their progress over time. As this will improve the user's eating habits and make adjustments to improve their diet.
