@@ -4,6 +4,7 @@ import { useQuery } from "@apollo/client";
 import { useState, type ChangeEvent } from "react";
 import { QUERY_ME } from "../utils/queries";
 
+
 const Home = () => {
   const containerRef = useRef<HTMLDivElement>(null); // Ref for the container
 
