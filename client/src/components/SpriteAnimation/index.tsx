@@ -12,7 +12,7 @@ const AnimatedGifComponent: React.FC<AnimatedGifComponentProps> = ({ containerRe
   const [position, setPosition] = useState({ x: 0, y: 0 }); // Current position
   const [direction, setDirection] = useState({ x: "right", y: "down" }); // Current direction
   const [gifSource, setGifSource] = useState("spriteMoveRight.gif"); // Default GIF source
-  const [isMoving, setIsMoving] = useState(true); // Movement state
+  const [isMoving, setIsMoving] = useState(false); // Movement state
   const [displayedCaloriesStatus, setDisplayedCaloriesStatus] = useState<null | boolean>(null); // Display state for the calorie status
   const [queryTimestamp, setQueryTimestamp] = useState<number | null>(null); // Forces re-render on query
 
@@ -37,9 +37,15 @@ const AnimatedGifComponent: React.FC<AnimatedGifComponentProps> = ({ containerRe
 
   // Update displayed state based on query result
   useEffect(() => {
+    const initialPauseTimeout = setTimeout(() => {
+      setIsMoving(true);
+    }, minPauseTime);
+
+
     if (data?.me?.isOverRecommendedCalories !== undefined) {
       setDisplayedCaloriesStatus(data.me.isOverRecommendedCalories); // Sync query result to display state
     }
+    return () => clearTimeout(initialPauseTimeout);
   }, [data, queryTimestamp]);
 
   const getRandomDirection = () => ({
@@ -113,6 +119,8 @@ const AnimatedGifComponent: React.FC<AnimatedGifComponentProps> = ({ containerRe
   };
 
   const randomPause = () => {
+    if (!isMoving) return;
+
     if (Math.random() < pauseProbability) {
       setIsMoving(false); // Pause movement
 
