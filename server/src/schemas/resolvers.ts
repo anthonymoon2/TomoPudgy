@@ -3,7 +3,7 @@ import FoodItem, { IFoodItem } from '../models/FoodItem.js';
 import { Types } from 'mongoose';
 import fetchCalorieData from '../utils/fetchCalorieData.js';
 import { signToken, AuthenticationError } from '../utils/auth.js';
-import { resetCaloriesForAllUsers } from "../utils/resetCaloriesAndFood.js";
+// import { resetCaloriesForAllUsers } from "../utils/resetCaloriesAndFood.js";
 
 interface AddProfileArgs{
   input: {
@@ -54,6 +54,43 @@ const resolvers = {
       }
       throw new AuthenticationError('QUERY_ME: You are not authenticated');
     },
+    // Getting the user's History Log
+    getUserHistoryLog: async (_parent: any, { id, username}: { id: string, username: string}) => {
+      try {
+        let user;
+
+        if (id && username) {
+          user = await UserInfo.findOne({ _id: id, username});
+          if (!user) {
+            throw new Error('No user found with the given id and username.');
+          }
+        } else if (id) {
+          user = await UserInfo.findById(id);
+        } else if (username) {
+          user = await UserInfo.findOne({ username });
+        } else {
+          throw new Error('Either id or username must be provided.');
+        }
+
+        if (!user) {
+          throw new Error('User not found');
+        }
+
+        return {
+          username: user.username,
+          currentCalories: user.currentCalories,
+          foodItems: user.foodItems.map(food => food.toString()),
+          resetHistory: user.resetHistory.map(entry => ({
+            date: entry.date.toISOString(),
+            calories: entry.calories,
+            foodItems: entry.foodItems.map(food => food.toString()),
+          })),
+        };
+      } catch (error) {
+        console.error('Error fetching user history:', error);
+        throw error;
+      }
+    }
   },
 
   Mutation: {
