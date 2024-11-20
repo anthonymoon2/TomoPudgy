@@ -8,7 +8,11 @@ import { COMPARE_USER_CALORIES } from "../utils/mutations";
 
 const Home = () => {
   // create mutations
-  const [addUserMeal] = useMutation(ADD_USER_MEAL);
+  const [addUserMeal] = useMutation(ADD_USER_MEAL, {
+    refetchQueries: [
+        { query: QUERY_ME }
+    ],
+  });
   const [compareUserCalories] = useMutation(COMPARE_USER_CALORIES)
 
   const [formState, setFormState] = useState({ meal: "" });
@@ -86,7 +90,7 @@ const Home = () => {
         console.error(e);
     }
 
-    window.location.reload();
+    // window.location.reload();
   }
 
   if (!profile?.username) {
