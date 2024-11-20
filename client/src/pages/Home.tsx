@@ -26,7 +26,7 @@ const Home = () => {
     });
   };
 
-  const { loading, data, error } = useQuery(QUERY_ME);
+  const { loading, data, error, refetch } = useQuery(QUERY_ME);
 
     // Handle error case
     if (error) {
@@ -74,7 +74,6 @@ const Home = () => {
         }
         setFormState({ meal: "" });
 
-        window.location.reload();
   }
 
   const handleDoneButton = async(event: React.MouseEvent<HTMLButtonElement>) => {
@@ -90,7 +89,7 @@ const Home = () => {
         console.error(e);
     }
 
-    // window.location.reload();
+    refetch();
   }
 
   if (!profile?.username) {
