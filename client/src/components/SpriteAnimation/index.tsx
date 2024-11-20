@@ -16,6 +16,8 @@ const AnimatedGifComponent: React.FC<AnimatedGifComponentProps> = ({ containerRe
   const [isMoving, setIsMoving] = useState(false); // Movement state
   const [displayedCaloriesStatus, setDisplayedCaloriesStatus] = useState<null | boolean>(null); // Display state for the calorie status
   const [queryTimestamp, setQueryTimestamp] = useState<number | null>(null); // Forces re-render on query
+  const [speechLeft, setLeftSpeech] = ["WhatDidYouEatLeft.png","speech_bubble_left.png"];
+  const [speechRight, setRightSpeech] = ["WhatDidYouEatRight.png", "speech_bubble_Right.png"];
 
   const pauseProbability = 0.0025; // Chance of pausing
   const minPauseTime = 5000; // Minimum pause duration (ms)
@@ -192,34 +194,66 @@ const AnimatedGifComponent: React.FC<AnimatedGifComponentProps> = ({ containerRe
       />
   
       {/* Speech Bubble for Right Direction */}
-      {!isMoving && direction.x === "right" && (
-        <img
-          src="speech_bubble_right.png"
-          alt="Speech Bubble"
-          className="speech-bubble"
-          style={{
-            position: "absolute",
-            top: position.y + 160, // Position the bubble above the GIF
-            left: position.x + 170, // Center the bubble horizontally relative to the GIF
-          }}
-        />
-      )}
+      {!isMoving && direction.x === "right" && (() => {
+        // Array of possible image sources for right direction
+        const rightImageOptions = [
+          "WhatDidYouEatRight.png",
+          "GreatDayRight.png",
+          "HelloRight.png",
+          "LookGreatRight.png",
+          "fatThoughtRight.png",
+          "deathRight.png"
+        ];
+  
+        // Randomly select an image
+        const randomRightImage =
+          rightImageOptions[Math.floor(Math.random() * rightImageOptions.length)];
+  
+        return (
+          <img
+            src={randomRightImage} // Use the randomly selected image
+            alt="Speech Bubble"
+            className="speech-bubble"
+            style={{
+              position: "absolute",
+              top: position.y + 160, // Position the bubble above the GIF
+              left: position.x + 170, // Center the bubble horizontally relative to the GIF
+            }}
+          />
+        );
+      })()}
   
       {/* Speech Bubble for Left Direction */}
-      {!isMoving && direction.x === "left" && (
-        <img
-          src="speech_bubble_left.png"
-          alt="Speech Bubble"
-          className="speech-bubble"
-          style={{
-            position: "absolute",
-            top: position.y + 160, // Position the bubble above the GIF
-            left: position.x - 40, // Adjust the bubble position to the left of the GIF
-          }}
-        />
-      )}
+      {!isMoving && direction.x === "left" && (() => {
+        // Array of possible image sources for left direction
+        const leftImageOptions = [
+          "WhatDidYouEatLeft.png",
+          "GreatDayLeft.png",
+          "HelloLeft.png",
+          "LookGreatLeft.png",
+          "fatThoughtLeft.png",
+          "deathLeft.png"
+        ];
+  
+        // Randomly select an image
+        const randomLeftImage =
+          leftImageOptions[Math.floor(Math.random() * leftImageOptions.length)];
+  
+        return (
+          <img
+            src={randomLeftImage} // Use the randomly selected image
+            alt="Speech Bubble"
+            className="speech-bubble"
+            style={{
+              position: "absolute",
+              top: position.y + 160, // Position the bubble above the GIF
+              left: position.x - 40, // Adjust the bubble position to the left of the GIF
+            }}
+          />
+        );
+      })()}
     </div>
-  );  
+  );    
 };
 
 export default AnimatedGifComponent;
