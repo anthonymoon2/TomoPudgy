@@ -2,11 +2,11 @@
 name: Lint and Test workflow
 
 # Trigger workflow on all pull requests
-# on:
-#   pull_request:
-#     branches:
-#       - develop
-#       - staging
+on:
+  pull_request:
+    branches:
+      - develop
+      - staging
 
 # Jobs to carry out
 jobs:
