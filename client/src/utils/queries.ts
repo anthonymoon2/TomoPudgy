@@ -1,5 +1,19 @@
 import { gql } from '@apollo/client';
 
+export const GET_USER_HISTORY = gql 
+`query GetUserHistory($id: String!, $username: String!) {
+  getUserHistoryLog(_id: $id, username: $username) {
+    username
+    currentCalories
+    foodItems
+    resetHistory {
+      date
+      calories
+      foodItems
+    }
+  }
+}`
+
 export const GET_USER_INFO = gql`
   query GetUserInfo($id: String!) {
     getUserInfo(_id: $id) {
@@ -42,4 +56,5 @@ export const QUERY_ME = gql`
       }
     }
   }
+    
 `;
