@@ -6,6 +6,7 @@ import ErrorPage from './pages/Error';
 import Home from './pages/Home.js';
 import LandingPage from './pages/LandingPage.js';
 import Profile from './pages/Profile.js';
+import UserHistory from './pages/History.js';
 
 const router = createBrowserRouter([
     {
@@ -24,6 +25,10 @@ const router = createBrowserRouter([
             {
                 path:'/me',
                 element: <Home /> 
+            },
+            {
+                path:'/history',
+                element: <UserHistory />
             }
         ]
     }

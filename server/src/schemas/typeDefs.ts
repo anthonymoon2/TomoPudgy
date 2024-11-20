@@ -4,7 +4,7 @@ const typeDefs = `
     getFoodItem(foodName: String!): FoodItem
     calculateUserCalories(_id: String!, foodName: String!): Float
     me: UserInfo
-    getUserHistoryLog(_id: String!, username: String!): UserHistoryResponse
+    getUserHistoryLog: UserHistoryResponse
     }
     
   type UserInfo {
@@ -26,13 +26,13 @@ const typeDefs = `
   type ResetHistoryEntry {
     date: String!
     calories: Float!
-    foodItems: [String!]
+    foodItems: [FoodItem!]!
   }
 
   type UserHistoryResponse {
     username: String!
     currentCalories: Float!
-    foodItems: [String!]!
+    foodItems: [FoodItem!]!
     resetHistory: [ResetHistoryEntry!]!
   }
   
