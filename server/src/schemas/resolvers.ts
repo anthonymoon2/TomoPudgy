@@ -3,6 +3,7 @@ import FoodItem, { IFoodItem } from '../models/FoodItem.js';
 import { Types } from 'mongoose';
 import fetchCalorieData from '../utils/fetchCalorieData.js';
 import { signToken, AuthenticationError } from '../utils/auth.js';
+import { resetCaloriesForAllUsers } from "../utils/resetCaloriesAndFood.js";
 
 interface AddProfileArgs{
   input: {
@@ -201,10 +202,6 @@ const resolvers = {
         return null;
       }
     },
-
-  // Resetting the calorie and meal for the day
-    
-
   },
 };
 

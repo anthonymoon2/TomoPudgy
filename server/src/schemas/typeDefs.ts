@@ -1,11 +1,10 @@
 const typeDefs = `
   type Query {
     getUserInfo(_id: String!): UserInfo
-
     getFoodItem(foodName: String!): FoodItem
-
     calculateUserCalories(_id: String!, foodName: String!): Float
     me: UserInfo
+    getUserHistoryLog(_id: String!, username: String!): ResetHistoryEntry
     }
     
   type UserInfo {
@@ -21,20 +20,27 @@ const typeDefs = `
     currentCalories: Float
     isOverRecommendedCalories: Boolean
     foodItems: [FoodItem!]!
+    resetHistory: [ResetHistoryEntry!]!
   }
-    
-type Compare {
-  result: Boolean
-  currentCalories: Float
-  weight: Float
-}
+  
+  type ResetHistoryEntry {
+    date: String!
+    calories: Int!
+    foodItems: [String!]
+  }
+  
+  type Compare {
+    result: Boolean
+    currentCalories: Float
+    weight: Float
+  }
 
       
-    type FoodItem {
-      name: String
-      calories: Float
-      _id: ID!
-    } 
+  type FoodItem {
+    name: String
+    calories: Float
+    _id: ID!
+  } 
 
   type Auth {
     token: String!
