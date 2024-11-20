@@ -202,6 +202,9 @@ const resolvers = {
       }
     },
 
+  // Resetting the calorie and meal for the day
+    
+
   },
 };
 
