@@ -16,8 +16,6 @@ const AnimatedGifComponent: React.FC<AnimatedGifComponentProps> = ({ containerRe
   const [isMoving, setIsMoving] = useState(false); // Movement state
   const [displayedCaloriesStatus, setDisplayedCaloriesStatus] = useState<null | boolean>(null); // Display state for the calorie status
   const [queryTimestamp, setQueryTimestamp] = useState<number | null>(null); // Forces re-render on query
-  const [speechLeft, setLeftSpeech] = ["WhatDidYouEatLeft.png","speech_bubble_left.png"];
-  const [speechRight, setRightSpeech] = ["WhatDidYouEatRight.png", "speech_bubble_Right.png"];
 
   const pauseProbability = 0.0025; // Chance of pausing
   const minPauseTime = 5000; // Minimum pause duration (ms)
