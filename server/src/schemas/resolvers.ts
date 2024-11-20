@@ -55,21 +55,17 @@ const resolvers = {
       throw new AuthenticationError('QUERY_ME: You are not authenticated');
     },
     // Getting the user's History Log
-    getUserHistoryLog: async (_parent: any, { id, username}: { id: string, username: string}) => {
+    getUserHistoryLog: async (_parent: any, _args: any, context: Context) => {
       try {
         let user;
 
-        if (id && username) {
-          user = await UserInfo.findOne({ _id: id, username});
+        if (context.user) {
+          user = await UserInfo.findOne({ _id: context.user._id}).populate("foodItems");
           if (!user) {
             throw new Error('No user found with the given id and username.');
           }
-        } else if (id) {
-          user = await UserInfo.findById(id);
-        } else if (username) {
-          user = await UserInfo.findOne({ username });
         } else {
-          throw new Error('Either id or username must be provided.');
+          throw new Error('Invalid token');
         }
 
         if (!user) {
@@ -79,11 +75,11 @@ const resolvers = {
         return {
           username: user.username,
           currentCalories: user.currentCalories,
-          foodItems: user.foodItems.map(food => food.toString()),
+          foodItems: user.foodItems.map(food => food),
           resetHistory: user.resetHistory.map(entry => ({
             date: entry.date.toISOString(),
             calories: entry.calories,
-            foodItems: entry.foodItems.map(food => food.toString()),
+            foodItems: entry.foodItems.map(food => food),
           })),
         };
       } catch (error) {
